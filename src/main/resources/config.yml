@@ -1,0 +1,139 @@
+# The database for the claims, based on SQLite
+database:
+  path: "/database.db"
+
+# The messages configuration
+messages:
+  prefix:
+    toggle: true
+    string: "&8[&9Lands&8] &r"
+
+  general:
+    enabled: "&aEnabled&r"
+    disabled: "&cDisabled&r"
+
+  commands:
+    claim:
+      chunk_already_claimed: "&cThis chunk has already been claimed."
+      missing_land_name: "&cYou must provide your new land name because you will create one with this chunk!"
+      land_name_already_taken: "&cThis land name is already been taken, please choose another one."
+      chunk_claimed_success: "&aYou have successfully claimed the chunk! &9%chunk_x%, %chunk_z%"
+
+    delete_role:
+      land_not_found: "&cYou don't have a land!"
+      min_roles_reached: "&cYou cannot delete any role, it should be there at least 2 roles to maintain the land!"
+      no_role_provided: "&cYou must provide a role name to delete."
+      role_not_found: "&cThis role was not found in your land."
+      role_delete_success: "&aSuccessfully deleted the role %role%!"
+
+    info:
+      chunk_wilderness: "&cThis is wilderness, you must use this command inside a claimed chunk!"
+
+    new_role:
+      land_not_found: "&cYou don't have a land!"
+      no_role_provided: "&cYou must provide a new role name to create."
+      role_found: "&cThis role does already exist in the land!"
+      role_create_success: "&aSuccessfully created a new role!"
+
+    rename_role:
+      land_not_found: "&cYou don't have a land!"
+      no_role_provided: "&cYou must provide an existing role name to rename."
+      role_not_found: "&cThis role does not exist in the land!"
+      missing_new_role_name: "&cYou must provide a new role name!"
+      role_update_success: "&aSuccessfully renamed &9%old% &ato &&9%new%&a!"
+
+    set_spawn:
+      land_not_found: "&cYou don't have a land!"
+      chunk_not_claimed: "&cThis chunk is not claimed."
+      not_owner_of_chunk: "&cYou don't own this chunk."
+      spawn_set_success: "&aSuccessfully updated spawn coordinates: &9%x%, %y%, %z%"
+
+    spawn:
+      missing_land_name: "&cYou must provide the land name!"
+      land_name_not_found: "&cThis land name doesn't exist."
+      missing_permissions_to_teleport: "&cYou do not have permission to teleport to %land_name%."
+      spawn_teleport_success: "&aTeleported to &6%land_name%&a: &9%x%, %y%, %z% &a(%world%)"
+
+    trust:
+      land_not_found: "&cYou don't have a land!"
+      no_playername_provided: "&cYou must name the player to trust."
+      playername_not_found: "&cThis playername doens't exist."
+      playername_already_trusted: "&cThis playername is already in the land!"
+      playername_owner_of_land: "&cYou are the owner of the land."
+      no_role_provided: "&cYou must provide a role name to delete."
+      role_not_found: "&cThis role was not found in your land."
+      player_cannot_have_default_role: "&cThe player cannot have a default (Visitor) role!"
+      player_trusted_success: "&aYou trusted &6%player% &ato join the land!"
+
+    unclaim:
+      land_not_found: "&cYou don't have a land!"
+      chunk_not_claimed: "&cThis chunk is not claimed."
+      chunk_not_owned_by_sender: "&cThis chunk is owned by a land that you don't own!"
+      confirm_missing: "&7You must confirm to continue..."
+      chunk_unclaimed_success: "&aYou have successfully unclaimed this chunk!"
+      show_note_land_deleted: "&6Note: Your land has been deleted because you have no chunks to maintain it!"
+
+    untrust:
+      land_not_found: "&cYou don't have a land!"
+      no_playername_provided: "&cYou must name the player to trust."
+      playername_not_found: "&cThis playername doens't exist."
+      playername_not_trusted: "&cThis playername is not in the land!"
+      player_untrusted_success: "&aYou untrusted &f%player% &ato leave the land."
+
+    update_role_flags:
+      land_not_found: "&cYou don't have a land!"
+      no_role_provided: "&cYou must provide a role name to update/read it's flags."
+      role_not_found: "&cThis role was not found in your land."
+      not_valid_flag: "&cThis is not a valid flag."
+      missing_boolean_value: "&cYou must provide a boolean value to update the role's flag (true/1 or false/0)."
+      not_boolean_value: "&cYou must choose true/1 or false/0, not any kind of other values"
+      role_flag_updated_success: "&aThe flag &7%flag% &afor &f%role_name% &ahas been updated to &6%new_value%&a."
+
+    update_nature_flags:
+      land_not_found: "&cYou don't have a land!"
+      not_valid_flag: "&cThis is not a valid flag."
+      missing_boolean_value: "&cYou must provide a boolean value to update the role's flag (true/1 or false/0)."
+      not_boolean_value: "&cYou must choose true/1 or false/0, not any kind of other values"
+      nature_flag_updated_success: "&aThe flag &7%flag% &ahas been updated to &6%new_value%&a."
+
+    view:
+      chunk_wilderness: "&cThis is wilderness, you must use this command inside a claimed chunk!"
+      particles_spawned_success: "&aDone! You can check the particles around the land to see the chunks limits."
+
+  permissions:
+    prefix:
+      toggle: true
+      string: "&c&lHEY! &r"
+
+    suffix:
+      toggle: true
+      string: " &c(&r%land_name%: &7%flag%&c)"
+    
+    messages:
+      breakblocks: "&cYou do not have permission to break blocks here"
+      placeblocks: "&cYou do not have permission to place blocks here"
+      containers: "&cYou do not have permission to open containers here"
+      redstone: "&cYou do not have permission to use redstone here"
+      doors: "&cYou do not have permission to use doors here"
+      trapdoors: "&cYou do not have permission to use trapdoors here"
+      emptybuckets: "&cYou do not have permission to empty buckets here"
+      fillbuckets: "&cYou do not have permission to fill buckets here"
+      harvestcrops: "&cYou do not have permission to harvest crops here"
+      frostwalker: "&cYou do not have permission to use frost walker boots here"
+      shearsheeps: "&cYou do not have permission to shear sheeps here"
+      itemframes: "&cYou do not have permission to interact with item frames here"
+      fencegates: "&cYou do not have permission to use fence gates here"
+      buttons: "&cYou do not have permission to use buttons here"
+      levers: "&cYou do not have permission to use levers here"
+      pressureplates: "&cYou do not have permission to use pressure plates here"
+      bells: "&cYou do not have permission to use bells here"
+      tripwires: "&cYou do not have permission to use tripwires here"
+      armorstands: "&cYou do not have permission to take off or put on armors on armor stands here"
+      teleporttospawn: "&cYou do not have permission to teleport to spawn"
+      damagehostilemobs: "&cYou do not have permission to hit hostile mobs here"
+      damagepassivemobs: "&cYou do not have permission to hit passive mobs here"
+      pvp: "&cYou do not have permission to PvP here"
+      usecauldron: "&cYou do not have permission to empty or fill cauldrons here"
+      pickupitems: "&cYou do not have permission to pickup items here"
+      useanvil: "&cYou do not have permission to use anvils here"
+      createfire: "&cYou do not have permission to ignite a fire here"
