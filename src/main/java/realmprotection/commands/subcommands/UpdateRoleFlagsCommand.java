@@ -117,6 +117,8 @@ public class UpdateRoleFlagsCommand implements CommandExecutor {
                     listofflags.add("tripwires");
                     listofflags.add("armorstands");
                     listofflags.add("teleporttospawn");
+                    listofflags.add("throwenderpearls");
+                    listofflags.add("throwpotions");
                     listofflags.add("damagehostilemobs");
                     listofflags.add("damagepassivemobs");
                     listofflags.add("pvp");
@@ -167,9 +169,9 @@ public class UpdateRoleFlagsCommand implements CommandExecutor {
     public Material getMaterialItemFromPermissionName(String permission) {
         switch (permission) {
             case "permissions_breakblocks":
-                return Material.OAK_PLANKS;
-            case "permissions_placeblocks":
                 return Material.IRON_PICKAXE;
+            case "permissions_placeblocks":
+                return Material.OAK_LOG;
             case "permissions_containers":
                 return Material.CHEST;
             case "permissions_redstone":
@@ -208,6 +210,10 @@ public class UpdateRoleFlagsCommand implements CommandExecutor {
                 return Material.ARMOR_STAND;
             case "permissions_teleporttospawn":
                 return Material.ENDER_EYE;
+            case "permissions_throwenderpearls":
+                return Material.ENDER_PEARL;
+            case "permissions_throwpotions":
+                return Material.SPLASH_POTION;
             case "permissions_damagehostilemobs":
                 return Material.ZOMBIE_HEAD;
             case "permissions_damagepassivemobs":

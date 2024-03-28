@@ -19,7 +19,7 @@ import realmprotection.managers.LandsManager;
 import realmprotection.utils.ColoredString;
 
 public class RealmProtection extends JavaPlugin implements Listener {
-    public static final Logger logger = Logger.getLogger("XTremeLands");
+    public static final Logger logger = Logger.getLogger("RealmProtector");
     public static final String ANSI_COLOR_RESET = "\u001B[0m";
     public static final String ANSI_COLOR_GREEN = "\u001B[32m";
     public static final String ANSI_COLOR_RED = "\u001B[31m";
@@ -30,7 +30,7 @@ public class RealmProtection extends JavaPlugin implements Listener {
 
     @Override
     public void onEnable() {
-        logger.info(ANSI_COLOR_GREEN + "XTremeLands Plugin has been enabled." + ANSI_COLOR_RESET);
+        logger.info(ANSI_COLOR_GREEN + "RealmProtector Plugin has been enabled." + ANSI_COLOR_RESET);
 
         saveDefaultConfig();
 
@@ -57,7 +57,7 @@ public class RealmProtection extends JavaPlugin implements Listener {
 
     @Override
     public void onDisable() {
-        logger.info(ANSI_COLOR_RED + "XTremeLands Plugin has been disabled." + ANSI_COLOR_RESET);
+        logger.info(ANSI_COLOR_RED + "RealmProtector Plugin has been disabled." + ANSI_COLOR_RESET);
 
         try {
             RealmProtection.database.closeConnection();

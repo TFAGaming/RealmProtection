@@ -354,9 +354,9 @@ public class LandsManager {
     public static List<String> listAllLandNames() {
         List<String> landnames = new ArrayList<>();
 
-        if (!land_id_cache.isEmpty()) {
+        if (!land_name_cache.isEmpty()) {
             @SuppressWarnings("rawtypes")
-            Set keys = land_id_cache.keySet();
+            Set keys = land_name_cache.keySet();
 
             @SuppressWarnings("rawtypes")
             Iterator iterator = keys.iterator();

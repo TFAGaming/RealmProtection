@@ -1,6 +1,9 @@
 package realmprotection.commands.subcommands;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.bukkit.Bukkit;
@@ -62,12 +65,20 @@ public class InfoCommand implements CommandExecutor {
                         List<String> loreConfigData = LoadConfigString
                                         .guiStringList("land_info.content.land_information.lore");
 
+                        DateFormat dateFormatter = new SimpleDateFormat(LoadConfigString.generalString("date.format"));
+
                         for (String lore : loreConfigData) {
                                 landInformationButtonLore.add(ColoredString.translate(lore
                                                 .replace("%land_id%", land_id)
-                                                .replace("%chunks%", "" + ChunksManager.getChunksCountOfLand(new Integer(land_id)))
-                                                .replace("%created_at%", LandsManager.getLandDetailById(
-                                                                new Integer(land_id), "created_at"))));
+                                                .replace("%chunks%",
+                                                                "" + ChunksManager.getChunksCountOfLand(
+                                                                                new Integer(land_id)))
+                                                .replace("%created_at%",
+                                                                dateFormatter.format(
+                                                                                new Date(new Long(LandsManager
+                                                                                                .getLandDetailById(
+                                                                                                                new Integer(land_id),
+                                                                                                                "created_at")))))));
                         }
 
                         landInformationButtonMeta.setLore(landInformationButtonLore);
@@ -86,7 +97,8 @@ public class InfoCommand implements CommandExecutor {
                         ItemMeta landMembersButtonMeta = landMembersButton.getItemMeta();
                         landMembersButtonMeta.setDisplayName(ColoredString.translate(LoadConfigString
                                         .guiString("land_info.content.land_members.displayname")
-                                        .replace("%members_count%", "" + LandMembersManager.getMembersCountOfLand(new Integer(land_id)))));
+                                        .replace("%members_count%", "" + LandMembersManager
+                                                        .getMembersCountOfLand(new Integer(land_id)))));
 
                         ArrayList<String> landMembersButtonLore = new ArrayList<>();
 

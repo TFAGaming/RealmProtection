@@ -245,6 +245,8 @@ public class LandsCommand implements TabExecutor {
             arguments.add("tripwires");
             arguments.add("armorstands");
             arguments.add("teleporttospawn");
+            arguments.add("throwenderpearls");
+            arguments.add("throwpotions");
             arguments.add("damagehostilemobs");
             arguments.add("damagepassivemobs");
             arguments.add("pvp");

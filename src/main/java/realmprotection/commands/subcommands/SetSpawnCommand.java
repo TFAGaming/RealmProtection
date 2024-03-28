@@ -42,7 +42,7 @@ public class SetSpawnCommand implements CommandExecutor {
 
             LandsManager.updateSpawnLocation(new Integer(land_id), player_x, player_y, player_z, player_world);
 
-            player.sendMessage(LoadConfigString.load("set_spawn.spawn_set_success").replace("%x%", "" + player_x).replace("%y%", "" + player_y).replace("%z%", "" + player_z));
+            player.sendMessage(LoadConfigString.load("set_spawn.spawn_set_success").replace("%x%", String.format("%.2f", player_x)).replace("%y%", String.format("%.2f", player_y)).replace("%z%", String.format("%.2f", player_z)));
 
             return true;
         } else {

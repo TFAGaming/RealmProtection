@@ -20,15 +20,26 @@ messages:
     flags:
       enabled: "&a✔ Enabled &r"
       disabled: "&c✘ Disabled &r"
+
     gui:
       close_button:
         enabled: true # You can disable it, because players can use ESC key to close the inventory
         displayname: "&cClose"
         type: "BARRIER"
+
+    date:
+      format: "dd MMM yyy HH:mm:ss" # Example output: 01 Jan 1970 00:00:03
+    
+    player_chunk_entry:
+      claimed:
+        title: "&9%land%"
+        subtitle: "&fYou have entered a claimed chunk"
+      unclaimed:
+        title: "&2Wilderness"
+        subtitle: "&fRoam the wild!"
   
   gui:
     # Material names: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html
-
     # GUI for the command: /land info (land name)
     land_info:
       title: "&9Land Information"
@@ -36,16 +47,16 @@ messages:
         land_information:
           displayname: "&9Land: &r%land_name%"
           lore:
-            - "&bID: &r%land_id%"
-            - "&bChunks: &r%chunks%"
-            - "&bCreated at: &r%created_at%"
+            - "&aID: &f%land_id%"
+            - "&aChunks: &f%chunks%"
+            - "&aCreated at: &f%created_at%"
           type: "OAK_SIGN"
         land_owner:
           displayname: "&9Owner: &c%land_owner%"
           type: "PLAYER_HEAD"
         land_members:
           displayname: "&9Members (%members_count%):"
-          lore_style: "%role_name%&f: %member_name%"
+          lore_style: "&a%role_name%&f: &6%member_name%"
           type: "EMERALD"
 
     # GUI for the command: /land roles flags [role name]
@@ -120,7 +131,7 @@ messages:
       playername_not_found: "&cThis playername doens't exist."
       playername_already_trusted: "&cThis playername is already in the land!"
       playername_owner_of_land: "&cYou are the owner of the land."
-      no_role_provided: "&cYou must provide a role name to delete."
+      no_role_provided: "&cYou must provide a role name for the player."
       role_not_found: "&cThis role was not found in your land."
       player_cannot_have_default_role: "&cThe player cannot have a default (Visitor) role!"
       player_trusted_success: "&aYou trusted &6%player% &ato join the land!"
@@ -190,6 +201,8 @@ messages:
       tripwires: "&cYou do not have permission to use tripwires here"
       armorstands: "&cYou do not have permission to take off or put on armors on armor stands here"
       teleporttospawn: "&cYou do not have permission to teleport to spawn"
+      throwenderpearls: "&cYou do not have permission to throw ender pearls here"
+      throwpotions: "&cYou do not have permission to throw potions here"
       damagehostilemobs: "&cYou do not have permission to hit hostile mobs here"
       damagepassivemobs: "&cYou do not have permission to hit passive mobs here"
       pvp: "&cYou do not have permission to PvP here"

@@ -87,6 +87,8 @@ public class Database {
                 "permissions_tripwires BOOLEAN NOT NULL," +
                 "permissions_armorstands BOOLEAN NOT NULL," +
                 "permissions_teleporttospawn BOOLEAN NOT NULL," +
+                "permissions_throwenderpearls BOOLEAN NOT NULL," +
+                "permissions_throwpotions BOOLEAN NOT NULL," +
                 "permissions_damagehostilemobs BOOLEAN NOT NULL," +
                 "permissions_damagepassivemobs BOOLEAN NOT NULL," +
                 "permissions_pvp BOOLEAN NOT NULL," +

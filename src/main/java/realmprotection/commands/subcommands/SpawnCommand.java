@@ -49,7 +49,7 @@ public class SpawnCommand implements CommandExecutor {
 
             player.teleport(location);
 
-            player.sendMessage(LoadConfigString.load("spawn.spawn_teleport_success").replace("%land_name%", args[1]).replace("%x%", land_x).replace("%y%", land_y).replace("%z%", land_z).replace("%world%", land_world));
+            player.sendMessage(LoadConfigString.load("spawn.spawn_teleport_success").replace("%land_name%", args[1]).replace("%x%", String.format("%.2f", new Double(land_x))).replace("%y%", String.format("%.2f", new Double(land_y))).replace("%z%", String.format("%.2f", new Double(land_z))).replace("%world%", land_world));
 
             return true;
         } else {
