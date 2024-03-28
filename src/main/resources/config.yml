@@ -1,3 +1,11 @@
+# --------------------------------------------------------------------------
+# 
+#               * RealmProtection, by TFAGaming (GitHub) *
+#
+#     Please read the license before you do any changes to this plugin!
+#   
+# --------------------------------------------------------------------------
+
 # The database for the claims, based on SQLite
 database:
   path: "/database.db"
@@ -9,8 +17,60 @@ messages:
     string: "&8[&9Lands&8] &r"
 
   general:
-    enabled: "&aEnabled&r"
-    disabled: "&cDisabled&r"
+    flags:
+      enabled: "&a✔ Enabled &r"
+      disabled: "&c✘ Disabled &r"
+    gui:
+      close_button:
+        enabled: true # You can disable it, because players can use ESC key to close the inventory
+        displayname: "&cClose"
+        type: "BARRIER"
+  
+  gui:
+    # Material names: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html
+
+    # GUI for the command: /land info (land name)
+    land_info:
+      title: "&9Land Information"
+      content:
+        land_information:
+          displayname: "&9Land: &r%land_name%"
+          lore:
+            - "&bID: &r%land_id%"
+            - "&bChunks: &r%chunks%"
+            - "&bCreated at: &r%created_at%"
+          type: "OAK_SIGN"
+        land_owner:
+          displayname: "&9Owner: &c%land_owner%"
+          type: "PLAYER_HEAD"
+        land_members:
+          displayname: "&9Members (%members_count%):"
+          lore_style: "%role_name%&f: %member_name%"
+          type: "EMERALD"
+
+    # GUI for the command: /land roles flags [role name]
+    role_flags:
+      title: "&9Role Flags"
+      content:
+        flag_style:
+          displayname: "&7%flag%"
+          lore_style: "%value%" # Configure the value from this path: "messages.general.flags.[enabled/disabled]"
+          type: "%flag_item%" # Configure the flag's item from this path: "items.role_flags"
+        role_name:
+          displayname: "&9Role: &f%role%"
+          type: "PAPER"
+
+    # GUI for the command: /land nature flags
+    nature_flags:
+      title: "&9Nature Flags"
+      content:
+        flag_style:
+          displayname: "&7%flag%"
+          lore_style: "%value%" # Configure the value from this path: "messages.general.flags.[enabled/disabled]"
+          type: "%flag_item%" # Configure the flag's item from this path: "items.nature_flags"
+        land_name:
+          displayname: "&9Land: &f%land_name%"
+          type: "PAPER"
 
   commands:
     claim:

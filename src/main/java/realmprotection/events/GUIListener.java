@@ -1,0 +1,73 @@
+package realmprotection.events;
+
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.inventory.ItemStack;
+
+import realmprotection.utils.ColoredString;
+
+public class GUIListener implements Listener {
+    @EventHandler
+    public void onClick(InventoryClickEvent event) {
+        Player player = (Player) event.getWhoClicked();
+
+        if (event.getView().getTitle().equalsIgnoreCase(ColoredString.translate("&9Land Information"))) {
+            event.setCancelled(true);
+
+            ItemStack item = event.getCurrentItem();
+
+            switch (item.getType()) {
+                case OAK_SIGN:
+                    break;
+                case PLAYER_HEAD:
+                    break;
+                case EMERALD:
+                    event.setCancelled(true);
+                    break;
+                case BARRIER:
+                    player.closeInventory();
+                    break;
+                default:
+                    break;
+            }
+        } else if (event.getView().getTitle().equalsIgnoreCase(ColoredString.translate("&9Role Flags"))) {
+            event.setCancelled(true);
+
+            ItemStack item = event.getCurrentItem();
+
+            switch (item.getType()) {
+                case BARRIER:
+                    player.closeInventory();
+                    break;
+                case PAPER:
+                    break;
+                default:
+                    player.sendMessage(ColoredString.translate(
+                            "&cSorry, but you can only edit flags values using the commands for this moment."));
+            }
+        } else if (event.getView().getTitle().equalsIgnoreCase(ColoredString.translate("&9Nature Flags"))) {
+            event.setCancelled(true);
+
+            ItemStack item = event.getCurrentItem();
+
+            switch (item.getType()) {
+                case BARRIER:
+                    player.closeInventory();
+                    break;
+                case PAPER:
+                    break;
+                default:
+                    player.sendMessage(ColoredString.translate(
+                            "&cSorry, but you can only edit flags values using the commands for this moment."));
+            }
+        }
+    }
+
+    @EventHandler
+    public void onClose(InventoryCloseEvent event) {
+
+    }
+}

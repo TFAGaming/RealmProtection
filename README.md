@@ -1,8 +1,9 @@
 <img width="150" height="150" align="left" style="float: left; margin: 0 10px 10px 0;" alt="RealmProtector" src="">
 
-<p style="font-size:35px"><u>RealmProtector</u></p>
+<h3><u>RealmProtector</u></h3>
 
 RealmProtector is a Minecraft plugin that allows you to claim a 16x16 block segment from a world (a chunk) and protects it from griefers and thieves. It is super customizable with 35+ different flags for different roles, nature flags, and many other features.
+<br>
 <br>
 <br>
 ## How does it work?
