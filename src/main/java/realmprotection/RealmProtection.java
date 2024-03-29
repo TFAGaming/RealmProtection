@@ -8,8 +8,10 @@ import java.util.logging.Logger;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import net.milkbowl.vault.economy.Economy;
 import realmprotection.commands.LandsCommand;
 import realmprotection.database.Database;
 import realmprotection.events.ChunksProtection;
@@ -24,13 +26,15 @@ public class RealmProtection extends JavaPlugin implements Listener {
     public static final String ANSI_COLOR_GREEN = "\u001B[32m";
     public static final String ANSI_COLOR_RED = "\u001B[31m";
 
+    private static Economy vaultapi_economy = null;
+
     private static Set<UUID> cooldownPlayers = new HashSet<>();
 
     public static Database database;
 
     @Override
     public void onEnable() {
-        logger.info(ANSI_COLOR_GREEN + "RealmProtector Plugin has been enabled." + ANSI_COLOR_RESET);
+        logger.info(ANSI_COLOR_GREEN + "RealmProtector: The plugin has been enabled." + ANSI_COLOR_RESET);
 
         saveDefaultConfig();
 
@@ -45,7 +49,19 @@ public class RealmProtection extends JavaPlugin implements Listener {
             RealmProtection.database.initialize();
         } catch (SQLException error) {
             error.printStackTrace();
-            logger.severe(ANSI_COLOR_RED + "Failed to connect to the database." + ANSI_COLOR_RESET);
+            logger.severe(ANSI_COLOR_RED + "RealmProtector: Failed to connect to the database." + ANSI_COLOR_RESET);
+        }
+
+        if (getConfig().getBoolean("lands.plugins.vaultapi_economy") == true) {
+            if (!setupEconomy()) {
+                logger.severe(ANSI_COLOR_RED
+                        + "RealmProtector: Unable to load the economy API from Vault."
+                        + ANSI_COLOR_RESET);
+            } else {
+                logger.severe(ANSI_COLOR_GREEN
+                        + "RealmProtector: Vault API economy has been enabled!"
+                        + ANSI_COLOR_RESET);
+            }
         }
 
         getServer().getPluginManager().registerEvents(new ChunksProtection(), this);
@@ -57,16 +73,38 @@ public class RealmProtection extends JavaPlugin implements Listener {
 
     @Override
     public void onDisable() {
-        logger.info(ANSI_COLOR_RED + "RealmProtector Plugin has been disabled." + ANSI_COLOR_RESET);
+        logger.severe(ANSI_COLOR_GREEN + "RealmProtector: The plugin has been disabled." + ANSI_COLOR_RESET);
 
         try {
             RealmProtection.database.closeConnection();
 
-            logger.severe(ANSI_COLOR_GREEN + "Successfully closed the database." + ANSI_COLOR_RESET);
+            logger.info(ANSI_COLOR_GREEN + "RealmProtector: Successfully closed the database." + ANSI_COLOR_RESET);
         } catch (SQLException error) {
             error.printStackTrace();
-            logger.severe(ANSI_COLOR_RED + "Failed to close the database." + ANSI_COLOR_RESET);
+            logger.severe(ANSI_COLOR_RED + "RealmProtector: Failed to close the database." + ANSI_COLOR_RESET);
         }
+    }
+
+    private boolean setupEconomy() {
+        if (getServer().getPluginManager().getPlugin("Vault") == null) {
+            return false;
+        }
+
+        RegisteredServiceProvider<Economy> registerer = getServer().getServicesManager().getRegistration(Economy.class);
+
+        System.out.println("DEBUG: " + registerer);
+
+        if (registerer == null) {
+            return false;
+        }
+
+        vaultapi_economy = registerer.getProvider();
+
+        return vaultapi_economy != null;
+    }
+
+    public static Economy getEconomy() {
+        return vaultapi_economy;
     }
 
     public static void _sendMessageWithTimeout(Player player, String permission) {

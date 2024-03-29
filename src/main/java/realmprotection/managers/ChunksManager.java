@@ -252,6 +252,16 @@ public class ChunksManager {
         return 0;
     }
 
+    public static String getOwnerByChunk(Chunk chunk) {
+        String land_id = getChunkDetail(chunk, "land_id");
+
+        if (land_id != null) {
+            return LandsManager.getLandDetailById(new Integer(land_id), "owner_name");
+        } else {
+            return null;
+        }
+    }
+
     public static void spawnParticlesAroundChunk(Player player, Integer land_id, double y, boolean is_owner, boolean is_trusted) {
         List<List<Object>> chunks = listChunksFromLandId(land_id);
 

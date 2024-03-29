@@ -67,12 +67,18 @@ public class InfoCommand implements CommandExecutor {
 
                         DateFormat dateFormatter = new SimpleDateFormat(LoadConfigString.generalString("date.format"));
 
+                        double land_balance = Double.parseDouble(LandsManager.getLandDetailById(new Integer(land_id), "balance"));
+
+                        System.out.println(land_balance);
+
                         for (String lore : loreConfigData) {
                                 landInformationButtonLore.add(ColoredString.translate(lore
                                                 .replace("%land_id%", land_id)
                                                 .replace("%chunks%",
                                                                 "" + ChunksManager.getChunksCountOfLand(
                                                                                 new Integer(land_id)))
+                                                .replace("%balance%",
+                                                                String.format("%.2f", land_balance))
                                                 .replace("%created_at%",
                                                                 dateFormatter.format(
                                                                                 new Date(new Long(LandsManager

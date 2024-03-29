@@ -22,7 +22,7 @@ public class Database {
         Connection connection = DriverManager.getConnection("jdbc:sqlite:" + this.DATABASE_PATH);
         this.connection = connection;
 
-        RealmProtection.logger.info(RealmProtection.ANSI_COLOR_GREEN + "Successfully connected to the database!"
+        RealmProtection.logger.info(RealmProtection.ANSI_COLOR_GREEN + "RealmProtector: Successfully connected to the database!"
                 + RealmProtection.ANSI_COLOR_RESET);
 
         return connection;
@@ -44,6 +44,7 @@ public class Database {
                 "location_z REAL NOT NULL, " +
                 "location_world TEXT NOT NULL, " +
                 "created_at BIGINT NOT NULL, " +
+                "balance REAL NOT NULL, " +
                 "nature_hostilemobsspawn BOOLEAN NOT NULL, " +
                 "nature_passivemobsspawn BOOLEAN NOT NULL, " +
                 "nature_leavesdecay BOOLEAN NOT NULL, " +

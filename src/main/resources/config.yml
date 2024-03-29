@@ -6,15 +6,37 @@
 #   
 # --------------------------------------------------------------------------
 
+# Links for important info:
+# - Material/item names: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html
+
 # The database for the claims, based on SQLite
 database:
   path: "/database.db"
+
+# Main config
+lands:
+  plugins:
+    worldguard_regions: true # If enabled, this will block any player to claim a chunk that is protected by WorldGuard
+    vaultapi_economy: true # If enabled, this will make any player to use /land deposit and /land withdraw in their land
+  ratelimits:
+    # Player's land limits for chunks
+    chunks:
+      default: 10
+      vip: 20
+      admin: 50
+      owner: 100
+    # Player's land limits for roles
+    roles:
+      default: 5
+      vip: 10
+      admin: 20
+      owner: 50
 
 # The messages configuration
 messages:
   prefix:
     toggle: true
-    string: "&8[&9Lands&8] &r"
+    string: "&8[&9RealmProtector&8] &r"
 
   general:
     flags:
@@ -39,7 +61,6 @@ messages:
         subtitle: "&fRoam the wild!"
   
   gui:
-    # Material names: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html
     # GUI for the command: /land info (land name)
     land_info:
       title: "&9Land Information"
@@ -49,6 +70,7 @@ messages:
           lore:
             - "&aID: &f%land_id%"
             - "&aChunks: &f%chunks%"
+            - "&aBalance: &f$%balance%"
             - "&aCreated at: &f%created_at%"
           type: "OAK_SIGN"
         land_owner:
@@ -67,8 +89,8 @@ messages:
           displayname: "&7%flag%"
           lore:
             - "&f%description%"
-            - "%value%" # Configure the value from this path: "messages.general.flags.[enabled/disabled]"
-          type: "%flag_item%" # Configure the flag's item from this path: "items.role_flags"
+            - "%value%" # The value is "Enabled" or "Disabled" ("messages.general.flags.[enabled/disabled]")
+          type: "%flag_item%" # The flag's item type ("messages.gui.role_flags.items")
         role_name:
           displayname: "&9Role: &6%role%"
           type: "PAPER"
@@ -81,8 +103,8 @@ messages:
           displayname: "&7%flag%"
           lore:
             - "&f%description%"
-            - "%value%" # Configure the value from this path: "messages.general.flags.[enabled/disabled]"
-          type: "%flag_item%" # Configure the flag's item from this path: "items.nature_flags"
+            - "%value%" # The value is "Enabled" or "Disabled" ("messages.general.flags.[enabled/disabled]")
+          type: "%flag_item%" # The flag's item type ("messages.gui.nature_flags.items")
         land_name:
           displayname: "&9Land: &6%land_name%"
           type: "PAPER"
@@ -132,7 +154,12 @@ messages:
         pistonsfromwilderness: "Allow blocks to be pushed/pulled by pistons to/from your land?"
         plantgrowth: "Allow any plant to grow in your land?"
 
+  # Command messages
   commands:
+    balance:
+      land_not_found: "&cYou don't have a land!"
+      balance_string: "&aYour land balance: &6$%land_balance%"
+
     claim:
       chunk_already_claimed: "&cThis chunk has already been claimed."
       missing_land_name: "&cYou must provide your new land name because you will create one with this chunk!"
@@ -145,6 +172,14 @@ messages:
       no_role_provided: "&cYou must provide a role name to delete."
       role_not_found: "&cThis role was not found in your land."
       role_delete_success: "&aSuccessfully deleted the role %role%!"
+
+    deposit:
+      land_not_found: "&cYou don't have a land!"
+      no_amount_provided: "&cYou must provide the amount to deposit!"
+      input_negative_or_zero: "&cThe amount must be higher than 0."
+      input_larger_than_player_balance: "&cYou don't have that amount of money."
+      input_not_double_or_integer: "&cNot a valid integer or double."
+      deposited_success: "&aYou deposited &6$%amount%&a, now your land got &6$%land_balance%&a!"
 
     info:
       chunk_wilderness: "&cThis is wilderness, you must use this command inside a claimed chunk!"
@@ -220,15 +255,27 @@ messages:
       chunk_wilderness: "&cThis is wilderness, you must use this command inside a claimed chunk!"
       particles_spawned_success: "&aDone! You can check the particles around the land to see the chunks limits."
 
+    withdraw:
+      land_not_found: "&cYou don't have a land!"
+      no_amount_provided: "&cYou must provide the amount to withdraw!"
+      input_negative_or_zero: "&cThe amount must be higher than 0."
+      input_larger_than_land_balance: "&cYour land doesn't have that amount of money."
+      input_not_double_or_integer: "&cNot a valid integer or double."
+      withdrew_success: "&aYou withdrew &6$%amount%&a, now your land got &6$%land_balance%&a!"
+
+  # Error messages when a player doesn't have the permission to do in a land
   permissions:
+    # The prefix of the messages
     prefix:
       toggle: true
       string: "&c&lHEY! &r"
 
+    # The suffix of the messages
     suffix:
       toggle: true
       string: " &c(&r%land_name%: &7%flag%&c)"
     
+    # The error messages
     messages:
       breakblocks: "&cYou do not have permission to break blocks here"
       placeblocks: "&cYou do not have permission to place blocks here"
@@ -263,10 +310,11 @@ messages:
 
 land_roles:
   default:
+    # Default roles that must be created when a player creates a new land
     names:
       - "Visitor"
       - "Member"
-      - "test_role"
+
     permissions:
       # Permissions for the role: Visitor
       Visitor:

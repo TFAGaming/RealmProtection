@@ -10,8 +10,11 @@ import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 
 import realmprotection.commands.subcommands.ViewCommand;
+import realmprotection.commands.subcommands.WithdrawCommand;
+import realmprotection.commands.subcommands.BalanceCommand;
 import realmprotection.commands.subcommands.ClaimCommand;
 import realmprotection.commands.subcommands.DeleteRoleCommand;
+import realmprotection.commands.subcommands.DepositCommand;
 import realmprotection.commands.subcommands.InfoCommand;
 import realmprotection.commands.subcommands.NewRoleCommand;
 import realmprotection.commands.subcommands.RenameRoleCommand;
@@ -55,6 +58,15 @@ public class LandsCommand implements TabExecutor {
                         break;
                     case "setspawn":
                         new SetSpawnCommand().onCommand(sender, command, label, args);
+                        break;
+                    case "deposit":
+                        new DepositCommand().onCommand(sender, command, label, args);
+                        break;
+                    case "withdraw":
+                        new WithdrawCommand().onCommand(sender, command, label, args);
+                        break;
+                    case "balance":
+                        new BalanceCommand().onCommand(sender, command, label, args);
                         break;
                     default:
                         break;
@@ -109,6 +121,9 @@ public class LandsCommand implements TabExecutor {
             subcommands.add("spawn");
             subcommands.add("setspawn");
             subcommands.add("nature");
+            subcommands.add("deposit");
+            subcommands.add("withdraw");
+            subcommands.add("balance");
 
             return subcommands;
         } else if (args.length == 2) {

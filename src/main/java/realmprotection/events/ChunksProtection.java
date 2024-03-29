@@ -511,29 +511,25 @@ public class ChunksProtection implements Listener {
     @EventHandler
     public void onPistonExtend(BlockPistonExtendEvent event) {
         Block piston = event.getBlock();
-
         @SuppressWarnings({ "rawtypes", "unchecked" })
         List<Block> affectedBlocks = new ArrayList(event.getBlocks());
-
         BlockFace direction = event.getDirection();
         if (!affectedBlocks.isEmpty()) {
             affectedBlocks.add(piston.getRelative(direction));
         }
 
-        if (!this.canPistonMoveBlock(affectedBlocks, direction, piston.getLocation().getChunk(), true)) {
+        if (!this.canPistonMoveBlock(affectedBlocks, direction, piston.getLocation().getChunk(), false)) {
             event.setCancelled(true);
         }
+
     }
 
     @EventHandler
     public void onPistonRetract(BlockPistonRetractEvent event) {
         Block piston = event.getBlock();
-
         @SuppressWarnings({ "rawtypes", "unchecked" })
         List<Block> affectedBlocks = new ArrayList(event.getBlocks());
-
         BlockFace direction = event.getDirection();
-
         if (event.isSticky() && !affectedBlocks.isEmpty()) {
             affectedBlocks.add(piston.getRelative(direction));
         }
@@ -541,6 +537,7 @@ public class ChunksProtection implements Listener {
         if (!this.canPistonMoveBlock(affectedBlocks, direction, piston.getLocation().getChunk(), true)) {
             event.setCancelled(true);
         }
+
     }
 
     private boolean canPistonMoveBlock(List<Block> blocks, BlockFace direction, Chunk pistonChunk,
@@ -549,20 +546,27 @@ public class ChunksProtection implements Listener {
         Iterator var5;
         Block block;
         Chunk chunk;
-
         if (retractOrNot) {
             var5 = blocks.iterator();
 
             while (var5.hasNext()) {
                 block = (Block) var5.next();
                 chunk = block.getLocation().getChunk();
+
                 if (!chunk.equals(pistonChunk) && ChunksManager.isChunkClaimed(chunk)) {
-                    if (ChunksManager.getChunkDetail(pistonChunk, "owner_name") == ChunksManager.getChunkDetail(chunk,
-                            "owner_name")) {
+                    String pistonChunkOwnerName = ChunksManager.getOwnerByChunk(pistonChunk);
+                    String chunkOwnerName = ChunksManager.getOwnerByChunk(chunk);
+
+                    if (pistonChunkOwnerName != null && chunkOwnerName != null
+                            && pistonChunkOwnerName.equalsIgnoreCase(chunkOwnerName)) {
                         return true;
                     }
 
-                    return false;
+                    String land_id = ChunksManager.getChunkDetail(chunk, "land_id");
+
+                    if (land_id != null && !LandsManager.getFlagValue(new Integer(land_id), "pistonsfromwilderness")) {
+                        return false;
+                    }
                 }
             }
 
@@ -573,13 +577,21 @@ public class ChunksProtection implements Listener {
             while (var5.hasNext()) {
                 block = (Block) var5.next();
                 chunk = block.getRelative(direction).getLocation().getChunk();
+
                 if (!chunk.equals(pistonChunk) && ChunksManager.isChunkClaimed(chunk)) {
-                    if (ChunksManager.getChunkDetail(pistonChunk, "owner_name") == ChunksManager.getChunkDetail(chunk,
-                            "owner_name")) {
+                    String pistonChunkOwnerName = ChunksManager.getOwnerByChunk(pistonChunk);
+                    String chunkOwnerName = ChunksManager.getOwnerByChunk(chunk);
+
+                    if (pistonChunkOwnerName != null && chunkOwnerName != null
+                            && pistonChunkOwnerName.equalsIgnoreCase(chunkOwnerName)) {
                         return true;
                     }
 
-                    return false;
+                    String land_id = ChunksManager.getChunkDetail(chunk, "land_id");
+
+                    if (land_id != null && !LandsManager.getFlagValue(new Integer(land_id), "pistonsfromwilderness")) {
+                        return false;
+                    }
                 }
             }
 
@@ -603,6 +615,8 @@ public class ChunksProtection implements Listener {
         if (ChunksManager.isChunkClaimed(chunk)) {
             if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
                 Material material = event.getClickedBlock().getType();
+
+                System.out.println(material);
 
                 String land_id = ChunksManager.getChunkDetail(chunk, "land_id");
                 String land_owner_name = LandsManager.getLandDetailById(new Integer(land_id), "owner_name");
@@ -845,12 +859,37 @@ public class ChunksProtection implements Listener {
         }
     }
 
+    @EventHandler
+    public void onPlayerPunchFrame(EntityDamageByEntityEvent event) {
+        if (event.getEntityType() == EntityType.ITEM_FRAME || event.getEntityType() == EntityType.GLOW_ITEM_FRAME) {
+            if (event.getDamager() instanceof Player) {
+                Player player = (Player) event.getDamager();
+                Chunk chunk = event.getEntity().getLocation().getChunk();
+
+                if (ChunksManager.isChunkClaimed(chunk)) {
+                    String land_id = ChunksManager.getChunkDetail(chunk, "land_id");
+                    String land_owner_name = LandsManager.getLandDetailById(new Integer(land_id), "owner_name");
+
+                    if (!player.getName().equalsIgnoreCase(land_owner_name)
+                            && !LandMembersManager.hasPlayerThePermissionToDo(new Integer(land_id), player.getName(),
+                                    "itemframes")) {
+                        event.setCancelled(true);
+                        realmprotection.RealmProtection._sendMessageWithTimeout(player, "itemframes");
+
+                        return;
+                    }
+                }
+            }
+        }
+    }
+
     // Item frame and painting breaking
     @EventHandler
     public void onHangingBreakByEntity(HangingBreakByEntityEvent event) {
         Chunk chunk;
         Player player;
-        if (event.getEntity().getType() == EntityType.PAINTING && event.getRemover() instanceof Player) {
+
+        if (event.getEntity().getType().name().contains("PAINTING") && event.getRemover() instanceof Player) {
             chunk = event.getEntity().getLocation().getChunk();
 
             if (ChunksManager.isChunkClaimed(chunk)) {
@@ -870,7 +909,7 @@ public class ChunksProtection implements Listener {
             }
         }
 
-        if (event.getEntity().getType() == EntityType.ITEM_FRAME && event.getRemover() instanceof Player) {
+        if (event.getEntity().getType().name().contains("ITEM_FRAME") && event.getRemover() instanceof Player) {
             chunk = event.getEntity().getLocation().getChunk();
 
             if (ChunksManager.isChunkClaimed(chunk)) {
@@ -901,7 +940,7 @@ public class ChunksProtection implements Listener {
             String land_id = ChunksManager.getChunkDetail(chunk, "land_id");
             String land_owner_name = LandsManager.getLandDetailById(new Integer(land_id), "owner_name");
 
-            if (land_owner_name != player.getName()
+            if (!player.getName().equalsIgnoreCase(land_owner_name)
                     && !LandMembersManager.hasPlayerThePermissionToDo(new Integer(land_id), player.getName(),
                             "pickupitems")) {
                 event.setCancelled(true);

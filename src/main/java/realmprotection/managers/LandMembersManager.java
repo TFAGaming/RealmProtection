@@ -35,8 +35,6 @@ public class LandMembersManager {
 
                 List<Object> data_land_member_cache = Lists.newArrayList(member_id, land_id, member_name, role_name);
 
-                System.out.println("CACHE UPDATED: " + data_land_member_cache);
-
                 land_id_and_member_name_cache.put(land_id + "," + member_name, data_land_member_cache);
             }
 
@@ -151,12 +149,8 @@ public class LandMembersManager {
     public static boolean hasPlayerThePermissionToDo(Integer land_id, String player_name, String permission_name) {
         boolean isTrusted = isPlayerInTheLand(land_id, player_name);
 
-        System.out.println("IS TRUSTED? " + isTrusted);
-
         if (isTrusted) {
             String role_name = getRoleNameFromPlayername(land_id, player_name);
-
-            System.out.println("ROLE NAME: " + role_name);
 
             if (role_name == "Visitor") {
                 boolean value = RolesManager.getPermissionValue(land_id, "Visitor", permission_name);
