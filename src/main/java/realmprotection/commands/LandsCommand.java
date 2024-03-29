@@ -269,6 +269,7 @@ public class LandsCommand implements TabExecutor {
             arguments.add("pickupitems");
             arguments.add("useanvil");
             arguments.add("createfire");
+            arguments.add("usevehicles");
 
             return arguments;
         } else if (args.length == 4 && args[0].equalsIgnoreCase("nature") && args[1].equalsIgnoreCase("flags")) {

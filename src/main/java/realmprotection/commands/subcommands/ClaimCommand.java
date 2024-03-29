@@ -13,6 +13,7 @@ import realmprotection.managers.LandMembersManager;
 import realmprotection.managers.LandsManager;
 import realmprotection.managers.RolesManager;
 import realmprotection.utils.LoadConfigString;
+import realmprotection.utils.StringValidator;
 
 public class ClaimCommand implements CommandExecutor {
     @Override
@@ -31,6 +32,11 @@ public class ClaimCommand implements CommandExecutor {
             if (!LandsManager.hasLand(player.getName())) {
                 if (args.length == 1) {
                     player.sendMessage(LoadConfigString.load("claim.missing_land_name"));
+                    return true;
+                }
+
+                if (!StringValidator.isCleanString(args[1])) {
+                    player.sendMessage(LoadConfigString.load("claim.land_name_not_alphanumeric"));
                     return true;
                 }
 

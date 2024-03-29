@@ -69,6 +69,7 @@ public class RolesManager {
                 boolean permissions_pickupitems = result.getBoolean("permissions_pickupitems");
                 boolean permissions_useanvil = result.getBoolean("permissions_useanvil");
                 boolean permissions_createfire = result.getBoolean("permissions_createfire");
+                boolean permissions_usevehicles = result.getBoolean("permissions_usevehicles");
 
                 List<Object> data_role_cache = Lists.newArrayList(role_id, land_id, role_name);
                 List<Boolean> data_role_id_flags_cache = Lists.newArrayList(
@@ -101,7 +102,8 @@ public class RolesManager {
                         permissions_usecauldron,
                         permissions_pickupitems,
                         permissions_useanvil,
-                        permissions_createfire);
+                        permissions_createfire,
+                        permissions_usevehicles);
 
                 role_id_cache.put("" + role_id, data_role_cache);
                 land_id_and_role_name_cache.put(land_id + "," + role_name, data_role_cache);
@@ -148,8 +150,9 @@ public class RolesManager {
                 "permissions_usecauldron, " +
                 "permissions_pickupitems, " +
                 "permissions_useanvil, " +
-                "permissions_createfire)" +
-                "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                "permissions_createfire, " +
+                "permissions_usevehicles) " +
+                "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
         try {
             Connection connection = RealmProtection.database.getConnection();
@@ -161,13 +164,13 @@ public class RolesManager {
             statement.setString(2, role_name);
 
             if (datapermissions.size() > 0) {
-                for (int i = 3; i < 33; i++) {
+                for (int i = 3; i < 34; i++) {
                     statement.setBoolean(i, datapermissions.get(i - 3));
                 }
             } else {
                 datapermissions = LoadConfigString.landRolesDefaultBooleanList("permissions.__default__");
 
-                for (int i = 3; i < 33; i++) {
+                for (int i = 3; i < 34; i++) {
                     statement.setBoolean(i, datapermissions.get(i - 3));
                 }
             }
@@ -334,6 +337,8 @@ public class RolesManager {
                     return data.get(28);
                 case "permissions_createfire":
                     return data.get(29);
+                case "permissions_usevehicles":
+                    return data.get(30);
                 default:
                     return false;
             }
@@ -486,6 +491,7 @@ public class RolesManager {
                 allflags.add(Lists.newArrayList("pickupitems", result.getBoolean("permissions_pickupitems")));
                 allflags.add(Lists.newArrayList("useanvil", result.getBoolean("permissions_useanvil")));
                 allflags.add(Lists.newArrayList("createfire", result.getBoolean("permissions_createfire")));
+                allflags.add(Lists.newArrayList("usevehicles", result.getBoolean("permissions_usevehicles")));
             }
 
             statement.close();

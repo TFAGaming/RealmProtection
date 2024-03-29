@@ -96,7 +96,8 @@ public class Database {
                 "permissions_usecauldron BOOLEAN NOT NULL," +
                 "permissions_pickupitems BOOLEAN NOT NULL," +
                 "permissions_useanvil BOOLEAN NOT NULL, " +
-                "permissions_createfire BOOLEAN NOT NULL)");
+                "permissions_createfire BOOLEAN NOT NULL, " +
+                "permissions_usevehicles BOOLEAN NOT NULL)");
 
         statementExecute("CREATE TABLE IF NOT EXISTS land_members (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT, " +

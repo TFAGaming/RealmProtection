@@ -136,6 +136,7 @@ public class UpdateRoleFlagsCommand implements CommandExecutor {
                     listofflags.add("pickupitems");
                     listofflags.add("useanvil");
                     listofflags.add("createfire");
+                    listofflags.add("usevehicles");
 
                     if (!listofflags.contains(args[3])) {
                         player.sendMessage(LoadConfigString.load("update_role_flags.not_valid_flag"));
@@ -177,69 +178,19 @@ public class UpdateRoleFlagsCommand implements CommandExecutor {
     }
 
     public Material getMaterialItemFromPermissionName(String permission) {
-        switch (permission) {
-            case "permissions_breakblocks":
-                return Material.IRON_PICKAXE;
-            case "permissions_placeblocks":
-                return Material.OAK_LOG;
-            case "permissions_containers":
-                return Material.CHEST;
-            case "permissions_redstone":
-                return Material.REDSTONE;
-            case "permissions_doors":
-                return Material.OAK_DOOR;
-            case "permissions_trapdoors":
-                return Material.OAK_TRAPDOOR;
-            case "permissions_editsigns":
-                return Material.OAK_SIGN;
-            case "permissions_emptybuckets":
-                return Material.BUCKET;
-            case "permissions_fillbuckets":
-                return Material.WATER_BUCKET;
-            case "permissions_harvestcrops":
-                return Material.WHEAT_SEEDS;
-            case "permissions_frostwalker":
-                return Material.DIAMOND_BOOTS;
-            case "permissions_shearentities":
-                return Material.SHEARS;
-            case "permissions_itemframes":
-                return Material.ITEM_FRAME;
-            case "permissions_fencegates":
-                return Material.OAK_FENCE_GATE;
-            case "permissions_buttons":
-                return Material.STONE_BUTTON;
-            case "permissions_levers":
-                return Material.LEVER;
-            case "permissions_pressureplates":
-                return Material.STONE_PRESSURE_PLATE;
-            case "permissions_bells":
-                return Material.BELL;
-            case "permissions_tripwires":
-                return Material.TRIPWIRE_HOOK;
-            case "permissions_armorstands":
-                return Material.ARMOR_STAND;
-            case "permissions_teleporttospawn":
-                return Material.ENDER_EYE;
-            case "permissions_throwenderpearls":
-                return Material.ENDER_PEARL;
-            case "permissions_throwpotions":
-                return Material.SPLASH_POTION;
-            case "permissions_damagehostilemobs":
-                return Material.ZOMBIE_HEAD;
-            case "permissions_damagepassivemobs":
-                return Material.IRON_SWORD;
-            case "permissions_pvp":
-                return Material.DIAMOND_SWORD;
-            case "permissions_usecauldron":
-                return Material.CAULDRON;
-            case "permissions_pickupitems":
-                return Material.SUNFLOWER;
-            case "permissions_useanvil":
-                return Material.ANVIL;
-            case "permissions_createfire":
-                return Material.FLINT_AND_STEEL;
-            default:
-                return Material.STRUCTURE_VOID;
+        String[] splitted = permission.split("_");
+        List<String> splittedlist = new ArrayList<>();
+
+        for (String split : splitted) {
+            splittedlist.add(split);
+        }
+
+        Material material = Material.getMaterial(LoadConfigString.guiString("role_flags.items." + splittedlist.get(1)));
+
+        if (material != null) {
+            return material;
+        } else {
+            return Material.STRUCTURE_VOID;
         }
     }
 }

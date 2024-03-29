@@ -105,6 +105,10 @@ public class ChunksManager {
     }
 
     public static boolean isChunkClaimed(Chunk chunk) {
+        if (claimed_chunks_cache.containsKey(createCacheKey(chunk.getX(), chunk.getZ(), chunk.getWorld().getName()))) {
+            return true;
+        }
+
         String sql = "SELECT COUNT (*) AS count FROM claimed_chunks WHERE chunk_x = ? AND chunk_z = ? AND chunk_world = ?";
         boolean claimed = false;
 
@@ -124,6 +128,8 @@ public class ChunksManager {
             }
 
             statement.close();
+
+            cacheUpdateAll();
         } catch (SQLException e) {
             e.printStackTrace();
         }

@@ -16,8 +16,7 @@ database:
 # Main config
 lands:
   plugins:
-    worldguard_regions: true # If enabled, this will block any player to claim a chunk that is protected by WorldGuard
-    vaultapi_economy: true # If enabled, this will make any player to use /land deposit and /land withdraw in their land
+    vaultapi_economy: true # If enabled, this will make any player to use /land deposit, /land withdraw and /land balance in their land
   ratelimits:
     # Player's land limits for chunks
     chunks:
@@ -94,6 +93,39 @@ messages:
         role_name:
           displayname: "&9Role: &6%role%"
           type: "PAPER"
+      items:
+        # Item type for each role flag
+        breakblocks: "IRON_PICKAXE"
+        placeblocks: "OAK_LOG"
+        containers: "CHEST"
+        redstone: "REDSTONE"
+        doors: "OAK_DOOR"
+        trapdoors: "OAK_TRAPDOOR"
+        editsigns: "OAK_SIGN"
+        emptybuckets: "BUCKET"
+        fillbuckets: "WATER_BUCKET"
+        harvestcrops: "WHEAT_SEEDS"
+        frostwalker: "DIAMOND_BOOTS"
+        shearentities: "SHEARS"
+        itemframes: "ITEM_FRAME"
+        fencegates: "OAK_FENCE_GATE"
+        buttons: "STONE_BUTTON"
+        levers: "LEVER"
+        pressureplates: "STONE_PRESSURE_PLATE"
+        bells: "BELL"
+        tripwires: "TRIPWIRE_HOOK"
+        armorstands: "ARMOR_STAND"
+        teleporttospawn: "ENDER_EYE"
+        throwenderpearls: "ENDER_PEARL"
+        throwpotions: "SPLASH_POTION"
+        damagehostilemobs: "ZOMBIE_HEAD"
+        damagepassivemobs: "IRON_SWORD"
+        pvp: "DIAMOND_SWORD"
+        usecauldron: "CAULDRON"
+        pickupitems: "SUNFLOWER"
+        useanvil: "ANVIL"
+        createfire: "FLINT_AND_STEEL"
+        usevehicles: "MINECART"
 
     # GUI for the command: /land nature flags
     nature_flags:
@@ -108,6 +140,17 @@ messages:
         land_name:
           displayname: "&9Land: &6%land_name%"
           type: "PAPER"
+      items:
+        # Item type for each nature flag
+        hostilemobsspawn: "ZOMBIE_HEAD"
+        passivemobsspawn: "SPAWNER"
+        leavesdecay: "VINE"
+        firespread: "FLINT_AND_STEEL"
+        liquidflow: "WATER_BUCKET"
+        tntblockdamage: "TNT"
+        respawnanchorblockdamage: "RESPAWN_ANCHOR"
+        pistonsfromwilderness: "PISTON"
+        plantgrowth: "OAK_SAPLING"
 
     flags_description:
       # Role flags
@@ -142,6 +185,8 @@ messages:
         pickupitems: "Allow players to drop and pick up items?"
         useanvil: "Allow players to use anvils?"
         createfire: "Allow players to start fire?"
+        usevehicles: "Allow players to ride minecarts and boats?" # Note: To break the vehicles, flag required is: breakblocks
+
       # Nature flags
       nature_flags:
         hostilemobsspawn: "Allow any hostile mob to spawn?"
@@ -149,7 +194,7 @@ messages:
         leavesdecay: "Allow leaves to decay?"
         firespread: "Allow fire to spread in your land?"
         liquidflow: "Allow any external liquid to enter to your land?"
-        tntblockdamage: "Allow TnT damage blocks in your land?"
+        tntblockdamage: "Allow TNT damage blocks in your land?"
         respawnanchorblockdamage: "Allow respawn anchors and beds (Nether) damage blocks in your land?"
         pistonsfromwilderness: "Allow blocks to be pushed/pulled by pistons to/from your land?"
         plantgrowth: "Allow any plant to grow in your land?"
@@ -163,6 +208,7 @@ messages:
     claim:
       chunk_already_claimed: "&cThis chunk has already been claimed."
       missing_land_name: "&cYou must provide your new land name because you will create one with this chunk!"
+      land_name_not_alphanumeric: "&cYour land name must be alphanumeric; Do not use colors or any other symbols."
       land_name_already_taken: "&cThis land name is already been taken, please choose another one."
       chunk_claimed_success: "&aYou have successfully claimed the chunk! &9%chunk_x%, %chunk_z%"
 
@@ -307,6 +353,7 @@ messages:
       pickupitems: "&cYou do not have permission to pickup items here"
       useanvil: "&cYou do not have permission to use anvils here"
       createfire: "&cYou do not have permission to ignite a fire here"
+      usevehicles: "&cYou do not have permission to ride vehicles here"
 
 land_roles:
   default:
@@ -348,6 +395,7 @@ land_roles:
         - true # pickupitems
         - false # useanvil
         - false # createfire
+        - false # usevehicles
 
       # Permissions for the role: Member
       Member:
@@ -381,6 +429,7 @@ land_roles:
         - true # pickupitems
         - true # useanvil
         - false # createfire
+        - true # usevehicles
 
       # Default permissions if there is a new role created:
       __default__:
@@ -414,3 +463,4 @@ land_roles:
         - true # pickupitems
         - false # useanvil
         - false # createfire
+        - false # usevehicles

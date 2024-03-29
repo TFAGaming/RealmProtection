@@ -146,27 +146,19 @@ public class UpdateNatureFlagsCommand implements CommandExecutor {
     }
 
     public Material getMaterialItemFromFlagName(String flag) {
-        switch (flag) {
-            case "nature_hostilemobsspawn":
-                return Material.ZOMBIE_HEAD;
-            case "nature_passivemobsspawn":
-                return Material.SPAWNER;
-            case "nature_leavesdecay":
-                return Material.VINE;
-            case "nature_firespread":
-                return Material.FLINT_AND_STEEL;
-            case "nature_liquidflow":
-                return Material.WATER_BUCKET;
-            case "nature_tntblockdamage":
-                return Material.TNT;
-            case "nature_respawnanchorblockdamage":
-                return Material.RESPAWN_ANCHOR;
-            case "nature_pistonsfromwilderness":
-                return Material.PISTON;
-            case "nature_plantgrowth":
-                return Material.OAK_SAPLING;
-            default:
-                return Material.STRUCTURE_VOID;
+        String[] splitted = flag.split("_");
+        List<String> splittedlist = new ArrayList<>();
+
+        for (String split : splitted) {
+            splittedlist.add(split);
+        }
+
+        Material material = Material.getMaterial(LoadConfigString.guiString("nature_flags.items." + splittedlist.get(1)));
+
+        if (material != null) {
+            return material;
+        } else {
+            return Material.STRUCTURE_VOID;
         }
     }
 }
