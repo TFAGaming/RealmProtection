@@ -56,15 +56,25 @@ public class UpdateRoleFlagsCommand implements CommandExecutor {
                                         .replace("%flag%", "" + flag.get(0))));
 
                         ArrayList<String> flagButtonLore = new ArrayList<>();
+                        List<String> roleflagslore = LoadConfigString
+                                .guiStringList("role_flags.content.flag_style.lore");
 
-                        if ((Boolean) flag.get(1) == true) {
-                            flagButtonLore.add(ColoredString
-                                    .translate(LoadConfigString.guiString("role_flags.content.flag_style.lore_style")
-                                            .replace("%value%", LoadConfigString.generalString("flags.enabled"))));
-                        } else {
-                            flagButtonLore.add(ColoredString
-                                    .translate(LoadConfigString.guiString("role_flags.content.flag_style.lore_style")
-                                            .replace("%value%", LoadConfigString.generalString("flags.disabled"))));
+                        for (String lore : roleflagslore) {
+                            if ((Boolean) flag.get(1) == true) {
+                                flagButtonLore.add(ColoredString
+                                        .translate(lore
+                                                .replace("%description%",
+                                                        "" + LoadConfigString.guiString(
+                                                                "flags_description.role_flags." + flag.get(0)))
+                                                .replace("%value%", LoadConfigString.generalString("flags.enabled"))));
+                            } else {
+                                flagButtonLore.add(ColoredString
+                                        .translate(lore
+                                                .replace("%description%",
+                                                        "" + LoadConfigString.guiString(
+                                                                "flags_description.role_flags." + flag.get(0)))
+                                                .replace("%value%", LoadConfigString.generalString("flags.disabled"))));
+                            }
                         }
 
                         flagButtonMeta.setLore(flagButtonLore);

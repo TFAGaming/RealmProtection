@@ -43,4 +43,22 @@ public class LoadConfigString {
 
         return plugin.getConfig().getBoolean("messages.general." + path);
     }
+
+    public static List<String> generalStringList(String path) {
+        RealmProtection plugin = RealmProtection.getPlugin(RealmProtection.class);
+
+        return plugin.getConfig().getStringList("messages.general." + path);
+    }
+
+    public static List<Boolean> landRolesDefaultBooleanList(String path) {
+        RealmProtection plugin = RealmProtection.getPlugin(RealmProtection.class);
+
+        return plugin.getConfig().getBooleanList("land_roles.default." + path);
+    }
+
+    public static List<String> landRolesDefaultStringList(String path) {
+        RealmProtection plugin = RealmProtection.getPlugin(RealmProtection.class);
+
+        return plugin.getConfig().getStringList("land_roles.default." + path);
+    }
 }

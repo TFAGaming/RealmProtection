@@ -32,7 +32,7 @@ public class NewRoleCommand implements CommandExecutor {
                 return true;
             }
 
-            RolesManager.createNewRole(new Integer(land_id), args[2], true);
+            RolesManager.createNewRole(new Integer(land_id), args[2]);
 
             player.sendMessage(LoadConfigString.load("new_role.role_create_success"));
 

@@ -507,6 +507,8 @@ public class LandsManager {
             allflags.add(
                     Lists.newArrayList("pistonsfromwilderness", data.get(7)));
             allflags.add(Lists.newArrayList("plantgrowth", data.get(8)));
+
+            return allflags;
         }
 
         String sql = "SELECT * FROM lands WHERE id = ?";

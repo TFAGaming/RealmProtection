@@ -12,6 +12,7 @@ import java.util.Map;
 import com.google.common.collect.Lists;
 
 import realmprotection.RealmProtection;
+import realmprotection.utils.LoadConfigString;
 
 public class RolesManager {
     private static final Map<String, List<Object>> role_id_cache = new HashMap<>();
@@ -114,7 +115,7 @@ public class RolesManager {
         }
     }
 
-    public static void createNewRole(Integer land_id, String role_name, Boolean is_member) {
+    public static void createNewRole(Integer land_id, String role_name) {
         String sql = "INSERT INTO land_roles (" +
                 "land_id, " +
                 "role_name, " +
@@ -154,72 +155,21 @@ public class RolesManager {
             Connection connection = RealmProtection.database.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql);
 
-            if (is_member) {
-                statement.setInt(1, land_id);
-                statement.setString(2, role_name);
-                statement.setBoolean(3, true); // break blocks
-                statement.setBoolean(4, true); // Place blocks
-                statement.setBoolean(5, true); // Containers
-                statement.setBoolean(6, true); // Redstone
-                statement.setBoolean(7, true); // Doors
-                statement.setBoolean(8, true); // Trapdoors
-                statement.setBoolean(9, false); // Edit signs
-                statement.setBoolean(10, true); // Empty buckets
-                statement.setBoolean(11, true); // Fill buckets
-                statement.setBoolean(12, true); // Harvest crops
-                statement.setBoolean(13, true); // Frost walker
-                statement.setBoolean(14, true); // Shear entities
-                statement.setBoolean(15, true); // Item frames
-                statement.setBoolean(16, true); // Fences gates
-                statement.setBoolean(17, true); // Buttons
-                statement.setBoolean(18, true); // Levers
-                statement.setBoolean(19, true); // Pressure plates
-                statement.setBoolean(20, true); // Bells
-                statement.setBoolean(21, true); // Tripwires
-                statement.setBoolean(22, true); // Armor stands
-                statement.setBoolean(23, true); // Teleport to spawn
-                statement.setBoolean(24, true); // Throw ender pearls
-                statement.setBoolean(25, true); // Throw potions
-                statement.setBoolean(26, true); // Damage hostile mobs
-                statement.setBoolean(27, false); // Damage passive mobs
-                statement.setBoolean(28, false); // PvP
-                statement.setBoolean(29, true); // Use cauldron
-                statement.setBoolean(30, true); // Pickup items
-                statement.setBoolean(31, true); // Use anvil
-                statement.setBoolean(32, false); // Ignite (create fire)
+            List<Boolean> datapermissions = LoadConfigString.landRolesDefaultBooleanList("permissions." + role_name);
+
+            statement.setInt(1, land_id);
+            statement.setString(2, role_name);
+
+            if (datapermissions.size() > 0) {
+                for (int i = 3; i < 33; i++) {
+                    statement.setBoolean(i, datapermissions.get(i - 3));
+                }
             } else {
-                statement.setInt(1, land_id);
-                statement.setString(2, role_name);
-                statement.setBoolean(3, false); // break blocks
-                statement.setBoolean(4, false); // Place blocks
-                statement.setBoolean(5, false); // Containers
-                statement.setBoolean(6, false); // Redstone
-                statement.setBoolean(7, false); // Doors
-                statement.setBoolean(8, false); // Trapdoors
-                statement.setBoolean(9, false); // Edit signs
-                statement.setBoolean(10, false); // Empty buckets
-                statement.setBoolean(11, false); // Fill buckets
-                statement.setBoolean(12, false); // Harvest crops
-                statement.setBoolean(13, false); // Frost walker
-                statement.setBoolean(14, false); // Shear entities
-                statement.setBoolean(15, false); // Item frames
-                statement.setBoolean(16, false); // Fences gates
-                statement.setBoolean(17, false); // Buttons
-                statement.setBoolean(18, false); // Levers
-                statement.setBoolean(19, false); // Pressure plates
-                statement.setBoolean(20, false); // Bells
-                statement.setBoolean(21, false); // Tripwires
-                statement.setBoolean(22, false); // Armor stands
-                statement.setBoolean(23, false); // Teleport to spawn
-                statement.setBoolean(24, true); // Throw ender pearls
-                statement.setBoolean(25, true); // Throw potions
-                statement.setBoolean(26, false); // Damage hostile mobs
-                statement.setBoolean(27, false); // Damage passive mobs
-                statement.setBoolean(28, false); // PvP
-                statement.setBoolean(29, false); // Use cauldron
-                statement.setBoolean(30, true); // Pickup items
-                statement.setBoolean(31, false); // Use anvil
-                statement.setBoolean(32, false); // Ignite (create fire)
+                datapermissions = LoadConfigString.landRolesDefaultBooleanList("permissions.__default__");
+
+                for (int i = 3; i < 33; i++) {
+                    statement.setBoolean(i, datapermissions.get(i - 3));
+                }
             }
 
             statement.executeUpdate();
@@ -321,8 +271,6 @@ public class RolesManager {
 
     public static boolean getPermissionValue(Integer land_id, String role_name, String permission_name) {
         if (land_id_and_role_name_flags_cache.containsKey(land_id + "," + role_name)) {
-            System.out.println("FOUND CACHE");
-
             List<Boolean> data = land_id_and_role_name_flags_cache.get(land_id + "," + role_name);
 
             switch ("permissions_" + permission_name) {

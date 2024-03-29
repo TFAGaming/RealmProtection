@@ -8,16 +8,19 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.ItemStack;
 
 import realmprotection.utils.ColoredString;
+import realmprotection.utils.LoadConfigString;
 
 public class GUIListener implements Listener {
     @EventHandler
     public void onClick(InventoryClickEvent event) {
         Player player = (Player) event.getWhoClicked();
 
-        if (event.getView().getTitle().equalsIgnoreCase(ColoredString.translate("&9Land Information"))) {
+        if (event.getView().getTitle().startsWith(ColoredString.translate(LoadConfigString.guiString("land_info.title")))) {
             event.setCancelled(true);
 
             ItemStack item = event.getCurrentItem();
+
+            if (item == null) return;
 
             switch (item.getType()) {
                 case OAK_SIGN:
@@ -33,10 +36,12 @@ public class GUIListener implements Listener {
                 default:
                     break;
             }
-        } else if (event.getView().getTitle().equalsIgnoreCase(ColoredString.translate("&9Role Flags"))) {
+        } else if (event.getView().getTitle().startsWith(ColoredString.translate(LoadConfigString.guiString("role_flags.title")))) {
             event.setCancelled(true);
 
             ItemStack item = event.getCurrentItem();
+
+            if (item == null) return;
 
             switch (item.getType()) {
                 case BARRIER:
@@ -48,10 +53,12 @@ public class GUIListener implements Listener {
                     player.sendMessage(ColoredString.translate(
                             "&cSorry, but you can only edit flags values using the commands for this moment."));
             }
-        } else if (event.getView().getTitle().equalsIgnoreCase(ColoredString.translate("&9Nature Flags"))) {
+        } else if (event.getView().getTitle().startsWith(ColoredString.translate(LoadConfigString.guiString("nature_flags.title")))) {
             event.setCancelled(true);
 
             ItemStack item = event.getCurrentItem();
+
+            if (item == null) return;
 
             switch (item.getType()) {
                 case BARRIER:

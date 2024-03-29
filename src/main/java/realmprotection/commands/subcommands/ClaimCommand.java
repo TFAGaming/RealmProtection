@@ -1,5 +1,7 @@
 package realmprotection.commands.subcommands;
 
+import java.util.List;
+
 import org.bukkit.Chunk;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -47,11 +49,15 @@ public class ClaimCommand implements CommandExecutor {
 
             ChunksManager.claimNewChunk(chunk, new Integer(land_id));
 
-            player.sendMessage(LoadConfigString.load("claim.chunk_claimed_success").replace("%chunk_x%", "" + chunk.getX()).replace("%chunk_z%", "" + chunk.getZ()));
+            player.sendMessage(LoadConfigString.load("claim.chunk_claimed_success")
+                    .replace("%chunk_x%", "" + chunk.getX()).replace("%chunk_z%", "" + chunk.getZ()));
 
             if (!hasOneChunkClaimedForLand) {
-                RolesManager.createNewRole(new Integer(land_id), "Visitor", false);
-                RolesManager.createNewRole(new Integer(land_id), "Member", true);
+                List<String> rolenames = LoadConfigString.landRolesDefaultStringList("names");
+
+                for (String rolename : rolenames) {
+                    RolesManager.createNewRole(new Integer(land_id), rolename);
+                }
             }
 
             // Show particles

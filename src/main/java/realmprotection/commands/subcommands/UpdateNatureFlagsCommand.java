@@ -31,7 +31,8 @@ public class UpdateNatureFlagsCommand implements CommandExecutor {
 
                 if (args.length == 2) {
                     Inventory inventory = Bukkit.createInventory(player, 9 * 3,
-                            ColoredString.translate(ColoredString.translate(LoadConfigString.guiString("nature_flags.title"))));
+                            ColoredString.translate(
+                                    ColoredString.translate(LoadConfigString.guiString("nature_flags.title"))));
 
                     List<List<Object>> allflags = LandsManager.listEnabledAndDisabledFlagsForLand(new Integer(land_id));
 
@@ -40,18 +41,30 @@ public class UpdateNatureFlagsCommand implements CommandExecutor {
                                 getMaterialItemFromFlagName("nature_" + flag.get(0)));
 
                         ItemMeta flagButtonMeta = flagButton.getItemMeta();
-                        flagButtonMeta.setDisplayName(ColoredString.translate(LoadConfigString.guiString("nature_flags.content.flag_style.displayname").replace("%flag%", "" + flag.get(0))));
+                        flagButtonMeta.setDisplayName(ColoredString
+                                .translate(LoadConfigString.guiString("nature_flags.content.flag_style.displayname")
+                                        .replace("%flag%", "" + flag.get(0))));
 
                         ArrayList<String> flagButtonLore = new ArrayList<>();
+                        List<String> natureflagslore = LoadConfigString
+                                .guiStringList("nature_flags.content.flag_style.lore");
 
-                        if ((Boolean) flag.get(1) == true) {
-                            flagButtonLore.add(ColoredString
-                                    .translate(LoadConfigString.guiString("nature_flags.content.flag_style.lore_style")
-                                            .replace("%value%", LoadConfigString.generalString("flags.enabled"))));
-                        } else {
-                            flagButtonLore.add(ColoredString
-                                    .translate(LoadConfigString.guiString("nature_flags.content.flag_style.lore_style")
-                                            .replace("%value%", LoadConfigString.generalString("flags.disabled"))));
+                        for (String lore : natureflagslore) {
+                            if ((Boolean) flag.get(1) == true) {
+                                flagButtonLore.add(ColoredString
+                                        .translate(lore
+                                                .replace("%description%",
+                                                        "" + LoadConfigString.guiString(
+                                                                "flags_description.nature_flags." + flag.get(0)))
+                                                .replace("%value%", LoadConfigString.generalString("flags.enabled"))));
+                            } else {
+                                flagButtonLore.add(ColoredString
+                                        .translate(lore
+                                                .replace("%description%",
+                                                        "" + LoadConfigString.guiString(
+                                                                "flags_description.nature_flags." + flag.get(0)))
+                                                .replace("%value%", LoadConfigString.generalString("flags.disabled"))));
+                            }
                         }
 
                         flagButtonMeta.setLore(flagButtonLore);
@@ -63,13 +76,16 @@ public class UpdateNatureFlagsCommand implements CommandExecutor {
                     ItemStack landNameButton = new ItemStack(
                             Material.getMaterial(LoadConfigString.guiString("nature_flags.content.land_name.type")));
                     ItemMeta landNameButtonMeta = landNameButton.getItemMeta();
-                    landNameButtonMeta.setDisplayName(ColoredString.translate(LoadConfigString.guiString("nature_flags.content.land_name.displayname").replace("%land_name%", land_name)));
+                    landNameButtonMeta.setDisplayName(ColoredString
+                            .translate(LoadConfigString.guiString("nature_flags.content.land_name.displayname")
+                                    .replace("%land_name%", land_name)));
                     landNameButton.setItemMeta(landNameButtonMeta);
 
                     ItemStack closeButton = new ItemStack(
                             Material.getMaterial(LoadConfigString.generalString("gui.close_button.type")));
                     ItemMeta closeButtonMeta = closeButton.getItemMeta();
-                    closeButtonMeta.setDisplayName(ColoredString.translate(LoadConfigString.generalString("gui.close_button.displayname")));
+                    closeButtonMeta.setDisplayName(
+                            ColoredString.translate(LoadConfigString.generalString("gui.close_button.displayname")));
                     closeButton.setItemMeta(closeButtonMeta);
 
                     inventory.setItem(18, landNameButton);

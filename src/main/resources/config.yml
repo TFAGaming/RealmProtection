@@ -65,10 +65,12 @@ messages:
       content:
         flag_style:
           displayname: "&7%flag%"
-          lore_style: "%value%" # Configure the value from this path: "messages.general.flags.[enabled/disabled]"
+          lore:
+            - "&f%description%"
+            - "%value%" # Configure the value from this path: "messages.general.flags.[enabled/disabled]"
           type: "%flag_item%" # Configure the flag's item from this path: "items.role_flags"
         role_name:
-          displayname: "&9Role: &f%role%"
+          displayname: "&9Role: &6%role%"
           type: "PAPER"
 
     # GUI for the command: /land nature flags
@@ -77,11 +79,58 @@ messages:
       content:
         flag_style:
           displayname: "&7%flag%"
-          lore_style: "%value%" # Configure the value from this path: "messages.general.flags.[enabled/disabled]"
+          lore:
+            - "&f%description%"
+            - "%value%" # Configure the value from this path: "messages.general.flags.[enabled/disabled]"
           type: "%flag_item%" # Configure the flag's item from this path: "items.nature_flags"
         land_name:
-          displayname: "&9Land: &f%land_name%"
+          displayname: "&9Land: &6%land_name%"
           type: "PAPER"
+
+    flags_description:
+      # Role flags
+      role_flags:
+        breakblocks: "Allow players to break blocks?"
+        placeblocks: "Allow players to place blocks?"
+        containers: "Allow players to open containers?"
+        redstone: "Allow players to configure redstone components?"
+        doors: "Allow players to use doors?"
+        trapdoors: "Allow players to trapdoors?"
+        editsigns: "Allow players to edit signs and hanging signs?"
+        emptybuckets: "Allow players to empty any bucket?"
+        fillbuckets: "Allow players to fill any bucket?"
+        harvestcrops: "Allow players to harvest crops?"
+        frostwalker: "Allow players to use Frost Walker boots?"
+        shearentities: "Allow players to shear entities?"
+        itemframes: "Allow players to spin, break and take off items from item frames?"
+        fencegates: "Allow players to use fence gates?"
+        buttons: "Allow players to use buttons?"
+        levers: "Allow players to use levers?"
+        pressureplates: "Allow players to step on pressure plates?"
+        bells: "Allow players to use bells?"
+        tripwires: "Allow players to step on tripwires and triggers them?"
+        armorstands: "Allow players to interact with armor stands?"
+        teleporttospawn: "Allow players to visit your land?"
+        throwenderpearls: "Allow players to teleport using ender pearls?"
+        throwpotions: "Allow players to throw splash potions?"
+        damagehostilemobs: "Allow players to hit and kill hostile mobs?"
+        damagepassivemobs: "Allow players to hit and kill passive mobs?"
+        pvp: "Allow players to PvP each other?"
+        usecauldron: "Allow players to interact with cauldrons?"
+        pickupitems: "Allow players to drop and pick up items?"
+        useanvil: "Allow players to use anvils?"
+        createfire: "Allow players to start fire?"
+      # Nature flags
+      nature_flags:
+        hostilemobsspawn: "Allow any hostile mob to spawn?"
+        passivemobsspawn: "Allow any passive mob to spawn?"
+        leavesdecay: "Allow leaves to decay?"
+        firespread: "Allow fire to spread in your land?"
+        liquidflow: "Allow any external liquid to enter to your land?"
+        tntblockdamage: "Allow TnT damage blocks in your land?"
+        respawnanchorblockdamage: "Allow respawn anchors and beds (Nether) damage blocks in your land?"
+        pistonsfromwilderness: "Allow blocks to be pushed/pulled by pistons to/from your land?"
+        plantgrowth: "Allow any plant to grow in your land?"
 
   commands:
     claim:
@@ -187,11 +236,12 @@ messages:
       redstone: "&cYou do not have permission to use redstone here"
       doors: "&cYou do not have permission to use doors here"
       trapdoors: "&cYou do not have permission to use trapdoors here"
+      editsigns: "&cYou do not have permission to edit signs"
       emptybuckets: "&cYou do not have permission to empty buckets here"
       fillbuckets: "&cYou do not have permission to fill buckets here"
       harvestcrops: "&cYou do not have permission to harvest crops here"
       frostwalker: "&cYou do not have permission to use frost walker boots here"
-      shearsheeps: "&cYou do not have permission to shear sheeps here"
+      shearentities: "&cYou do not have permission to shear sheeps here"
       itemframes: "&cYou do not have permission to interact with item frames here"
       fencegates: "&cYou do not have permission to use fence gates here"
       buttons: "&cYou do not have permission to use buttons here"
@@ -210,3 +260,109 @@ messages:
       pickupitems: "&cYou do not have permission to pickup items here"
       useanvil: "&cYou do not have permission to use anvils here"
       createfire: "&cYou do not have permission to ignite a fire here"
+
+land_roles:
+  default:
+    names:
+      - "Visitor"
+      - "Member"
+      - "test_role"
+    permissions:
+      # Permissions for the role: Visitor
+      Visitor:
+        - false # breakblocks
+        - false # placeblocks
+        - false # containers
+        - false # redstone
+        - false # doors
+        - false # trapdoors
+        - false # editsigns
+        - false # emptybuckets
+        - false # fillbuckets
+        - false # harvestcrops
+        - false # frostwalker
+        - false # shearentities
+        - false # itemframes
+        - false # fencegates
+        - false # buttons
+        - false # levers
+        - false # pressureplates
+        - false # bells
+        - false # tripwires
+        - false # armorstands
+        - false # teleporttospawn
+        - false # throwenderpearls
+        - false # throwpotions
+        - false # damagehostilemobs
+        - false # damagepassivemobs
+        - false # pvp
+        - false # usecauldron
+        - true # pickupitems
+        - false # useanvil
+        - false # createfire
+
+      # Permissions for the role: Member
+      Member:
+        - true # breakblocks
+        - true # placeblocks
+        - true # containers
+        - true # redstone
+        - true # doors
+        - true # trapdoors
+        - true # editsigns
+        - true # emptybuckets
+        - true # fillbuckets
+        - true # harvestcrops
+        - false # frostwalker
+        - true # shearentities
+        - true # itemframes
+        - true # fencegates
+        - true # buttons
+        - true # levers
+        - true # pressureplates
+        - true # bells
+        - true # tripwires
+        - true # armorstands
+        - true # teleporttospawn
+        - true # throwenderpearls
+        - true # throwpotions
+        - true # damagehostilemobs
+        - false # damagepassivemobs
+        - true # pvp
+        - true # usecauldron
+        - true # pickupitems
+        - true # useanvil
+        - false # createfire
+
+      # Default permissions if there is a new role created:
+      __default__:
+        - false # breakblocks
+        - false # placeblocks
+        - false # containers
+        - false # redstone
+        - false # doors
+        - false # trapdoors
+        - false # editsigns
+        - false # emptybuckets
+        - false # fillbuckets
+        - false # harvestcrops
+        - false # frostwalker
+        - false # shearentities
+        - false # itemframes
+        - false # fencegates
+        - false # buttons
+        - false # levers
+        - false # pressureplates
+        - false # bells
+        - false # tripwires
+        - false # armorstands
+        - false # teleporttospawn
+        - false # throwenderpearls
+        - false # throwpotions
+        - false # damagehostilemobs
+        - false # damagepassivemobs
+        - false # pvp
+        - false # usecauldron
+        - true # pickupitems
+        - false # useanvil
+        - false # createfire
