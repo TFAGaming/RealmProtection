@@ -15,6 +15,11 @@ public class BalanceCommand implements CommandExecutor {
         if (sender instanceof Player) {
             Player player = (Player) sender;
 
+            if (!LoadConfig.isVaultPluginLoaded()) {
+                player.sendMessage(ColoredString.translate(LoadConfig.commandString("balance.vault_plugin_not_ready")));
+                return true;
+            }
+
             if (!LandsManager.hasLand(player.getName())) {
                 player.sendMessage(ColoredString.translate(LoadConfig.commandString("balance.land_not_found")));
                 return true;

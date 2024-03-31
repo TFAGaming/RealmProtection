@@ -2,20 +2,15 @@ package realmprotection.commands.subcommands;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
+import realmprotection.gui.RoleFlagsGUI;
 import realmprotection.managers.LandsManager;
 import realmprotection.managers.RolesManager;
-import realmprotection.utils.ColoredString;
 import realmprotection.utils.LoadConfig;
 
 public class UpdateRoleFlagsCommand implements CommandExecutor {
@@ -40,69 +35,7 @@ public class UpdateRoleFlagsCommand implements CommandExecutor {
                 }
 
                 if (args.length == 3) {
-                    Inventory inventory = Bukkit.createInventory(player, 9 * 6,
-                            ColoredString.translate(LoadConfig.guiString("role_flags.title")));
-
-                    List<List<Object>> allflags = RolesManager.listEnabledAndDisabledFlagsForRole(new Integer(land_id),
-                            args[2]);
-
-                    for (List<Object> flag : allflags) {
-                        ItemStack flagButton = new ItemStack(
-                                getMaterialItemFromPermissionName("permissions_" + flag.get(0)));
-
-                        ItemMeta flagButtonMeta = flagButton.getItemMeta();
-                        flagButtonMeta.setDisplayName(ColoredString
-                                .translate(LoadConfig.guiString("role_flags.content.flag_style.displayname")
-                                        .replace("%flag%", "" + flag.get(0))));
-
-                        ArrayList<String> flagButtonLore = new ArrayList<>();
-                        List<String> roleflagslore = LoadConfig
-                                .guiStringList("role_flags.content.flag_style.lore");
-
-                        for (String lore : roleflagslore) {
-                            if ((Boolean) flag.get(1) == true) {
-                                flagButtonLore.add(ColoredString
-                                        .translate(lore
-                                                .replace("%description%",
-                                                        "" + LoadConfig.guiString(
-                                                                "flags_description.role_flags." + flag.get(0)))
-                                                .replace("%value%", LoadConfig.generalString("flags.enabled"))));
-                            } else {
-                                flagButtonLore.add(ColoredString
-                                        .translate(lore
-                                                .replace("%description%",
-                                                        "" + LoadConfig.guiString(
-                                                                "flags_description.role_flags." + flag.get(0)))
-                                                .replace("%value%", LoadConfig.generalString("flags.disabled"))));
-                            }
-                        }
-
-                        flagButtonMeta.setLore(flagButtonLore);
-                        flagButton.setItemMeta(flagButtonMeta);
-
-                        inventory.addItem(flagButton);
-                    }
-
-                    ItemStack roleNameButton = new ItemStack(
-                            Material.getMaterial(LoadConfig.guiString("role_flags.content.role_name.type")));
-                    ItemMeta roleNameButtonMeta = roleNameButton.getItemMeta();
-                    roleNameButtonMeta.setDisplayName(ColoredString.translate(LoadConfig
-                            .guiString("role_flags.content.role_name.displayname").replace("%role%", args[2])));
-                    roleNameButton.setItemMeta(roleNameButtonMeta);
-
-                    ItemStack closeButton = new ItemStack(
-                            Material.getMaterial(LoadConfig.generalString("gui.close_button.type")));
-                    ItemMeta closeButtonMeta = closeButton.getItemMeta();
-                    closeButtonMeta.setDisplayName(
-                            ColoredString.translate(LoadConfig.generalString("gui.close_button.displayname")));
-                    closeButton.setItemMeta(closeButtonMeta);
-
-                    inventory.setItem(45, roleNameButton);
-                    if (LoadConfig.generalBoolean("gui.close_button.enabled") == true) {
-                        inventory.setItem(53, closeButton);
-                    }
-
-                    player.openInventory(inventory);
+                    RoleFlagsGUI.create(player, args[2]);
                 } else {
                     List<String> listofflags = new ArrayList<>();
 

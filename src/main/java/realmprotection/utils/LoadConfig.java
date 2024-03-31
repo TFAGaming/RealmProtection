@@ -61,4 +61,8 @@ public class LoadConfig {
 
         return plugin.getConfig().getStringList("land_roles.default." + path);
     }
+
+    public static boolean isVaultPluginLoaded() {
+        return RealmProtection.vaultapi_economy != null ? true : false;
+    }
 }

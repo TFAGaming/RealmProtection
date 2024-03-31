@@ -35,7 +35,7 @@ public class TrustCommand implements CommandExecutor {
             }
 
             String land_id = LandsManager.getLandDetail(player.getName(), "id");
-            String land_owner_name = LandsManager.getLandDetail(player.getName(), "id");
+            String land_owner_name = LandsManager.getLandDetailById(new Integer(land_id), "owner_name");
 
             if (LandMembersManager.isPlayerInTheLand(new Integer(land_id), args[1])) {
                 player.sendMessage(LoadConfig.commandString("trust.playername_already_trusted"));

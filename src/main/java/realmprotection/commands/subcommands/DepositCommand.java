@@ -16,6 +16,11 @@ public class DepositCommand implements CommandExecutor {
         if (sender instanceof Player) {
             Player player = (Player) sender;
 
+            if (!LoadConfig.isVaultPluginLoaded()) {
+                player.sendMessage(ColoredString.translate(LoadConfig.commandString("deposit.vault_plugin_not_ready")));
+                return true;
+            }
+
             if (!LandsManager.hasLand(player.getName())) {
                 player.sendMessage(ColoredString.translate(LoadConfig.commandString("deposit.land_not_found")));
                 return true;

@@ -36,7 +36,7 @@ messages:
   # Prefix configuration
   prefix:
     toggle: true
-    string: "&8[&9RealmProtector&8] &r"
+    string: "&8[&9RealmProtection&8] &r"
 
   # General configuration
   general:
@@ -88,7 +88,7 @@ messages:
       title: "&9Role Flags"
       content:
         flag_style:
-          displayname: "&7%flag%"
+          displayname: "&9%displayname% &9(&8%flag%&9)"
           lore:
             - "&f%description%" # The flag description (from "messages.gui.flags_description.role_flags")
             - "%value%" # The value is "Enabled" or "Disabled" (from "messages.general.flags.[enabled/disabled]")
@@ -135,7 +135,7 @@ messages:
       title: "&9Nature Flags"
       content:
         flag_style:
-          displayname: "&7%flag%"
+          displayname: "&9%displayname% &9(&8%flag%&9)"
           lore:
             - "&f%description%" # The flag description (from "messages.gui.flags_description.nature_flags")
             - "%value%" # The value is "Enabled" or "Disabled" (from "messages.general.flags.[enabled/disabled]")
@@ -202,9 +202,57 @@ messages:
         pistonsfromwilderness: "Allow blocks to be pushed/pulled by pistons to/from your land?"
         plantgrowth: "Allow any plant to grow in your land?"
 
+    flags_displayname:
+      # Role flags
+      role_flags:
+        breakblocks: "Break blocks"
+        placeblocks: "Place blocks"
+        containers: "Open containers"
+        redstone: "Redstone"
+        doors: "Doors"
+        trapdoors: "Trapdoors"
+        editsigns: "Edit signs"
+        emptybuckets: "Empty buckets"
+        fillbuckets: "Fill buckets"
+        harvestcrops: "Harvest crops"
+        frostwalker: "Frost Walker"
+        shearentities: "Shear entities"
+        itemframes: "Item frames"
+        fencegates: "Fence gates"
+        buttons: "Buttons"
+        levers: "Levers"
+        pressureplates: "Pressure plates"
+        bells: "Bells"
+        tripwires: "Tripwires"
+        armorstands: "Armor stands"
+        teleporttospawn: "Teleport to spawn"
+        throwenderpearls: "Throw Ender Pearl"
+        throwpotions: "Splash/lingering potions"
+        damagehostilemobs: "Damage hostile mobs"
+        damagepassivemobs: "Damage passive mobs"
+        pvp: "PvP"
+        usecauldron: "Cauldrons"
+        pickupitems: "Pick up items"
+        useanvil: "Anvils"
+        createfire: "Ignite"
+        usevehicles: "Vehicles"
+
+      # Nature flags
+      nature_flags:
+        hostilemobsspawn: "Hostile mobs spawn"
+        passivemobsspawn: "Passive mobs spawn"
+        leavesdecay: "Leaves decay"
+        firespread: "Fire spread"
+        liquidflow: "Liquid flow"
+        tntblockdamage: "TNT damage"
+        respawnanchorblockdamage: "Respawn anchors damage"
+        pistonsfromwilderness: "Wilderness pistons"
+        plantgrowth: "Plant growth"
+
   # Command messages
   commands:
     balance:
+      vault_plugin_not_ready: "&cUnable to run the command, Vault economy API is disabled in config.yml."
       land_not_found: "&cYou don't have a land!"
       balance_string: "&aYour land balance: &6$%land_balance%"
 
@@ -223,6 +271,7 @@ messages:
       role_delete_success: "&aSuccessfully deleted the role %role%!"
 
     deposit:
+      vault_plugin_not_ready: "&cUnable to run the command, Vault economy API is disabled in config.yml."
       land_not_found: "&cYou don't have a land!"
       no_amount_provided: "&cYou must provide the amount to deposit!"
       input_negative_or_zero: "&cThe amount must be higher than 0."
@@ -232,6 +281,14 @@ messages:
 
     info:
       chunk_wilderness: "&cThis is wilderness, you must use this command inside a claimed chunk!"
+      land_name_not_found: "&cThis land name doesn't exist."
+
+    leave:
+      missing_land_name: "&cYou must provide the land name!"
+      land_name_not_alphanumeric: "&cThe land name must be alphanumeric; Do not use colors or any other symbols."
+      land_name_not_found: "&cThis land name doesn't exist."
+      playername_not_found: "&cYou are not trusted in the land!"
+      player_left_success: "&aYou left the land &6%land_name%&a."
 
     new_role:
       land_not_found: "&cYou don't have a land!"
@@ -315,6 +372,7 @@ messages:
       particles_spawned_success: "&aDone! You can check the particles around the land to see the chunks limits."
 
     withdraw:
+      vault_plugin_not_ready: "&cUnable to run the command, Vault economy API is disabled in config.yml."
       land_not_found: "&cYou don't have a land!"
       no_amount_provided: "&cYou must provide the amount to withdraw!"
       input_negative_or_zero: "&cThe amount must be higher than 0."

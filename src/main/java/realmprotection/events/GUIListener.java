@@ -20,7 +20,8 @@ public class GUIListener implements Listener {
 
             ItemStack item = event.getCurrentItem();
 
-            if (item == null) return;
+            if (item == null)
+                return;
 
             switch (item.getType()) {
                 case OAK_SIGN:
@@ -36,12 +37,11 @@ public class GUIListener implements Listener {
                 default:
                     break;
             }
-        } else if (event.getView().getTitle().startsWith(ColoredString.translate(LoadConfig.guiString("role_flags.title")))) {
+        } else if (event.getView().getTitle()
+                .startsWith(ColoredString.translate(LoadConfig.guiString("role_flags.title")))) {
             event.setCancelled(true);
 
             ItemStack item = event.getCurrentItem();
-
-            if (item == null) return;
 
             switch (item.getType()) {
                 case BARRIER:
@@ -53,12 +53,14 @@ public class GUIListener implements Listener {
                     player.sendMessage(ColoredString.translate(
                             "&cSorry, but you can only edit flags values using the commands for this moment."));
             }
-        } else if (event.getView().getTitle().startsWith(ColoredString.translate(LoadConfig.guiString("nature_flags.title")))) {
+        } else if (event.getView().getTitle()
+                .startsWith(ColoredString.translate(LoadConfig.guiString("nature_flags.title")))) {
             event.setCancelled(true);
 
             ItemStack item = event.getCurrentItem();
 
-            if (item == null) return;
+            if (item == null)
+                return;
 
             switch (item.getType()) {
                 case BARRIER:

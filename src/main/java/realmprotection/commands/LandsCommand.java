@@ -17,6 +17,7 @@ import realmprotection.commands.subcommands.ClaimCommand;
 import realmprotection.commands.subcommands.DeleteRoleCommand;
 import realmprotection.commands.subcommands.DepositCommand;
 import realmprotection.commands.subcommands.InfoCommand;
+import realmprotection.commands.subcommands.LeaveCommand;
 import realmprotection.commands.subcommands.NewRoleCommand;
 import realmprotection.commands.subcommands.RenameCommand;
 import realmprotection.commands.subcommands.RenameRoleCommand;
@@ -82,6 +83,9 @@ public class LandsCommand implements TabExecutor {
                     case "rename":
                         new RenameCommand().onCommand(sender, command, label, args);
                         break;
+                    case "leave":
+                        new LeaveCommand().onCommand(sender, command, label, args);
+                        break;
                     default:
                         break;
                 }
@@ -139,6 +143,7 @@ public class LandsCommand implements TabExecutor {
             subcommands.add("withdraw");
             subcommands.add("balance");
             subcommands.add("rename");
+            subcommands.add("leave");
 
             return subcommands;
         } else if (args.length == 2) {
@@ -151,6 +156,7 @@ public class LandsCommand implements TabExecutor {
                     arguments.add("confirm");
                     break;
                 case "info":
+                    arguments = LandsManager.listAllLandNames();
                     break;
                 case "roles":
                     arguments.add("create");
@@ -186,10 +192,14 @@ public class LandsCommand implements TabExecutor {
                     break;
                 case "spawn":
                     arguments = LandsManager.listAllLandNames();
+                    break;
                 case "setspawn":
                     break;
                 case "nature":
                     arguments.add("flags");
+                    break;
+                case "leave":
+                    arguments = LandsManager.listAllLandNames();
                     break;
                 default:
                     break;

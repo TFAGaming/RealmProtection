@@ -26,7 +26,7 @@ public class RealmProtection extends JavaPlugin implements Listener {
     public static final String ANSI_COLOR_GREEN = "\u001B[32m";
     public static final String ANSI_COLOR_RED = "\u001B[31m";
 
-    private static Economy vaultapi_economy = null;
+    public static Economy vaultapi_economy = null;
 
     private static Set<UUID> cooldownPlayers = new HashSet<>();
 

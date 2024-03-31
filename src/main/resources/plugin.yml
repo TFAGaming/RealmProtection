@@ -25,6 +25,9 @@ permissions:
   realmprotection.lands.info:
     description: "Allow a player to run the command: /lands info"
     default: true
+  realmprotection.lands.leave:
+    description: "Allow a player to run the command: /lands leave"
+    default: true
   realmprotection.lands.roles:
     description: "Allow a player to run the command: /lands roles"
     default: true
