@@ -360,91 +360,6 @@ public class LandsManager {
         return null;
     }
 
-    public static List<String> listAllLandNames() {
-        List<String> landnames = new ArrayList<>();
-
-        if (!land_name_cache.isEmpty()) {
-            @SuppressWarnings("rawtypes")
-            Set keys = land_name_cache.keySet();
-
-            @SuppressWarnings("rawtypes")
-            Iterator iterator = keys.iterator();
-
-            while (iterator.hasNext()) {
-                landnames.add((String) iterator.next());
-            }
-
-            return landnames;
-        }
-
-        String sql = "SELECT * FROM lands";
-
-        try {
-            Connection connection = RealmProtection.database.getConnection();
-            PreparedStatement statement = connection.prepareStatement(sql);
-
-            ResultSet result = statement.executeQuery();
-
-            while (result.next()) {
-                String string = result.getString("land_name");
-
-                landnames.add(string);
-            }
-
-            statement.close();
-
-            cacheUpdateAll();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return landnames;
-    }
-
-    public static void updateSpawnLocation(Integer land_id, double location_x, double location_y, double location_z,
-            String location_world) {
-        String sql = "UPDATE lands SET location_x=" + location_x + ", location_y=" + location_y + ", location_z="
-                + location_z + ", location_world = '" + location_world + "' WHERE id = ?";
-
-        try {
-            Connection connection = RealmProtection.database.getConnection();
-            PreparedStatement statement = connection.prepareStatement(sql);
-
-            statement.setInt(1, land_id);
-
-            statement.execute();
-
-            statement.close();
-
-            cacheUpdateAll();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return;
-    }
-
-    public static void updateBalance(Integer land_id, double new_balance) {
-        String sql = "UPDATE lands SET balance=" + new_balance + " WHERE id = ?";
-
-        try {
-            Connection connection = RealmProtection.database.getConnection();
-            PreparedStatement statement = connection.prepareStatement(sql);
-
-            statement.setInt(1, land_id);
-
-            statement.execute();
-
-            statement.close();
-
-            cacheUpdateAll();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return;
-    }
-
     public static boolean getFlagValue(Integer land_id, String flag_name) {
         if (land_id_nature_flags_cache.containsKey("" + land_id)) {
             List<Boolean> data = land_id_nature_flags_cache.get("" + land_id);
@@ -499,6 +414,71 @@ public class LandsManager {
         return false;
     }
 
+    public static void updateLandName(Integer land_id, String new_land_name) {
+        String sql = "UPDATE lands SET land_name='" + new_land_name + "' WHERE id = ?";
+
+        try {
+            Connection connection = RealmProtection.database.getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql);
+
+            statement.setInt(1, land_id);
+
+            statement.execute();
+
+            statement.close();
+
+            cacheUpdateAll();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return;
+    }
+
+    public static void updateSpawnLocation(Integer land_id, double location_x, double location_y, double location_z,
+            String location_world) {
+        String sql = "UPDATE lands SET location_x=" + location_x + ", location_y=" + location_y + ", location_z="
+                + location_z + ", location_world = '" + location_world + "' WHERE id = ?";
+
+        try {
+            Connection connection = RealmProtection.database.getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql);
+
+            statement.setInt(1, land_id);
+
+            statement.execute();
+
+            statement.close();
+
+            cacheUpdateAll();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return;
+    }
+
+    public static void updateBalance(Integer land_id, double new_balance) {
+        String sql = "UPDATE lands SET balance=" + new_balance + " WHERE id = ?";
+
+        try {
+            Connection connection = RealmProtection.database.getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql);
+
+            statement.setInt(1, land_id);
+
+            statement.execute();
+
+            statement.close();
+
+            cacheUpdateAll();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return;
+    }
+
     public static void updateNatureFlagValue(Integer land_id, String flag, Boolean value) {
         String sql = "UPDATE lands SET nature_" + flag + "=" + value + " WHERE id = ?";
 
@@ -518,6 +498,47 @@ public class LandsManager {
         }
 
         return;
+    }
+
+    public static List<String> listAllLandNames() {
+        List<String> landnames = new ArrayList<>();
+
+        if (!land_name_cache.isEmpty()) {
+            @SuppressWarnings("rawtypes")
+            Set keys = land_name_cache.keySet();
+
+            @SuppressWarnings("rawtypes")
+            Iterator iterator = keys.iterator();
+
+            while (iterator.hasNext()) {
+                landnames.add((String) iterator.next());
+            }
+
+            return landnames;
+        }
+
+        String sql = "SELECT * FROM lands";
+
+        try {
+            Connection connection = RealmProtection.database.getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql);
+
+            ResultSet result = statement.executeQuery();
+
+            while (result.next()) {
+                String string = result.getString("land_name");
+
+                landnames.add(string);
+            }
+
+            statement.close();
+
+            cacheUpdateAll();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return landnames;
     }
 
     public static List<List<Object>> listEnabledAndDisabledFlagsForLand(Integer land_id) {

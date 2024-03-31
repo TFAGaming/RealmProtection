@@ -11,12 +11,14 @@ import org.bukkit.entity.Player;
 
 import realmprotection.commands.subcommands.ViewCommand;
 import realmprotection.commands.subcommands.WithdrawCommand;
+import realmprotection.RealmProtection;
 import realmprotection.commands.subcommands.BalanceCommand;
 import realmprotection.commands.subcommands.ClaimCommand;
 import realmprotection.commands.subcommands.DeleteRoleCommand;
 import realmprotection.commands.subcommands.DepositCommand;
 import realmprotection.commands.subcommands.InfoCommand;
 import realmprotection.commands.subcommands.NewRoleCommand;
+import realmprotection.commands.subcommands.RenameCommand;
 import realmprotection.commands.subcommands.RenameRoleCommand;
 import realmprotection.commands.subcommands.SetSpawnCommand;
 import realmprotection.commands.subcommands.SpawnCommand;
@@ -28,12 +30,21 @@ import realmprotection.commands.subcommands.UpdateRoleFlagsCommand;
 import realmprotection.managers.LandMembersManager;
 import realmprotection.managers.LandsManager;
 import realmprotection.managers.RolesManager;
+import realmprotection.utils.ColoredString;
 
 public class LandsCommand implements TabExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
             if (args.length > 0) {
+                if (!sender.hasPermission("realmprotection.lands." + args[0])) {
+                    RealmProtection plugin = RealmProtection.getPlugin(RealmProtection.class);
+
+                    sender.sendMessage(ColoredString.translate(plugin.getConfig().getString("messages.permissions.default")));
+
+                    return true;
+                }
+
                 switch (args[0]) {
                     case "claim":
                         new ClaimCommand().onCommand(sender, command, label, args);
@@ -67,6 +78,9 @@ public class LandsCommand implements TabExecutor {
                         break;
                     case "balance":
                         new BalanceCommand().onCommand(sender, command, label, args);
+                        break;
+                    case "rename":
+                        new RenameCommand().onCommand(sender, command, label, args);
                         break;
                     default:
                         break;
@@ -124,6 +138,7 @@ public class LandsCommand implements TabExecutor {
             subcommands.add("deposit");
             subcommands.add("withdraw");
             subcommands.add("balance");
+            subcommands.add("rename");
 
             return subcommands;
         } else if (args.length == 2) {

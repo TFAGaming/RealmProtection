@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 
 import realmprotection.managers.LandsManager;
 import realmprotection.utils.ColoredString;
-import realmprotection.utils.LoadConfigString;
+import realmprotection.utils.LoadConfig;
 
 public class BalanceCommand implements CommandExecutor {
     @Override
@@ -16,14 +16,14 @@ public class BalanceCommand implements CommandExecutor {
             Player player = (Player) sender;
 
             if (!LandsManager.hasLand(player.getName())) {
-                player.sendMessage(ColoredString.translate(LoadConfigString.load("balance.land_not_found")));
+                player.sendMessage(ColoredString.translate(LoadConfig.commandString("balance.land_not_found")));
                 return true;
             }
 
             String land_id = LandsManager.getLandDetail(player.getName(), "id");
             double land_balance = Double.parseDouble(LandsManager.getLandDetailById(new Integer(land_id), "balance"));
 
-            player.sendMessage(ColoredString.translate(LoadConfigString.load("balance.balance_string").replace("%land_balance%", String.format("%.2f", land_balance))));
+            player.sendMessage(ColoredString.translate(LoadConfig.commandString("balance.balance_string").replace("%land_balance%", String.format("%.2f", land_balance))));
 
             return true;
         } else {

@@ -58,7 +58,7 @@ public class RealmProtection extends JavaPlugin implements Listener {
                         + "RealmProtector: Unable to load the economy API from Vault."
                         + ANSI_COLOR_RESET);
             } else {
-                logger.severe(ANSI_COLOR_GREEN
+                logger.info(ANSI_COLOR_GREEN
                         + "RealmProtector: Vault API economy has been enabled!"
                         + ANSI_COLOR_RESET);
             }
@@ -73,7 +73,7 @@ public class RealmProtection extends JavaPlugin implements Listener {
 
     @Override
     public void onDisable() {
-        logger.severe(ANSI_COLOR_GREEN + "RealmProtector: The plugin has been disabled." + ANSI_COLOR_RESET);
+        logger.info(ANSI_COLOR_GREEN + "RealmProtector: The plugin has been disabled." + ANSI_COLOR_RESET);
 
         try {
             RealmProtection.database.closeConnection();
@@ -91,8 +91,6 @@ public class RealmProtection extends JavaPlugin implements Listener {
         }
 
         RegisteredServiceProvider<Economy> registerer = getServer().getServicesManager().getRegistration(Economy.class);
-
-        System.out.println("DEBUG: " + registerer);
 
         if (registerer == null) {
             return false;

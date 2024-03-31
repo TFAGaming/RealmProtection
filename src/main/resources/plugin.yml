@@ -8,3 +8,50 @@ commands:
     usage: '/<command> [subcommand]'
     aliases:
      - land
+    permission: realmprotection.lands
+permissions:
+  realmprotection.lands:
+    description: "Allow a player to run the command: /lands"
+    default: true
+  realmprotection.lands.balance:
+    description: "Allow a player to run the command: /lands balance"
+    default: true
+  realmprotection.lands.claim:
+    description: "Allow a player to run the command: /lands claim"
+    default: true
+  realmprotection.lands.deposit:
+    description: "Allow a player to run the command: /lands deposit"
+    default: true
+  realmprotection.lands.info:
+    description: "Allow a player to run the command: /lands info"
+    default: true
+  realmprotection.lands.roles:
+    description: "Allow a player to run the command: /lands roles"
+    default: true
+  realmprotection.lands.rename:
+    description: "Allow a player to run the command: /lands rename"
+    default: true
+  realmprotection.lands.setspawn:
+    description: "Allow a player to run the command: /lands setspawn"
+    default: true
+  realmprotection.lands.spawn:
+    description: "Allow a player to run the command: /lands spawn"
+    default: true
+  realmprotection.lands.trust:
+    description: "Allow a player to run the command: /lands trust"
+    default: true
+  realmprotection.lands.unclaim:
+    description: "Allow a player to run the command: /lands unclaim"
+    default: true
+  realmprotection.lands.untrust:
+    description: "Allow a player to run the command: /lands untrust"
+    default: true
+  realmprotection.lands.nature:
+    description: "Allow a player to run the command: /lands nature"
+    default: true
+  realmprotection.lands.view:
+    description: "Allow a player to run the command: /lands view"
+    default: true  
+  realmprotection.lands.withdraw:
+    description: "Allow a player to run the command: /lands withdraw"
+    default: true

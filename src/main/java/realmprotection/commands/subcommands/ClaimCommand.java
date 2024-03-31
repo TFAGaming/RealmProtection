@@ -12,7 +12,7 @@ import realmprotection.managers.ChunksManager;
 import realmprotection.managers.LandMembersManager;
 import realmprotection.managers.LandsManager;
 import realmprotection.managers.RolesManager;
-import realmprotection.utils.LoadConfigString;
+import realmprotection.utils.LoadConfig;
 import realmprotection.utils.StringValidator;
 
 public class ClaimCommand implements CommandExecutor {
@@ -25,23 +25,23 @@ public class ClaimCommand implements CommandExecutor {
             boolean isClaimed = ChunksManager.isChunkClaimed(chunk);
 
             if (isClaimed) {
-                player.sendMessage(LoadConfigString.load("claim.chunk_already_claimed"));
+                player.sendMessage(LoadConfig.commandString("claim.chunk_already_claimed"));
                 return true;
             }
 
             if (!LandsManager.hasLand(player.getName())) {
                 if (args.length == 1) {
-                    player.sendMessage(LoadConfigString.load("claim.missing_land_name"));
+                    player.sendMessage(LoadConfig.commandString("claim.missing_land_name"));
                     return true;
                 }
 
                 if (!StringValidator.isCleanString(args[1])) {
-                    player.sendMessage(LoadConfigString.load("claim.land_name_not_alphanumeric"));
+                    player.sendMessage(LoadConfig.commandString("claim.land_name_not_alphanumeric"));
                     return true;
                 }
 
                 if (LandsManager.landNameExist(args[1])) {
-                    player.sendMessage(LoadConfigString.load("claim.land_name_already_taken"));
+                    player.sendMessage(LoadConfig.commandString("claim.land_name_already_taken"));
                     return true;
                 }
 
@@ -55,11 +55,11 @@ public class ClaimCommand implements CommandExecutor {
 
             ChunksManager.claimNewChunk(chunk, new Integer(land_id));
 
-            player.sendMessage(LoadConfigString.load("claim.chunk_claimed_success")
+            player.sendMessage(LoadConfig.commandString("claim.chunk_claimed_success")
                     .replace("%chunk_x%", "" + chunk.getX()).replace("%chunk_z%", "" + chunk.getZ()));
 
             if (!hasOneChunkClaimedForLand) {
-                List<String> rolenames = LoadConfigString.landRolesDefaultStringList("names");
+                List<String> rolenames = LoadConfig.landRolesDefaultStringList("names");
 
                 for (String rolename : rolenames) {
                     RolesManager.createNewRole(new Integer(land_id), rolename);

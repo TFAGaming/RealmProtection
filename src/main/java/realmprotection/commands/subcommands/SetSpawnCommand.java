@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 
 import realmprotection.managers.ChunksManager;
 import realmprotection.managers.LandsManager;
-import realmprotection.utils.LoadConfigString;
+import realmprotection.utils.LoadConfig;
 
 public class SetSpawnCommand implements CommandExecutor {
     @Override
@@ -18,12 +18,12 @@ public class SetSpawnCommand implements CommandExecutor {
             Chunk chunk = player.getLocation().getChunk();
 
             if (!LandsManager.hasLand(player.getName())) {
-                player.sendMessage(LoadConfigString.load("set_spawn.land_not_found"));
+                player.sendMessage(LoadConfig.commandString("set_spawn.land_not_found"));
                 return true;
             }
 
             if (!ChunksManager.isChunkClaimed(chunk)) {
-                player.sendMessage(LoadConfigString.load("set_spawn.chunk_not_claimed"));
+                player.sendMessage(LoadConfig.commandString("set_spawn.chunk_not_claimed"));
                 return true;
             }
 
@@ -31,7 +31,7 @@ public class SetSpawnCommand implements CommandExecutor {
             String land_owner_name = LandsManager.getLandDetailById(new Integer(land_id), "owner_name");
 
             if (!land_owner_name.equalsIgnoreCase(player.getName())) {
-                player.sendMessage(LoadConfigString.load("set_spawn.not_owner_of_chunk"));
+                player.sendMessage(LoadConfig.commandString("set_spawn.not_owner_of_chunk"));
                 return true;
             }
 
@@ -42,7 +42,7 @@ public class SetSpawnCommand implements CommandExecutor {
 
             LandsManager.updateSpawnLocation(new Integer(land_id), player_x, player_y, player_z, player_world);
 
-            player.sendMessage(LoadConfigString.load("set_spawn.spawn_set_success").replace("%x%", String.format("%.2f", player_x)).replace("%y%", String.format("%.2f", player_y)).replace("%z%", String.format("%.2f", player_z)));
+            player.sendMessage(LoadConfig.commandString("set_spawn.spawn_set_success").replace("%x%", String.format("%.2f", player_x)).replace("%y%", String.format("%.2f", player_y)).replace("%z%", String.format("%.2f", player_z)));
 
             return true;
         } else {

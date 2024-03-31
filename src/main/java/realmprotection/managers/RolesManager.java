@@ -12,7 +12,7 @@ import java.util.Map;
 import com.google.common.collect.Lists;
 
 import realmprotection.RealmProtection;
-import realmprotection.utils.LoadConfigString;
+import realmprotection.utils.LoadConfig;
 
 public class RolesManager {
     private static final Map<String, List<Object>> role_id_cache = new HashMap<>();
@@ -158,7 +158,7 @@ public class RolesManager {
             Connection connection = RealmProtection.database.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql);
 
-            List<Boolean> datapermissions = LoadConfigString.landRolesDefaultBooleanList("permissions." + role_name);
+            List<Boolean> datapermissions = LoadConfig.landRolesDefaultBooleanList("permissions." + role_name);
 
             statement.setInt(1, land_id);
             statement.setString(2, role_name);
@@ -168,7 +168,7 @@ public class RolesManager {
                     statement.setBoolean(i, datapermissions.get(i - 3));
                 }
             } else {
-                datapermissions = LoadConfigString.landRolesDefaultBooleanList("permissions.__default__");
+                datapermissions = LoadConfig.landRolesDefaultBooleanList("permissions.__default__");
 
                 for (int i = 3; i < 34; i++) {
                     statement.setBoolean(i, datapermissions.get(i - 3));
@@ -244,6 +244,49 @@ public class RolesManager {
         }
 
         return counted;
+    }
+
+    public static String getRoleDetail(Integer land_id, String role_name, String variable) {
+        if (land_id_and_role_name_cache.containsKey(land_id + "," + role_name)) {
+            List<Object> data = land_id_and_role_name_cache.get(land_id + "," + role_name);
+
+            switch (variable) {
+                case "id":
+                    return "" + data.get(0);
+                case "land_id":
+                    return "" + data.get(1);
+                case "role_name":
+                    return "" + data.get(2);
+                default:
+                    return null;
+            }
+        }
+
+        String sql = "SELECT * FROM land_roles WHERE land_id = ? AND role_name = ?";
+
+        try {
+            Connection connection = RealmProtection.database.getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql);
+
+            statement.setInt(1, land_id);
+            statement.setString(2, role_name);
+
+            ResultSet result = statement.executeQuery();
+
+            if (result.next()) {
+                String string = result.getString(variable);
+
+                return string;
+            }
+
+            statement.close();
+
+            cacheUpdateAll();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
     public static boolean hasRole(Integer land_id, String role_name) {
@@ -500,48 +543,5 @@ public class RolesManager {
         }
 
         return allflags;
-    }
-
-    public static String getRoleDetail(Integer land_id, String role_name, String variable) {
-        if (land_id_and_role_name_cache.containsKey(land_id + "," + role_name)) {
-            List<Object> data = land_id_and_role_name_cache.get(land_id + "," + role_name);
-
-            switch (variable) {
-                case "id":
-                    return "" + data.get(0);
-                case "land_id":
-                    return "" + data.get(1);
-                case "role_name":
-                    return "" + data.get(2);
-                default:
-                    return null;
-            }
-        }
-
-        String sql = "SELECT * FROM land_roles WHERE land_id = ? AND role_name = ?";
-
-        try {
-            Connection connection = RealmProtection.database.getConnection();
-            PreparedStatement statement = connection.prepareStatement(sql);
-
-            statement.setInt(1, land_id);
-            statement.setString(2, role_name);
-
-            ResultSet result = statement.executeQuery();
-
-            if (result.next()) {
-                String string = result.getString(variable);
-
-                return string;
-            }
-
-            statement.close();
-
-            cacheUpdateAll();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return null;
     }
 }

@@ -4,8 +4,8 @@ import java.util.List;
 
 import realmprotection.RealmProtection;
 
-public class LoadConfigString {
-    public static String load(String path) {
+public class LoadConfig {
+    public static String commandString(String path) {
         RealmProtection plugin = RealmProtection.getPlugin(RealmProtection.class);
 
         String final_string = "";

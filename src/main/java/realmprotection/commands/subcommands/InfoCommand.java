@@ -21,7 +21,7 @@ import realmprotection.managers.ChunksManager;
 import realmprotection.managers.LandMembersManager;
 import realmprotection.managers.LandsManager;
 import realmprotection.utils.ColoredString;
-import realmprotection.utils.LoadConfigString;
+import realmprotection.utils.LoadConfig;
 
 public class InfoCommand implements CommandExecutor {
         @Override
@@ -33,7 +33,7 @@ public class InfoCommand implements CommandExecutor {
                         boolean isclaimed = ChunksManager.isChunkClaimed(chunk);
 
                         if (!isclaimed) {
-                                player.sendMessage(LoadConfigString.load("info.chunk_wilderness"));
+                                player.sendMessage(LoadConfig.commandString("info.chunk_wilderness"));
                                 return true;
                         }
 
@@ -41,31 +41,31 @@ public class InfoCommand implements CommandExecutor {
 
                         // Creating new items
                         ItemStack landInformationButton = new ItemStack(
-                                        Material.getMaterial(LoadConfigString
+                                        Material.getMaterial(LoadConfig
                                                         .guiString("land_info.content.land_information.type")));
                         ItemStack landOwnerButton = new ItemStack(
-                                        Material.getMaterial(LoadConfigString
+                                        Material.getMaterial(LoadConfig
                                                         .guiString("land_info.content.land_owner.type")));
                         ItemStack landMembersButton = new ItemStack(
-                                        Material.getMaterial(LoadConfigString
+                                        Material.getMaterial(LoadConfig
                                                         .guiString("land_info.content.land_members.type")));
                         ItemStack landCloseButton = new ItemStack(
-                                        Material.getMaterial(LoadConfigString.generalString("gui.close_button.type")));
+                                        Material.getMaterial(LoadConfig.generalString("gui.close_button.type")));
 
                         // Edit items
                         ItemMeta landInformationButtonMeta = landInformationButton.getItemMeta();
                         landInformationButtonMeta.setDisplayName(ColoredString.translate(
-                                        LoadConfigString.guiString("land_info.content.land_information.displayname")
+                                        LoadConfig.guiString("land_info.content.land_information.displayname")
                                                         .replace("%land_name%",
                                                                         LandsManager.getLandDetailById(
                                                                                         new Integer(land_id),
                                                                                         "land_name"))));
 
                         ArrayList<String> landInformationButtonLore = new ArrayList<>();
-                        List<String> loreConfigData = LoadConfigString
+                        List<String> loreConfigData = LoadConfig
                                         .guiStringList("land_info.content.land_information.lore");
 
-                        DateFormat dateFormatter = new SimpleDateFormat(LoadConfigString.generalString("date.format"));
+                        DateFormat dateFormatter = new SimpleDateFormat(LoadConfig.generalString("date.format"));
 
                         double land_balance = Double.parseDouble(LandsManager.getLandDetailById(new Integer(land_id), "balance"));
 
@@ -92,7 +92,7 @@ public class InfoCommand implements CommandExecutor {
 
                         ItemMeta landOwnerButtonMeta = landOwnerButton.getItemMeta();
                         landOwnerButtonMeta.setDisplayName(ColoredString.translate(
-                                        LoadConfigString.guiString("land_info.content.land_owner.displayname").replace(
+                                        LoadConfig.guiString("land_info.content.land_owner.displayname").replace(
                                                         "%land_owner%",
                                                         LandsManager.getLandDetailById(new Integer(land_id),
                                                                         "owner_name"))));
@@ -101,7 +101,7 @@ public class InfoCommand implements CommandExecutor {
                         List<List<String>> membersdata = LandMembersManager.listAllMembersData(new Integer(land_id));
 
                         ItemMeta landMembersButtonMeta = landMembersButton.getItemMeta();
-                        landMembersButtonMeta.setDisplayName(ColoredString.translate(LoadConfigString
+                        landMembersButtonMeta.setDisplayName(ColoredString.translate(LoadConfig
                                         .guiString("land_info.content.land_members.displayname")
                                         .replace("%members_count%", "" + LandMembersManager
                                                         .getMembersCountOfLand(new Integer(land_id)))));
@@ -111,7 +111,7 @@ public class InfoCommand implements CommandExecutor {
                         for (List<String> memberdata : membersdata) {
                                 landMembersButtonLore
                                                 .add(ColoredString
-                                                                .translate(LoadConfigString.guiString(
+                                                                .translate(LoadConfig.guiString(
                                                                                 "land_info.content.land_members.lore_style")
                                                                                 .replace("%role_name%",
                                                                                                 memberdata.get(1))
@@ -124,17 +124,17 @@ public class InfoCommand implements CommandExecutor {
 
                         ItemMeta landCloseButtonMeta = landCloseButton.getItemMeta();
                         landCloseButtonMeta.setDisplayName(ColoredString
-                                        .translate(LoadConfigString.generalString("gui.close_button.displayname")));
+                                        .translate(LoadConfig.generalString("gui.close_button.displayname")));
                         landCloseButton.setItemMeta(landCloseButtonMeta);
 
                         // Create new inventory
                         Inventory inventory = Bukkit.createInventory(player, 9 * 3,
-                                        ColoredString.translate(LoadConfigString.guiString("land_info.title")));
+                                        ColoredString.translate(LoadConfig.guiString("land_info.title")));
 
                         inventory.setItem(11, landInformationButton);
                         inventory.setItem(13, landOwnerButton);
                         inventory.setItem(15, landMembersButton);
-                        if (LoadConfigString.generalBoolean("gui.close_button.enabled") == true) {
+                        if (LoadConfig.generalBoolean("gui.close_button.enabled") == true) {
                                 inventory.setItem(26, landCloseButton);
                         }
 

@@ -3,6 +3,7 @@ package realmprotection.commands.subcommands;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -10,7 +11,7 @@ import org.bukkit.entity.Player;
 
 import realmprotection.managers.LandMembersManager;
 import realmprotection.managers.LandsManager;
-import realmprotection.utils.LoadConfigString;
+import realmprotection.utils.LoadConfig;
 
 public class SpawnCommand implements CommandExecutor {
     @Override
@@ -19,12 +20,12 @@ public class SpawnCommand implements CommandExecutor {
             Player player = (Player) sender;
 
             if (args.length == 1) {
-                player.sendMessage(LoadConfigString.load("spawn.missing_land_name"));
+                player.sendMessage(LoadConfig.commandString("spawn.missing_land_name"));
                 return true;
             }
 
             if (!LandsManager.landNameExist(args[1])) {
-                player.sendMessage(LoadConfigString.load("spawn.land_name_not_found"));
+                player.sendMessage(LoadConfig.commandString("spawn.land_name_not_found"));
                 return true;
             }
 
@@ -33,7 +34,7 @@ public class SpawnCommand implements CommandExecutor {
 
             if (!player.getName().equalsIgnoreCase(land_owner_name) && !LandMembersManager
                     .hasPlayerThePermissionToDo(new Integer(land_id), player.getName(), "teleporttospawn")) {
-                player.sendMessage(LoadConfigString.load("spawn.missing_permissions_to_teleport").replace("%land_name%", args[1]));
+                player.sendMessage(LoadConfig.commandString("spawn.missing_permissions_to_teleport").replace("%land_name%", args[1]));
                 return true;
             }
 
@@ -47,9 +48,17 @@ public class SpawnCommand implements CommandExecutor {
             Location location = new Location(world, Double.parseDouble(land_x), Double.parseDouble(land_y),
                     Double.parseDouble(land_z));
 
+            Block newblock = location.getBlock();
+            Block underplayer = newblock.getRelative(0,-1,0);
+
+            if (underplayer.getType().name().contains("AIR") || underplayer.getType().name().contains("LAVA")) {
+                player.sendMessage(LoadConfig.commandString("spawn.location_not_safe"));
+                return true;
+            }
+
             player.teleport(location);
 
-            player.sendMessage(LoadConfigString.load("spawn.spawn_teleport_success").replace("%land_name%", args[1]).replace("%x%", String.format("%.2f", new Double(land_x))).replace("%y%", String.format("%.2f", new Double(land_y))).replace("%z%", String.format("%.2f", new Double(land_z))).replace("%world%", land_world));
+            player.sendMessage(LoadConfig.commandString("spawn.spawn_teleport_success").replace("%land_name%", args[1]).replace("%x%", String.format("%.2f", new Double(land_x))).replace("%y%", String.format("%.2f", new Double(land_y))).replace("%z%", String.format("%.2f", new Double(land_z))).replace("%world%", land_world));
 
             return true;
         } else {

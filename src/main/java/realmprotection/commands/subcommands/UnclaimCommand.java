@@ -9,7 +9,7 @@ import org.bukkit.entity.Player;
 import realmprotection.managers.ChunksManager;
 import realmprotection.managers.LandsManager;
 import realmprotection.managers.RolesManager;
-import realmprotection.utils.LoadConfigString;
+import realmprotection.utils.LoadConfig;
 
 public class UnclaimCommand implements CommandExecutor {
     @Override
@@ -19,14 +19,14 @@ public class UnclaimCommand implements CommandExecutor {
             Chunk chunk = player.getLocation().getChunk();
 
             if (!LandsManager.hasLand(player.getName())) {
-                player.sendMessage(LoadConfigString.load("unclaim.land_not_found"));
+                player.sendMessage(LoadConfig.commandString("unclaim.land_not_found"));
                 return true;
             }
 
             boolean isClaimed = ChunksManager.isChunkClaimed(chunk);
 
             if (!isClaimed) {
-                player.sendMessage(LoadConfigString.load("unclaim.chunk_not_claimed"));
+                player.sendMessage(LoadConfig.commandString("unclaim.chunk_not_claimed"));
                 return true;
             }
 
@@ -35,18 +35,18 @@ public class UnclaimCommand implements CommandExecutor {
             String land_owner_name = LandsManager.getLandDetailById(new Integer(chunk_land_id), "owner_name");
 
             if (isClaimed && !land_owner_name.equalsIgnoreCase(player.getName())) {
-                player.sendMessage(LoadConfigString.load("unclaim.chunk_not_owned_by_sender"));
+                player.sendMessage(LoadConfig.commandString("unclaim.chunk_not_owned_by_sender"));
                 return true;
             }
 
             if (args.length == 1 || !args[1].equalsIgnoreCase("confirm")) {
-                player.sendMessage(LoadConfigString.load("unclaim.confirm_missing"));
+                player.sendMessage(LoadConfig.commandString("unclaim.confirm_missing"));
                 return true;
             }
 
             ChunksManager.removeClaimedChunk(chunk);
 
-            player.sendMessage(LoadConfigString.load("unclaim.chunk_unclaimed_success"));
+            player.sendMessage(LoadConfig.commandString("unclaim.chunk_unclaimed_success"));
 
             Boolean hasOneChunkClaimedForLand = ChunksManager.isLandHaveAtLeastOneChunk(new Integer(land_id));
 
@@ -54,7 +54,7 @@ public class UnclaimCommand implements CommandExecutor {
                 LandsManager.deleteLand(new Integer(land_id));
                 RolesManager.deleteAllRolesFromLand(new Integer(land_id));
 
-                player.sendMessage(LoadConfigString.load("unclaim.show_note_land_deleted"));
+                player.sendMessage(LoadConfig.commandString("unclaim.show_note_land_deleted"));
             }
 
             return true;

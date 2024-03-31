@@ -7,7 +7,8 @@ import org.bukkit.entity.Player;
 
 import realmprotection.managers.LandsManager;
 import realmprotection.managers.RolesManager;
-import realmprotection.utils.LoadConfigString;
+import realmprotection.utils.LoadConfig;
+import realmprotection.utils.StringValidator;
 
 public class RenameRoleCommand implements CommandExecutor {
     @Override
@@ -16,24 +17,29 @@ public class RenameRoleCommand implements CommandExecutor {
             Player player = (Player) sender;
 
             if (!LandsManager.hasLand(player.getName())) {
-                player.sendMessage(LoadConfigString.load("rename_role.land_not_found"));
+                player.sendMessage(LoadConfig.commandString("rename_role.land_not_found"));
                 return true;
             }
 
             if (args.length == 2) {
-                player.sendMessage(LoadConfigString.load("rename_role.no_role_provided"));
+                player.sendMessage(LoadConfig.commandString("rename_role.no_role_provided"));
                 return true;
             }
 
             String land_id = LandsManager.getLandDetail(player.getName(), "id");
 
             if (!RolesManager.hasRole(new Integer(land_id), args[2])) {
-                player.sendMessage(LoadConfigString.load("rename_role.role_not_found"));
+                player.sendMessage(LoadConfig.commandString("rename_role.role_not_found"));
+                return true;
+            }
+
+            if (!StringValidator.isCleanString(args[2])) {
+                player.sendMessage(LoadConfig.commandString("rename_role.role_name_not_alphanumeric"));
                 return true;
             }
 
             if (args.length == 3) {
-                player.sendMessage(LoadConfigString.load("rename_role.missing_new_role_name"));
+                player.sendMessage(LoadConfig.commandString("rename_role.missing_new_role_name"));
                 return true;
             }
 
@@ -41,7 +47,7 @@ public class RenameRoleCommand implements CommandExecutor {
 
             RolesManager.updateRoleName(new Integer(land_id), new Integer(role_id), args[3]);
 
-            player.sendMessage(LoadConfigString.load("rename_role.role_update_success").replace("%old%", args[2]).replace("%new%", args[3]));
+            player.sendMessage(LoadConfig.commandString("rename_role.role_update_success").replace("%old%", args[2]).replace("%new%", args[3]));
 
             return true;
         } else {

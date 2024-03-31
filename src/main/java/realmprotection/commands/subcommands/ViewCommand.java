@@ -9,7 +9,7 @@ import org.bukkit.entity.Player;
 import realmprotection.managers.ChunksManager;
 import realmprotection.managers.LandMembersManager;
 import realmprotection.managers.LandsManager;
-import realmprotection.utils.LoadConfigString;
+import realmprotection.utils.LoadConfig;
 
 public class ViewCommand implements CommandExecutor {
     @Override
@@ -19,7 +19,7 @@ public class ViewCommand implements CommandExecutor {
             Chunk chunk = player.getLocation().getChunk();
 
             if (!ChunksManager.isChunkClaimed(chunk)) {
-                player.sendMessage(LoadConfigString.load("view.chunk_wilderness"));
+                player.sendMessage(LoadConfig.commandString("view.chunk_wilderness"));
                 return true;
             }
 
@@ -37,7 +37,7 @@ public class ViewCommand implements CommandExecutor {
 
             ChunksManager.startParticleTask(player, new Integer(land_id), 1, is_owner, is_trusted);
 
-            player.sendMessage(LoadConfigString.load("view.particles_spawned_success"));
+            player.sendMessage(LoadConfig.commandString("view.particles_spawned_success"));
 
             return true;
         } else {

@@ -205,36 +205,6 @@ public class ChunksManager {
         return null;
     }
 
-    public static List<List<Object>> listChunksFromLandId(Integer land_id) {
-        String sql = "SELECT * FROM claimed_chunks WHERE land_id = ?";
-        List<List<Object>> chunks = Lists.newArrayList();
-
-        try {
-            Connection connection = RealmProtection.database.getConnection();
-            PreparedStatement statement = connection.prepareStatement(sql);
-
-            statement.setInt(1, land_id);
-
-            ResultSet result = statement.executeQuery();
-
-            while (result.next()) {
-                Integer chunk_x = new Integer(result.getString("chunk_x"));
-                Integer chunk_z = new Integer(result.getString("chunk_z"));
-                String chunk_world = result.getString("chunk_world");
-
-                chunks.add(Lists.newArrayList(chunk_x, chunk_z, chunk_world));
-            }
-
-            statement.close();
-
-            return chunks;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return chunks;
-    }
-
     public static int getChunksCountOfLand(Integer land_id) {
         String sql = "SELECT COUNT (*) AS count FROM claimed_chunks WHERE land_id = ?";
 
@@ -266,6 +236,36 @@ public class ChunksManager {
         } else {
             return null;
         }
+    }
+
+    public static List<List<Object>> listChunksFromLandId(Integer land_id) {
+        String sql = "SELECT * FROM claimed_chunks WHERE land_id = ?";
+        List<List<Object>> chunks = Lists.newArrayList();
+
+        try {
+            Connection connection = RealmProtection.database.getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql);
+
+            statement.setInt(1, land_id);
+
+            ResultSet result = statement.executeQuery();
+
+            while (result.next()) {
+                Integer chunk_x = new Integer(result.getString("chunk_x"));
+                Integer chunk_z = new Integer(result.getString("chunk_z"));
+                String chunk_world = result.getString("chunk_world");
+
+                chunks.add(Lists.newArrayList(chunk_x, chunk_z, chunk_world));
+            }
+
+            statement.close();
+
+            return chunks;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return chunks;
     }
 
     public static void spawnParticlesAroundChunk(Player player, Integer land_id, double y, boolean is_owner, boolean is_trusted) {

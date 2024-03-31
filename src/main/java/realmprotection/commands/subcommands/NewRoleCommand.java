@@ -7,7 +7,8 @@ import org.bukkit.entity.Player;
 
 import realmprotection.managers.LandsManager;
 import realmprotection.managers.RolesManager;
-import realmprotection.utils.LoadConfigString;
+import realmprotection.utils.LoadConfig;
+import realmprotection.utils.StringValidator;
 
 public class NewRoleCommand implements CommandExecutor {
     @Override
@@ -16,25 +17,30 @@ public class NewRoleCommand implements CommandExecutor {
             Player player = (Player) sender;
 
             if (!LandsManager.hasLand(player.getName())) {
-                player.sendMessage(LoadConfigString.load("new_role.land_not_found"));
+                player.sendMessage(LoadConfig.commandString("new_role.land_not_found"));
                 return true;
             }
 
             if (args.length == 2) {
-                player.sendMessage(LoadConfigString.load("new_role.no_role_provided"));
+                player.sendMessage(LoadConfig.commandString("new_role.no_role_provided"));
                 return true;
             }
 
             String land_id = LandsManager.getLandDetail(player.getName(), "id");
 
             if (RolesManager.hasRole(new Integer(land_id), args[2])) {
-                player.sendMessage(LoadConfigString.load("new_role.role_found"));
+                player.sendMessage(LoadConfig.commandString("new_role.role_found"));
+                return true;
+            }
+
+            if (!StringValidator.isCleanString(args[2])) {
+                player.sendMessage(LoadConfig.commandString("new_role.role_name_not_alphanumeric"));
                 return true;
             }
 
             RolesManager.createNewRole(new Integer(land_id), args[2]);
 
-            player.sendMessage(LoadConfigString.load("new_role.role_create_success"));
+            player.sendMessage(LoadConfig.commandString("new_role.role_create_success"));
 
             return true;
         } else {

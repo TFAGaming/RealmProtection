@@ -15,7 +15,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import realmprotection.managers.LandsManager;
 import realmprotection.utils.ColoredString;
-import realmprotection.utils.LoadConfigString;
+import realmprotection.utils.LoadConfig;
 
 public class UpdateNatureFlagsCommand implements CommandExecutor {
     @Override
@@ -24,7 +24,7 @@ public class UpdateNatureFlagsCommand implements CommandExecutor {
             Player player = (Player) sender;
 
             if (!LandsManager.hasLand(player.getName())) {
-                player.sendMessage(LoadConfigString.load("update_nature_flags.land_not_found"));
+                player.sendMessage(LoadConfig.commandString("update_nature_flags.land_not_found"));
             } else {
                 String land_id = LandsManager.getLandDetail(player.getName(), "id");
                 String land_name = LandsManager.getLandDetailById(new Integer(land_id), "land_name");
@@ -32,7 +32,7 @@ public class UpdateNatureFlagsCommand implements CommandExecutor {
                 if (args.length == 2) {
                     Inventory inventory = Bukkit.createInventory(player, 9 * 3,
                             ColoredString.translate(
-                                    ColoredString.translate(LoadConfigString.guiString("nature_flags.title"))));
+                                    ColoredString.translate(LoadConfig.guiString("nature_flags.title"))));
 
                     List<List<Object>> allflags = LandsManager.listEnabledAndDisabledFlagsForLand(new Integer(land_id));
 
@@ -42,11 +42,11 @@ public class UpdateNatureFlagsCommand implements CommandExecutor {
 
                         ItemMeta flagButtonMeta = flagButton.getItemMeta();
                         flagButtonMeta.setDisplayName(ColoredString
-                                .translate(LoadConfigString.guiString("nature_flags.content.flag_style.displayname")
+                                .translate(LoadConfig.guiString("nature_flags.content.flag_style.displayname")
                                         .replace("%flag%", "" + flag.get(0))));
 
                         ArrayList<String> flagButtonLore = new ArrayList<>();
-                        List<String> natureflagslore = LoadConfigString
+                        List<String> natureflagslore = LoadConfig
                                 .guiStringList("nature_flags.content.flag_style.lore");
 
                         for (String lore : natureflagslore) {
@@ -54,16 +54,16 @@ public class UpdateNatureFlagsCommand implements CommandExecutor {
                                 flagButtonLore.add(ColoredString
                                         .translate(lore
                                                 .replace("%description%",
-                                                        "" + LoadConfigString.guiString(
+                                                        "" + LoadConfig.guiString(
                                                                 "flags_description.nature_flags." + flag.get(0)))
-                                                .replace("%value%", LoadConfigString.generalString("flags.enabled"))));
+                                                .replace("%value%", LoadConfig.generalString("flags.enabled"))));
                             } else {
                                 flagButtonLore.add(ColoredString
                                         .translate(lore
                                                 .replace("%description%",
-                                                        "" + LoadConfigString.guiString(
+                                                        "" + LoadConfig.guiString(
                                                                 "flags_description.nature_flags." + flag.get(0)))
-                                                .replace("%value%", LoadConfigString.generalString("flags.disabled"))));
+                                                .replace("%value%", LoadConfig.generalString("flags.disabled"))));
                             }
                         }
 
@@ -74,22 +74,22 @@ public class UpdateNatureFlagsCommand implements CommandExecutor {
                     }
 
                     ItemStack landNameButton = new ItemStack(
-                            Material.getMaterial(LoadConfigString.guiString("nature_flags.content.land_name.type")));
+                            Material.getMaterial(LoadConfig.guiString("nature_flags.content.land_name.type")));
                     ItemMeta landNameButtonMeta = landNameButton.getItemMeta();
                     landNameButtonMeta.setDisplayName(ColoredString
-                            .translate(LoadConfigString.guiString("nature_flags.content.land_name.displayname")
+                            .translate(LoadConfig.guiString("nature_flags.content.land_name.displayname")
                                     .replace("%land_name%", land_name)));
                     landNameButton.setItemMeta(landNameButtonMeta);
 
                     ItemStack closeButton = new ItemStack(
-                            Material.getMaterial(LoadConfigString.generalString("gui.close_button.type")));
+                            Material.getMaterial(LoadConfig.generalString("gui.close_button.type")));
                     ItemMeta closeButtonMeta = closeButton.getItemMeta();
                     closeButtonMeta.setDisplayName(
-                            ColoredString.translate(LoadConfigString.generalString("gui.close_button.displayname")));
+                            ColoredString.translate(LoadConfig.generalString("gui.close_button.displayname")));
                     closeButton.setItemMeta(closeButtonMeta);
 
                     inventory.setItem(18, landNameButton);
-                    if (LoadConfigString.generalBoolean("gui.close_button.enabled") == true) {
+                    if (LoadConfig.generalBoolean("gui.close_button.enabled") == true) {
                         inventory.setItem(26, closeButton);
                     }
 
@@ -108,18 +108,18 @@ public class UpdateNatureFlagsCommand implements CommandExecutor {
                     listofflags.add("plantgrowth");
 
                     if (!listofflags.contains(args[2])) {
-                        player.sendMessage(LoadConfigString.load("update_nature_flags.not_valid_flag"));
+                        player.sendMessage(LoadConfig.commandString("update_nature_flags.not_valid_flag"));
                         return true;
                     }
 
                     if (args.length == 3) {
-                        player.sendMessage(LoadConfigString.load("update_nature_flags.missing_boolean_value"));
+                        player.sendMessage(LoadConfig.commandString("update_nature_flags.missing_boolean_value"));
                         return true;
                     }
 
                     if (!(args[3].equalsIgnoreCase("true") || args[3].equalsIgnoreCase("false")
                             || args[3].equalsIgnoreCase("1") || args[3].equalsIgnoreCase("0"))) {
-                        player.sendMessage(LoadConfigString.load("update_nature_flags.not_boolean_value"));
+                        player.sendMessage(LoadConfig.commandString("update_nature_flags.not_boolean_value"));
                         return true;
                     }
 
@@ -133,7 +133,7 @@ public class UpdateNatureFlagsCommand implements CommandExecutor {
 
                     LandsManager.updateNatureFlagValue(new Integer(land_id), args[2], value);
 
-                    player.sendMessage(LoadConfigString.load("update_nature_flags.nature_flag_updated_success")
+                    player.sendMessage(LoadConfig.commandString("update_nature_flags.nature_flag_updated_success")
                             .replace("%flag%", args[2]).replace("%new_value%", "" + value));
 
                 }
@@ -153,7 +153,7 @@ public class UpdateNatureFlagsCommand implements CommandExecutor {
             splittedlist.add(split);
         }
 
-        Material material = Material.getMaterial(LoadConfigString.guiString("nature_flags.items." + splittedlist.get(1)));
+        Material material = Material.getMaterial(LoadConfig.guiString("nature_flags.items." + splittedlist.get(1)));
 
         if (material != null) {
             return material;

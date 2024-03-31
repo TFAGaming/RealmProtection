@@ -16,7 +16,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import realmprotection.managers.LandsManager;
 import realmprotection.managers.RolesManager;
 import realmprotection.utils.ColoredString;
-import realmprotection.utils.LoadConfigString;
+import realmprotection.utils.LoadConfig;
 
 public class UpdateRoleFlagsCommand implements CommandExecutor {
     @Override
@@ -25,23 +25,23 @@ public class UpdateRoleFlagsCommand implements CommandExecutor {
             Player player = (Player) sender;
 
             if (!LandsManager.hasLand(player.getName())) {
-                player.sendMessage(LoadConfigString.load("update_role_flags.land_not_found"));
+                player.sendMessage(LoadConfig.commandString("update_role_flags.land_not_found"));
             } else {
                 if (args.length == 2) {
-                    player.sendMessage(LoadConfigString.load("update_role_flags.no_role_provided"));
+                    player.sendMessage(LoadConfig.commandString("update_role_flags.no_role_provided"));
                     return true;
                 }
 
                 String land_id = LandsManager.getLandDetail(player.getName(), "id");
 
                 if (!RolesManager.hasRole(new Integer(land_id), args[2])) {
-                    player.sendMessage(LoadConfigString.load("update_role_flags.role_not_found"));
+                    player.sendMessage(LoadConfig.commandString("update_role_flags.role_not_found"));
                     return true;
                 }
 
                 if (args.length == 3) {
                     Inventory inventory = Bukkit.createInventory(player, 9 * 6,
-                            ColoredString.translate(LoadConfigString.guiString("role_flags.title")));
+                            ColoredString.translate(LoadConfig.guiString("role_flags.title")));
 
                     List<List<Object>> allflags = RolesManager.listEnabledAndDisabledFlagsForRole(new Integer(land_id),
                             args[2]);
@@ -52,11 +52,11 @@ public class UpdateRoleFlagsCommand implements CommandExecutor {
 
                         ItemMeta flagButtonMeta = flagButton.getItemMeta();
                         flagButtonMeta.setDisplayName(ColoredString
-                                .translate(LoadConfigString.guiString("role_flags.content.flag_style.displayname")
+                                .translate(LoadConfig.guiString("role_flags.content.flag_style.displayname")
                                         .replace("%flag%", "" + flag.get(0))));
 
                         ArrayList<String> flagButtonLore = new ArrayList<>();
-                        List<String> roleflagslore = LoadConfigString
+                        List<String> roleflagslore = LoadConfig
                                 .guiStringList("role_flags.content.flag_style.lore");
 
                         for (String lore : roleflagslore) {
@@ -64,16 +64,16 @@ public class UpdateRoleFlagsCommand implements CommandExecutor {
                                 flagButtonLore.add(ColoredString
                                         .translate(lore
                                                 .replace("%description%",
-                                                        "" + LoadConfigString.guiString(
+                                                        "" + LoadConfig.guiString(
                                                                 "flags_description.role_flags." + flag.get(0)))
-                                                .replace("%value%", LoadConfigString.generalString("flags.enabled"))));
+                                                .replace("%value%", LoadConfig.generalString("flags.enabled"))));
                             } else {
                                 flagButtonLore.add(ColoredString
                                         .translate(lore
                                                 .replace("%description%",
-                                                        "" + LoadConfigString.guiString(
+                                                        "" + LoadConfig.guiString(
                                                                 "flags_description.role_flags." + flag.get(0)))
-                                                .replace("%value%", LoadConfigString.generalString("flags.disabled"))));
+                                                .replace("%value%", LoadConfig.generalString("flags.disabled"))));
                             }
                         }
 
@@ -84,21 +84,21 @@ public class UpdateRoleFlagsCommand implements CommandExecutor {
                     }
 
                     ItemStack roleNameButton = new ItemStack(
-                            Material.getMaterial(LoadConfigString.guiString("role_flags.content.role_name.type")));
+                            Material.getMaterial(LoadConfig.guiString("role_flags.content.role_name.type")));
                     ItemMeta roleNameButtonMeta = roleNameButton.getItemMeta();
-                    roleNameButtonMeta.setDisplayName(ColoredString.translate(LoadConfigString
+                    roleNameButtonMeta.setDisplayName(ColoredString.translate(LoadConfig
                             .guiString("role_flags.content.role_name.displayname").replace("%role%", args[2])));
                     roleNameButton.setItemMeta(roleNameButtonMeta);
 
                     ItemStack closeButton = new ItemStack(
-                            Material.getMaterial(LoadConfigString.generalString("gui.close_button.type")));
+                            Material.getMaterial(LoadConfig.generalString("gui.close_button.type")));
                     ItemMeta closeButtonMeta = closeButton.getItemMeta();
                     closeButtonMeta.setDisplayName(
-                            ColoredString.translate(LoadConfigString.generalString("gui.close_button.displayname")));
+                            ColoredString.translate(LoadConfig.generalString("gui.close_button.displayname")));
                     closeButton.setItemMeta(closeButtonMeta);
 
                     inventory.setItem(45, roleNameButton);
-                    if (LoadConfigString.generalBoolean("gui.close_button.enabled") == true) {
+                    if (LoadConfig.generalBoolean("gui.close_button.enabled") == true) {
                         inventory.setItem(53, closeButton);
                     }
 
@@ -139,18 +139,18 @@ public class UpdateRoleFlagsCommand implements CommandExecutor {
                     listofflags.add("usevehicles");
 
                     if (!listofflags.contains(args[3])) {
-                        player.sendMessage(LoadConfigString.load("update_role_flags.not_valid_flag"));
+                        player.sendMessage(LoadConfig.commandString("update_role_flags.not_valid_flag"));
                         return true;
                     }
 
                     if (args.length == 4) {
-                        player.sendMessage(LoadConfigString.load("update_role_flags.missing_boolean_value"));
+                        player.sendMessage(LoadConfig.commandString("update_role_flags.missing_boolean_value"));
                         return true;
                     }
 
                     if (!(args[4].equalsIgnoreCase("true") || args[4].equalsIgnoreCase("false")
                             || args[4].equalsIgnoreCase("1") || args[4].equalsIgnoreCase("0"))) {
-                        player.sendMessage(LoadConfigString.load("update_role_flags.not_boolean_value"));
+                        player.sendMessage(LoadConfig.commandString("update_role_flags.not_boolean_value"));
                         return true;
                     }
 
@@ -164,7 +164,7 @@ public class UpdateRoleFlagsCommand implements CommandExecutor {
 
                     RolesManager.updatePermissionValue(new Integer(land_id), args[2], args[3], value);
 
-                    player.sendMessage(LoadConfigString.load("update_role_flags.role_flag_updated_success")
+                    player.sendMessage(LoadConfig.commandString("update_role_flags.role_flag_updated_success")
                             .replace("%flag%", args[3]).replace("%role_name%", args[2])
                             .replace("%new_value%", "" + value));
 
@@ -185,7 +185,7 @@ public class UpdateRoleFlagsCommand implements CommandExecutor {
             splittedlist.add(split);
         }
 
-        Material material = Material.getMaterial(LoadConfigString.guiString("role_flags.items." + splittedlist.get(1)));
+        Material material = Material.getMaterial(LoadConfig.guiString("role_flags.items." + splittedlist.get(1)));
 
         if (material != null) {
             return material;

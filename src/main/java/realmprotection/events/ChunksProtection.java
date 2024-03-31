@@ -23,6 +23,7 @@ import org.bukkit.entity.Mob;
 import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.TNTPrimed;
+import org.bukkit.entity.Vehicle;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
@@ -41,6 +42,7 @@ import org.bukkit.event.block.LeavesDecayEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
+import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.event.hanging.HangingBreakByEntityEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
@@ -51,14 +53,17 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerShearEntityEvent;
+import org.bukkit.event.vehicle.VehicleDamageEvent;
+import org.bukkit.event.vehicle.VehicleEnterEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.projectiles.ProjectileSource;
 
 import realmprotection.managers.ChunksManager;
 import realmprotection.managers.LandMembersManager;
 import realmprotection.managers.LandsManager;
 import realmprotection.managers.ParticleSpawner;
 import realmprotection.utils.ColoredString;
-import realmprotection.utils.LoadConfigString;
+import realmprotection.utils.LoadConfig;
 
 public class ChunksProtection implements Listener {
     // Block place
@@ -394,6 +399,12 @@ public class ChunksProtection implements Listener {
                     event.setCancelled(true);
                 }
             }
+        } else {
+            Chunk chunk = event.getBlock().getLocation().getChunk();
+
+            if (ChunksManager.isChunkClaimed(chunk)) {
+                event.setCancelled(true);
+            }
         }
     }
 
@@ -470,11 +481,21 @@ public class ChunksProtection implements Listener {
         Entity damager = event.getDamager();
         Chunk chunk = entity.getLocation().getChunk();
 
+        System.out.println(entity.getName());
+
         if (ChunksManager.isChunkClaimed(chunk)) {
             String land_id = ChunksManager.getChunkDetail(chunk, "land_id");
             String land_owner_name = LandsManager.getLandDetailById(new Integer(land_id), "owner_name");
 
-            if (entity instanceof Player && damager instanceof Player) {
+            if (entity.getName().contains("Armor Stand")) {
+                if (damager instanceof Player && !damager.getName().equalsIgnoreCase(land_owner_name) && !LandMembersManager.hasPlayerThePermissionToDo(new Integer(land_id), damager.getName(),
+                        "breakblocks")) {
+                    event.setCancelled(true);
+                    realmprotection.RealmProtection._sendMessageWithTimeout((Player) damager, "breakblocks");
+
+                    return;
+                }
+            } else if (entity instanceof Player && damager instanceof Player) {
                 if (!LandMembersManager.hasPlayerThePermissionToDo(new Integer(land_id), damager.getName(),
                         "pvp")) {
                     event.setCancelled(true);
@@ -613,10 +634,26 @@ public class ChunksProtection implements Listener {
         }
 
         if (ChunksManager.isChunkClaimed(chunk)) {
+            if (event.getItem() != null) {
+                if (event.getItem().getType().name().contains("BOAT")
+                        || event.getItem().getType().name().contains("MINECART")
+                        || event.getItem().getType().name().contains("PAINTING")) {
+                    String land_id = ChunksManager.getChunkDetail(chunk, "land_id");
+                    String land_owner_name = LandsManager.getLandDetailById(new Integer(land_id), "owner_name");
+
+                    if (!player.getName().equalsIgnoreCase(land_owner_name)
+                            && !LandMembersManager.hasPlayerThePermissionToDo(new Integer(land_id), player.getName(),
+                                    "placeblocks")) {
+                        event.setCancelled(true);
+                        realmprotection.RealmProtection._sendMessageWithTimeout(player, "placeblocks");
+
+                        return;
+                    }
+                }
+            }
+
             if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
                 Material material = event.getClickedBlock().getType();
-
-                System.out.println(material);
 
                 String land_id = ChunksManager.getChunkDetail(chunk, "land_id");
                 String land_owner_name = LandsManager.getLandDetailById(new Integer(land_id), "owner_name");
@@ -781,7 +818,8 @@ public class ChunksProtection implements Listener {
                         return;
                     }
                 }
-            } else if (event.getItem().getType().equals(Material.SPLASH_POTION)) {
+            } else if (event.getItem().getType().equals(Material.SPLASH_POTION)
+                    || event.getItem().getType().equals(Material.LINGERING_POTION)) {
                 if (ChunksManager.isChunkClaimed(chunk)) {
                     String land_id = ChunksManager.getChunkDetail(chunk, "land_id");
                     String land_owner_name = LandsManager.getLandDetailById(new Integer(land_id), "owner_name");
@@ -798,18 +836,6 @@ public class ChunksProtection implements Listener {
             }
         }
     }
-
-    /*
-     * @EventHandler
-     * public void onProjectileLaunch(ProjectileLaunchEvent event) {
-     * 
-     * }
-     * 
-     * @EventHandler
-     * public void onProjectileHit(ProjectileHitEvent event) {
-     * 
-     * }
-     */
 
     // Armor stands
     @EventHandler
@@ -833,6 +859,28 @@ public class ChunksProtection implements Listener {
             }
 
         }
+    }
+
+    // Projectile launch
+    @EventHandler
+    public void onProjectileLaunch(ProjectileLaunchEvent event) {
+        ProjectileSource source = event.getEntity().getShooter();
+        Chunk chunk = event.getEntity().getLocation().getChunk();
+
+        if (ChunksManager.isChunkClaimed(chunk)) {
+            String land_id = ChunksManager.getChunkDetail(chunk, "land_id");
+
+            if (source instanceof Player
+                    && event.getEntityType().name().contains("ARROW")
+                    && !LandMembersManager.hasPlayerThePermissionToDo(new Integer(land_id), ((Player) source).getName(),
+                            "pvp")) {
+                event.setCancelled(true);
+                realmprotection.RealmProtection._sendMessageWithTimeout((Player) source, "pvp");
+
+                return;
+            }
+        }
+
     }
 
     // Item frames
@@ -872,9 +920,9 @@ public class ChunksProtection implements Listener {
 
                     if (!player.getName().equalsIgnoreCase(land_owner_name)
                             && !LandMembersManager.hasPlayerThePermissionToDo(new Integer(land_id), player.getName(),
-                                    "itemframes")) {
+                                    "breakblocks")) {
                         event.setCancelled(true);
-                        realmprotection.RealmProtection._sendMessageWithTimeout(player, "itemframes");
+                        realmprotection.RealmProtection._sendMessageWithTimeout(player, "breakblocks");
 
                         return;
                     }
@@ -920,9 +968,9 @@ public class ChunksProtection implements Listener {
 
                 if (!player.getName().equalsIgnoreCase(land_owner_name)
                         && !LandMembersManager.hasPlayerThePermissionToDo(new Integer(land_id), player.getName(),
-                                "itemframes")) {
+                                "breakblocks")) {
                     event.setCancelled(true);
-                    realmprotection.RealmProtection._sendMessageWithTimeout(player, "itemframes");
+                    realmprotection.RealmProtection._sendMessageWithTimeout(player, "breakblocks");
 
                     return;
                 }
@@ -995,6 +1043,53 @@ public class ChunksProtection implements Listener {
         }
     }
 
+    // Vehicles
+    @EventHandler
+    public void onVehicleEnter(VehicleEnterEvent event) {
+        Vehicle vehicle = event.getVehicle();
+        Chunk chunk = vehicle.getLocation().getChunk();
+        Entity entity = event.getEntered();
+
+        if (vehicle != null) {
+            if (entity instanceof Player && ChunksManager.isChunkClaimed(chunk)) {
+                String land_id = ChunksManager.getChunkDetail(chunk, "land_id");
+                String land_owner_name = LandsManager.getLandDetailById(new Integer(land_id), "owner_name");
+
+                if (!entity.getName().equalsIgnoreCase(land_owner_name)
+                        && !LandMembersManager.hasPlayerThePermissionToDo(new Integer(land_id), entity.getName(),
+                                "usevehicles")) {
+                    event.setCancelled(true);
+                    realmprotection.RealmProtection._sendMessageWithTimeout((Player) entity, "usevehicles");
+
+                    return;
+                }
+            }
+        }
+    }
+
+    @EventHandler
+    public void onVehicleDamage(VehicleDamageEvent event) {
+        Vehicle vehicle = event.getVehicle();
+        Chunk chunk = vehicle.getLocation().getChunk();
+        Entity entity = event.getAttacker();
+
+        if (vehicle != null) {
+            if (entity instanceof Player && ChunksManager.isChunkClaimed(chunk)) {
+                String land_id = ChunksManager.getChunkDetail(chunk, "land_id");
+                String land_owner_name = LandsManager.getLandDetailById(new Integer(land_id), "owner_name");
+
+                if (!entity.getName().equalsIgnoreCase(land_owner_name)
+                        && !LandMembersManager.hasPlayerThePermissionToDo(new Integer(land_id), entity.getName(),
+                                "breakblocks")) {
+                    event.setCancelled(true);
+                    realmprotection.RealmProtection._sendMessageWithTimeout((Player) entity, "breakblocks");
+
+                    return;
+                }
+            }
+        }
+    }
+
     // Player greeting to land
     private static final Map<String, Boolean> player_is_in_claimed_chunk_cache = new HashMap<>();
 
@@ -1014,9 +1109,9 @@ public class ChunksProtection implements Listener {
             String land_id = ChunksManager.getChunkDetail(chunk, "land_id");
             String land_name = LandsManager.getLandDetailById(new Integer(land_id), "land_name");
 
-            String title = LoadConfigString.generalString("player_chunk_entry.claimed.title").replace("%land%",
+            String title = LoadConfig.generalString("player_chunk_entry.claimed.title").replace("%land%",
                     land_name);
-            String subtitle = LoadConfigString.generalString("player_chunk_entry.claimed.subtitle");
+            String subtitle = LoadConfig.generalString("player_chunk_entry.claimed.subtitle");
 
             player.sendTitle(ColoredString.translate(title), ColoredString.translate(subtitle), 4, 60, 4);
 
@@ -1025,8 +1120,8 @@ public class ChunksProtection implements Listener {
             if (!player_is_in_claimed_chunk_cache.get(player.getName()))
                 return;
 
-            String title = LoadConfigString.generalString("player_chunk_entry.unclaimed.title");
-            String subtitle = LoadConfigString.generalString("player_chunk_entry.unclaimed.subtitle");
+            String title = LoadConfig.generalString("player_chunk_entry.unclaimed.title");
+            String subtitle = LoadConfig.generalString("player_chunk_entry.unclaimed.subtitle");
 
             player.sendTitle(ColoredString.translate(title), ColoredString.translate(subtitle), 4, 60, 4);
 

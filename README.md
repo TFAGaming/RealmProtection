@@ -1,11 +1,18 @@
-<img width="150" height="150" align="left" style="float: left; margin: 0 10px 10px 0;" alt="RealmProtector" src="">
+<img width="150" height="150" align="left" style="float: left; margin: 0 10px 10px 0;" alt="RealmProtection" src="icons/realmprotection-icon.png">
 
-<h3><u>RealmProtector</u></h3>
+<h3><u>RealmProtection</u></h3>
 
-RealmProtector is a Minecraft plugin that allows you to claim a 16x16 block segment from a world (a chunk) and protects it from griefers and thieves. It is super customizable with 35+ different flags for different roles, nature flags, and many other features.
+RealmProtection is a Minecraft plugin that allows you to claim a 16x16 block segment from a world (a chunk) and protects it from griefers and thieves. It is customizable, roles-based for land members, and has 30+ flags for each role. This plugin uses SQLite as the main database and has a powerful cache system to avoid the database being locked every time.
+
 <br>
 <br>
-<br>
+
+## How to install
+
+Go to the [releases page](https://github.com/TFAGaming/RealmProtector/releases), click on **Assets** and then click on the **.jar** file to download.
+
+Once the download is finished, copy the **.jar** file, open the plugins folder from your Minecraft server directory, and paste it there. If your Minecraft server is running, you can use the command `/reload` to get the plugin ready for the server, but we recommend you stop the server and then start it again for a fresh startup.
+
 ## How does it work?
 Once you try to claim a chunk, the plugin will ask you to enter a new land name with the command arguments. This will make the plugin create a new land with its specific name and ID, and protect the chunk that the player (you) is standing in. When new land is created, there will be two default roles to maintain the land; The first one is the Visitor role, which has nearly every flag disabled by default. The role is given by default to any non-trusted player in the land. The second role is the Member, which has nearly every flag enabled by default. These two roles are uneditable, which means they cannot be deleted or renamed because they're plugin-based roles. You can create other roles, but these two specific roles cannot be changed.
 
