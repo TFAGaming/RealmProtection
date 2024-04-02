@@ -262,7 +262,7 @@ public class RolesManager {
             }
         }
 
-        String sql = "SELECT * FROM land_roles WHERE land_id = ? AND role_name = ?";
+        String sql = "SELECT * FROM land_roles WHERE land_id = ? AND role_name COLLATE NOCASE = ?";
 
         try {
             Connection connection = RealmProtection.database.getConnection();
@@ -290,7 +290,7 @@ public class RolesManager {
     }
 
     public static boolean hasRole(Integer land_id, String role_name) {
-        String sql = "SELECT COUNT (*) AS count FROM land_roles WHERE land_id = ? AND role_name = ?";
+        String sql = "SELECT COUNT (*) AS count FROM land_roles WHERE land_id = ? AND role_name COLLATE NOCASE = ?";
         boolean exists = false;
 
         try {
@@ -387,7 +387,7 @@ public class RolesManager {
             }
         }
 
-        String sql = "SELECT * FROM land_roles WHERE land_id = ? AND role_name = ?";
+        String sql = "SELECT * FROM land_roles WHERE land_id = ? AND role_name COLLATE NOCASE = ?";
 
         try {
             Connection connection = RealmProtection.database.getConnection();
@@ -417,7 +417,7 @@ public class RolesManager {
     public static void updatePermissionValue(Integer land_id, String role_name, String permission_name,
             Boolean value) {
         String sql = "UPDATE land_roles SET permissions_" + permission_name + "=" + value
-                + " WHERE land_id = ? AND role_name = ?";
+                + " WHERE land_id = ? AND role_name COLLATE NOCASE = ?";
 
         try {
             Connection connection = RealmProtection.database.getConnection();
@@ -488,7 +488,7 @@ public class RolesManager {
     }
 
     public static List<List<Object>> listEnabledAndDisabledFlagsForRole(Integer land_id, String role_name) {
-        String sql = "SELECT * FROM land_roles WHERE land_id = ? AND role_name = ?";
+        String sql = "SELECT * FROM land_roles WHERE land_id = ? AND role_name COLLATE NOCASE = ?";
 
         List<List<Object>> allflags = new ArrayList<>();
 

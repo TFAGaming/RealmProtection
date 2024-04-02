@@ -7,7 +7,6 @@ import org.bukkit.entity.Player;
 
 import realmprotection.RealmProtection;
 import realmprotection.managers.LandsManager;
-import realmprotection.utils.ColoredString;
 import realmprotection.utils.LoadConfig;
 
 public class WithdrawCommand implements CommandExecutor {
@@ -17,12 +16,12 @@ public class WithdrawCommand implements CommandExecutor {
             Player player = (Player) sender;
 
             if (!LoadConfig.isVaultPluginLoaded()) {
-                player.sendMessage(ColoredString.translate(LoadConfig.commandString("withdraw.vault_plugin_not_ready")));
+                player.sendMessage(LoadConfig.commandString("withdraw.vault_plugin_not_ready"));
                 return true;
             }
 
             if (!LandsManager.hasLand(player.getName())) {
-                player.sendMessage(ColoredString.translate(LoadConfig.commandString("withdraw.land_not_found")));
+                player.sendMessage(LoadConfig.commandString("withdraw.land_not_found"));
                 return true;
             }
 
@@ -30,7 +29,7 @@ public class WithdrawCommand implements CommandExecutor {
             double land_balance = Double.parseDouble(LandsManager.getLandDetailById(new Integer(land_id), "balance"));
 
             if (args.length == 1) {
-                player.sendMessage(ColoredString.translate(LoadConfig.commandString("withdraw.no_amount_provided")));
+                player.sendMessage(LoadConfig.commandString("withdraw.no_amount_provided"));
                 return true;
             }
 
@@ -38,22 +37,22 @@ public class WithdrawCommand implements CommandExecutor {
                 double balance_input = Double.parseDouble(args[1]);
 
                 if (balance_input <= 0) {
-                    player.sendMessage(ColoredString.translate(LoadConfig.commandString("withdraw.input_negative_or_zero")));
+                    player.sendMessage(LoadConfig.commandString("withdraw.input_negative_or_zero"));
                     return true;
                 }
 
                 if (balance_input > land_balance) {
-                    player.sendMessage(ColoredString.translate(LoadConfig.commandString("withdraw.input_larger_than_land_balance")));
+                    player.sendMessage(LoadConfig.commandString("withdraw.input_larger_than_land_balance"));
                     return true;
                 }
 
                 LandsManager.updateBalance(new Integer(land_id), land_balance - balance_input);
                 RealmProtection.getEconomy().depositPlayer(player, balance_input);
 
-                player.sendMessage(ColoredString.translate(LoadConfig.commandString("withdraw.withdrew_success").replace("%amount%", args[1]).replace("%land_balance%", String.format("%.2f", (land_balance - balance_input)))));
+                player.sendMessage(LoadConfig.commandString("withdraw.withdrew_success").replace("%amount%", args[1]).replace("%land_balance%", String.format("%.2f", (land_balance - balance_input))));
 
             } catch (NumberFormatException err) {
-                player.sendMessage(ColoredString.translate(LoadConfig.commandString("withdraw.input_not_double_or_integer")));
+                player.sendMessage(LoadConfig.commandString("withdraw.input_not_double_or_integer"));
             }
 
             return true;

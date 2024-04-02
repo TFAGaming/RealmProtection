@@ -43,6 +43,9 @@ public class GUIListener implements Listener {
 
             ItemStack item = event.getCurrentItem();
 
+            if (item == null)
+                return;
+
             switch (item.getType()) {
                 case BARRIER:
                     player.closeInventory();
@@ -50,8 +53,50 @@ public class GUIListener implements Listener {
                 case PAPER:
                     break;
                 default:
-                    player.sendMessage(ColoredString.translate(
-                            "&cSorry, but you can only edit flags values using the commands for this moment."));
+                    break;
+                    /*
+                    int slot = event.getSlot();
+
+                    List<String> flags = new ArrayList<>();
+
+                    flags.add("breakblocks");
+                    flags.add("placeblocks");
+                    flags.add("containers");
+                    flags.add("redstone");
+                    flags.add("doors");
+                    flags.add("trapdoors");
+                    flags.add("editsigns");
+                    flags.add("emptybuckets");
+                    flags.add("fillbuckets");
+                    flags.add("harvestcrops");
+                    flags.add("frostwalker");
+                    flags.add("shearentities");
+                    flags.add("itemframes");
+                    flags.add("fencegates");
+                    flags.add("buttons");
+                    flags.add("levers");
+                    flags.add("pressureplates");
+                    flags.add("bells");
+                    flags.add("tripwires");
+                    flags.add("armorstands");
+                    flags.add("teleporttospawn");
+                    flags.add("throwenderpearls");
+                    flags.add("throwpotions");
+                    flags.add("damagehostilemobs");
+                    flags.add("damagepassivemobs");
+                    flags.add("pvp");
+                    flags.add("usecauldron");
+                    flags.add("pickupitems");
+                    flags.add("useanvil");
+                    flags.add("createfire");
+                    flags.add("usevehicles");
+
+                    String flag = flags.get(slot);
+
+                    String land_id = LandsManager.getLandDetail(event.getWhoClicked().getName(), "id");
+
+                    RolesManager.updatePermissionValue(new Integer(land_id), args[2], args[3], value);
+                    */
             }
         } else if (event.getView().getTitle()
                 .startsWith(ColoredString.translate(LoadConfig.guiString("nature_flags.title")))) {
@@ -69,8 +114,7 @@ public class GUIListener implements Listener {
                 case PAPER:
                     break;
                 default:
-                    player.sendMessage(ColoredString.translate(
-                            "&cSorry, but you can only edit flags values using the commands for this moment."));
+                    break;
             }
         }
     }

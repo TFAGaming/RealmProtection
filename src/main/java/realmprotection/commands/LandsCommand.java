@@ -16,6 +16,7 @@ import realmprotection.commands.subcommands.BalanceCommand;
 import realmprotection.commands.subcommands.ClaimCommand;
 import realmprotection.commands.subcommands.DeleteRoleCommand;
 import realmprotection.commands.subcommands.DepositCommand;
+import realmprotection.commands.subcommands.HelpCommand;
 import realmprotection.commands.subcommands.InfoCommand;
 import realmprotection.commands.subcommands.LeaveCommand;
 import realmprotection.commands.subcommands.NewRoleCommand;
@@ -86,6 +87,9 @@ public class LandsCommand implements TabExecutor {
                     case "leave":
                         new LeaveCommand().onCommand(sender, command, label, args);
                         break;
+                    case "help":
+                        new HelpCommand().onCommand(sender, command, label, args);
+                        break;
                     default:
                         break;
                 }
@@ -144,6 +148,7 @@ public class LandsCommand implements TabExecutor {
             subcommands.add("balance");
             subcommands.add("rename");
             subcommands.add("leave");
+            subcommands.add("help");
 
             return subcommands;
         } else if (args.length == 2) {
@@ -200,6 +205,8 @@ public class LandsCommand implements TabExecutor {
                     break;
                 case "leave":
                     arguments = LandsManager.listAllLandNames();
+                    break;
+                case "help":
                     break;
                 default:
                     break;

@@ -180,7 +180,7 @@ public class LandsManager {
     }
 
     public static boolean landNameExist(String land_name) {
-        String sql = "SELECT COUNT (*) AS count FROM lands WHERE land_name = ?";
+        String sql = "SELECT COUNT (*) AS count FROM lands WHERE land_name COLLATE NOCASE = ?";
         boolean exists = false;
 
         try {
@@ -336,7 +336,7 @@ public class LandsManager {
             }
         }
 
-        String sql = "SELECT * FROM lands WHERE land_name = ?";
+        String sql = "SELECT * FROM lands WHERE land_name COLLATE NOCASE = ?";
 
         try {
             Connection connection = RealmProtection.database.getConnection();

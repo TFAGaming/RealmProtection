@@ -279,6 +279,21 @@ messages:
       input_not_double_or_integer: "&cNot a valid integer or double."
       deposited_success: "&aYou deposited &6$%amount%&a, now your land got &6$%land_balance%&a!"
 
+    help:
+      stringlist:
+        # Note: Empty string OR "\n" = New line
+        - "&9Help | RealmProtection plugin"
+        - ""
+        - ""
+        - "&6The main command is: &7/lands [subcommand]"
+        - ""
+        - "&6Available sub commands: &7balance, claim, deposit, help, info, leave, nature, rename, roles, setspawn, spawn, trust, unclaim, untrust, view, withdraw"
+        - ""
+        - ""
+        - "&aCreated by TFAGaming" # You can remove my name, but it's good to keep the name of the original creator! :)
+        - ""
+        - "&aSource: https://github.com/TFAGaming/RealmProtection/"
+
     info:
       chunk_wilderness: "&cThis is wilderness, you must use this command inside a claimed chunk!"
       land_name_not_found: "&cThis land name doesn't exist."
