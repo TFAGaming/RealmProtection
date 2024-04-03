@@ -59,6 +59,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.projectiles.ProjectileSource;
 
 import realmprotection.managers.ChunksManager;
+import realmprotection.managers.LandBansManager;
 import realmprotection.managers.LandMembersManager;
 import realmprotection.managers.LandsManager;
 import realmprotection.managers.ParticleSpawner;
@@ -488,8 +489,9 @@ public class ChunksProtection implements Listener {
             String land_owner_name = LandsManager.getLandDetailById(new Integer(land_id), "owner_name");
 
             if (entity.getName().contains("Armor Stand")) {
-                if (damager instanceof Player && !damager.getName().equalsIgnoreCase(land_owner_name) && !LandMembersManager.hasPlayerThePermissionToDo(new Integer(land_id), damager.getName(),
-                        "breakblocks")) {
+                if (damager instanceof Player && !damager.getName().equalsIgnoreCase(land_owner_name)
+                        && !LandMembersManager.hasPlayerThePermissionToDo(new Integer(land_id), damager.getName(),
+                                "breakblocks")) {
                     event.setCancelled(true);
                     realmprotection.RealmProtection._sendMessageWithTimeout((Player) damager, "breakblocks");
 
@@ -1109,9 +1111,37 @@ public class ChunksProtection implements Listener {
             String land_id = ChunksManager.getChunkDetail(chunk, "land_id");
             String land_name = LandsManager.getLandDetailById(new Integer(land_id), "land_name");
 
+            if (LandBansManager.isPlayerBannedFromLand(new Integer(land_id), player.getName())) {
+                ChunksManager.findUnclaimedChunkPositionAndTeleportPlayer(player, new Integer(land_id));
+
+                boolean isclaimed = true;
+
+                while (isclaimed) {
+                    Chunk newchunk = player.getLocation().getChunk();
+
+                    if (ChunksManager.isChunkClaimed(newchunk)) {
+                        ChunksManager.findUnclaimedChunkPositionAndTeleportPlayer(player, new Integer(land_id));
+                    } else {
+                        isclaimed = false;
+                    }
+                }
+
+                String ban_reason = LandBansManager.getBanReason(new Integer(land_id), player.getName());
+
+                player.sendMessage(
+                        ColoredString.translate(
+                                LoadConfig.generalString("player_chunk_entry.claimed.player_banned").replace("%land%",
+                                        land_name).replace("%reason%", ban_reason)));
+
+                return;
+            }
+
+            String owner_name = LandsManager.getLandDetailById(new Integer(land_id), "owner_name");
+
             String title = LoadConfig.generalString("player_chunk_entry.claimed.title").replace("%land%",
                     land_name);
-            String subtitle = LoadConfig.generalString("player_chunk_entry.claimed.subtitle");
+            String subtitle = LoadConfig.generalString("player_chunk_entry.claimed.subtitle").replace("%owner%",
+                    owner_name);
 
             player.sendTitle(ColoredString.translate(title), ColoredString.translate(subtitle), 4, 60, 4);
 

@@ -13,7 +13,10 @@ import realmprotection.commands.subcommands.ViewCommand;
 import realmprotection.commands.subcommands.WithdrawCommand;
 import realmprotection.RealmProtection;
 import realmprotection.commands.subcommands.BalanceCommand;
+import realmprotection.commands.subcommands.BanCommand;
+import realmprotection.commands.subcommands.BanlistCommand;
 import realmprotection.commands.subcommands.ClaimCommand;
+import realmprotection.commands.subcommands.DeleteCommand;
 import realmprotection.commands.subcommands.DeleteRoleCommand;
 import realmprotection.commands.subcommands.DepositCommand;
 import realmprotection.commands.subcommands.HelpCommand;
@@ -25,11 +28,12 @@ import realmprotection.commands.subcommands.RenameRoleCommand;
 import realmprotection.commands.subcommands.SetSpawnCommand;
 import realmprotection.commands.subcommands.SpawnCommand;
 import realmprotection.commands.subcommands.TrustCommand;
+import realmprotection.commands.subcommands.UnbanCommand;
 import realmprotection.commands.subcommands.UnclaimCommand;
 import realmprotection.commands.subcommands.UntrustCommand;
 import realmprotection.commands.subcommands.UpdateNatureFlagsCommand;
 import realmprotection.commands.subcommands.UpdateRoleFlagsCommand;
-import realmprotection.managers.LandMembersManager;
+import realmprotection.managers.LandBansManager;
 import realmprotection.managers.LandsManager;
 import realmprotection.managers.RolesManager;
 import realmprotection.utils.ColoredString;
@@ -42,7 +46,8 @@ public class LandsCommand implements TabExecutor {
                 if (!sender.hasPermission("realmprotection.lands." + args[0])) {
                     RealmProtection plugin = RealmProtection.getPlugin(RealmProtection.class);
 
-                    sender.sendMessage(ColoredString.translate(plugin.getConfig().getString("messages.permissions.default")));
+                    sender.sendMessage(
+                            ColoredString.translate(plugin.getConfig().getString("messages.permissions.default")));
 
                     return true;
                 }
@@ -89,6 +94,18 @@ public class LandsCommand implements TabExecutor {
                         break;
                     case "help":
                         new HelpCommand().onCommand(sender, command, label, args);
+                        break;
+                    case "ban":
+                        new BanCommand().onCommand(sender, command, label, args);
+                        break;
+                    case "unban":
+                        new UnbanCommand().onCommand(sender, command, label, args);
+                        break;
+                    case "banlist":
+                        new BanlistCommand().onCommand(sender, command, label, args);
+                        break;
+                    case "delete":
+                        new DeleteCommand().onCommand(sender, command, label, args);
                         break;
                     default:
                         break;
@@ -149,6 +166,10 @@ public class LandsCommand implements TabExecutor {
             subcommands.add("rename");
             subcommands.add("leave");
             subcommands.add("help");
+            subcommands.add("ban");
+            subcommands.add("unban");
+            subcommands.add("banlist");
+            subcommands.add("delete");
 
             return subcommands;
         } else if (args.length == 2) {
@@ -184,15 +205,7 @@ public class LandsCommand implements TabExecutor {
                     arguments = playernames;
                     break;
                 case "untrust":
-                    if (LandsManager.hasLand(sender.getName())) {
-                        String land_id = LandsManager.getLandDetail(sender.getName(), "id");
-
-                        List<List<String>> alldata = LandMembersManager.listAllMembersData(new Integer(land_id));
-
-                        for (List<String> data : alldata) {
-                            arguments.add(data.get(0));
-                        }
-                    }
+                    arguments = getOnlinePlayersList();
 
                     break;
                 case "spawn":
@@ -207,6 +220,23 @@ public class LandsCommand implements TabExecutor {
                     arguments = LandsManager.listAllLandNames();
                     break;
                 case "help":
+                    break;
+                case "ban":
+                    arguments = getOnlinePlayersList();
+                    break;
+                case "unban":
+                    if (LandsManager.hasLand(sender.getName())) {
+                        String land_id = LandsManager.getLandDetail(sender.getName(), "id");
+
+                        List<List<String>> alldata = LandBansManager.listAllBannedPlayersData(new Integer(land_id));
+
+                        for (List<String> data : alldata) {
+                            arguments.add(data.get(0));
+                        }
+                    }
+
+                    break;
+                case "banlist":
                     break;
                 default:
                     break;
@@ -325,5 +355,18 @@ public class LandsCommand implements TabExecutor {
         }
 
         return null;
+    }
+
+    public List<String> getOnlinePlayersList() {
+        List<String> playernames = new ArrayList<>();
+        Player[] players = new Player[Bukkit.getServer().getOnlinePlayers().size()];
+
+        Bukkit.getServer().getOnlinePlayers().toArray(players);
+
+        for (int i = 0; i < players.length; i++) {
+            playernames.add(players[i].getName());
+        }
+
+        return playernames;
     }
 }

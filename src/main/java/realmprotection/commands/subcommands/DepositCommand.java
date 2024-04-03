@@ -7,7 +7,6 @@ import org.bukkit.entity.Player;
 
 import realmprotection.RealmProtection;
 import realmprotection.managers.LandsManager;
-import realmprotection.utils.ColoredString;
 import realmprotection.utils.LoadConfig;
 
 public class DepositCommand implements CommandExecutor {

@@ -9,6 +9,7 @@ import java.util.Map;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Color;
+import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.Particle.DustOptions;
 import org.bukkit.World;
@@ -104,6 +105,24 @@ public class ChunksManager {
         }
     }
 
+    public static void deleteAllChunksFromLand(Integer land_id) {
+        String sql = "DELETE FROM claimed_chunks WHERE land_id = ?";
+
+        try {
+            Connection connection = RealmProtection.database.getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql);
+
+            statement.setInt(1, land_id);
+
+            statement.executeUpdate();
+            statement.close();
+
+            cacheUpdateAll();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static boolean isChunkClaimed(Chunk chunk) {
         if (claimed_chunks_cache.containsKey(createCacheKey(chunk.getX(), chunk.getZ(), chunk.getWorld().getName()))) {
             return true;
@@ -169,13 +188,20 @@ public class ChunksManager {
             List<Object> data = claimed_chunks_cache.get(cacheKey);
 
             switch (variable) {
-                case "id": return "" + data.get(0);
-                case "chunk_x": return "" + data.get(1);
-                case "chunk_z": return "" + data.get(2);
-                case "chunk_world": return "" + data.get(3);
-                case "land_id": return "" + data.get(4);
-                case "created_at": return "" + data.get(5);
-                default: return null;
+                case "id":
+                    return "" + data.get(0);
+                case "chunk_x":
+                    return "" + data.get(1);
+                case "chunk_z":
+                    return "" + data.get(2);
+                case "chunk_world":
+                    return "" + data.get(3);
+                case "land_id":
+                    return "" + data.get(4);
+                case "created_at":
+                    return "" + data.get(5);
+                default:
+                    return null;
             }
         }
 
@@ -268,7 +294,49 @@ public class ChunksManager {
         return chunks;
     }
 
-    public static void spawnParticlesAroundChunk(Player player, Integer land_id, double y, boolean is_owner, boolean is_trusted) {
+    public static void findUnclaimedChunkPositionAndTeleportPlayer(Player player, Integer land_id) {
+        Chunk chunk = player.getLocation().getChunk();
+        World world = player.getWorld();
+        Integer chunkX = chunk.getX();
+        Integer chunkZ = chunk.getZ();
+        String chunkWorldName = chunk.getWorld().getName();
+
+        if (!player.getLocation().getWorld().getName().equals(chunkWorldName)) return;
+        
+        Chunk north = world.getChunkAt(chunkX, chunkZ - 1);
+        Chunk south = world.getChunkAt(chunkX, chunkZ + 1);
+        Chunk west = world.getChunkAt(chunkX - 1, chunkZ);
+        Chunk east = world.getChunkAt(chunkX + 1, chunkZ);
+
+        if (!ChunksManager.isChunkClaimed(north)) {
+            Location location = new Location(world, north.getX() * 16 + 8, 64, north.getZ() * 16 + 8);
+
+            location.setY(location.getWorld().getHighestBlockYAt(location) + 1);
+
+            player.teleport(location);
+        } else if (!ChunksManager.isChunkClaimed(south)) {
+            Location location = new Location(world, north.getX() * 16 + 8, 64, north.getZ() * 16 + 8);
+
+            location.setY(location.getWorld().getHighestBlockYAt(location) + 1);
+
+            player.teleport(location);
+        } else if (!ChunksManager.isChunkClaimed(west)) {
+            Location location = new Location(world, north.getX() * 16 + 8, 64, north.getZ() * 16 + 8);
+
+            location.setY(location.getWorld().getHighestBlockYAt(location) + 1);
+
+            player.teleport(location);
+        } else if (!ChunksManager.isChunkClaimed(east)) {
+            Location location = new Location(world, north.getX() * 16 + 8, 64, north.getZ() * 16 + 8);
+
+            location.setY(location.getWorld().getHighestBlockYAt(location) + 1);
+
+            player.teleport(location);
+        }
+    }
+
+    public static void spawnParticlesAroundChunk(Player player, Integer land_id, double y, boolean is_owner,
+            boolean is_trusted) {
         List<List<Object>> chunks = listChunksFromLandId(land_id);
 
         for (List<Object> chunk : chunks) {
@@ -279,10 +347,11 @@ public class ChunksManager {
             Integer minX = chunkX * 16;
             Integer minZ = chunkZ * 16;
 
-            if (!player.getLocation().getWorld().getName().equals(chunkWorldName)) continue;
+            if (!player.getLocation().getWorld().getName().equals(chunkWorldName))
+                continue;
 
             DustOptions dustoptions;
-            
+
             if (is_owner) {
                 dustoptions = new DustOptions(Color.fromRGB(0, 255, 0), 1.0F); // Green
             } else if (is_trusted) {
@@ -321,12 +390,14 @@ public class ChunksManager {
         }
     }
 
-    public static void startParticleTask(Player player, Integer land_id, double y, boolean is_owner, boolean is_trusted) {
+    public static void startParticleTask(Player player, Integer land_id, double y, boolean is_owner,
+            boolean is_trusted) {
         BukkitTask task = Bukkit.getScheduler().runTaskTimer(RealmProtection.getPlugin(RealmProtection.class), () -> {
             spawnParticlesAroundChunk(player, land_id, player.getLocation().getY() + y, is_owner, is_trusted);
-        }, 0L, 15L); 
+        }, 0L, 15L);
 
-        Bukkit.getScheduler().runTaskLater(RealmProtection.getPlugin(RealmProtection.class), () -> cancelParticleTask(task), 60 * 20L);
+        Bukkit.getScheduler().runTaskLater(RealmProtection.getPlugin(RealmProtection.class),
+                () -> cancelParticleTask(task), 60 * 20L);
     }
 
     public static void cancelParticleTask(BukkitTask task) {

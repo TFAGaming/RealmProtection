@@ -20,6 +20,12 @@ public class LoadConfig {
         return ColoredString.translate(final_string);
     }
 
+    public static String commandStringWithoutPrefix(String path) {
+        RealmProtection plugin = RealmProtection.getPlugin(RealmProtection.class);
+
+        return plugin.getConfig().getString("messages.commands." + path);
+    }
+
     public static List<String> commandStringList(String path) {
         RealmProtection plugin = RealmProtection.getPlugin(RealmProtection.class);
 

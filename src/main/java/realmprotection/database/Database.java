@@ -4,6 +4,10 @@ import java.sql.*;
 
 import realmprotection.RealmProtection;
 import realmprotection.managers.ChunksManager;
+import realmprotection.managers.LandBansManager;
+import realmprotection.managers.LandMembersManager;
+import realmprotection.managers.LandsManager;
+import realmprotection.managers.RolesManager;
 
 public class Database {
     private final String DATABASE_PATH;
@@ -105,7 +109,17 @@ public class Database {
                 "member_name TEXT NOT NULL," +
                 "role TEXT NOT NULL)");
 
+        statementExecute("CREATE TABLE IF NOT EXISTS land_bans (" +
+                "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "land_id INTEGER NOT NULL," +
+                "player_name INTEGER NOT NULL," +
+                "reason TEXT NOT NULL)");
+
         ChunksManager.cacheUpdateAll();
+        LandBansManager.cacheUpdateAll();
+        LandMembersManager.cacheUpdateAll();
+        LandsManager.cacheUpdateAll();
+        RolesManager.cacheUpdateAll();
     }
 
     public void statementExecute(String sql) throws SQLException {

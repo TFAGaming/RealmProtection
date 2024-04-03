@@ -16,6 +16,9 @@ permissions:
   realmprotection.lands.balance:
     description: "Allow a player to run the command: /lands balance"
     default: true
+  realmprotection.lands.ban:
+    description: "Allow a player to run the command: /lands ban"
+    default: true
   realmprotection.lands.claim:
     description: "Allow a player to run the command: /lands claim"
     default: true
@@ -45,6 +48,9 @@ permissions:
     default: true
   realmprotection.lands.trust:
     description: "Allow a player to run the command: /lands trust"
+    default: true
+  realmprotection.lands.unban:
+    description: "Allow a player to run the command: /lands unban"
     default: true
   realmprotection.lands.unclaim:
     description: "Allow a player to run the command: /lands unclaim"

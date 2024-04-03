@@ -56,10 +56,11 @@ messages:
     player_chunk_entry:
       claimed:
         title: "&9%land%"
-        subtitle: "&fYou have entered a claimed chunk"
+        subtitle: "&aOwned by: &6%owner%"
+        player_banned: "&cYou are banned from the land &6%land%&c with the reason: &7%reason%"
       unclaimed:
         title: "&2Wilderness"
-        subtitle: "&fRoam the wild!"
+        subtitle: "&aRoam the wild!"
   
   # GUIs configuration
   gui:
@@ -256,12 +257,35 @@ messages:
       land_not_found: "&cYou don't have a land!"
       balance_string: "&aYour land balance: &6$%land_balance%"
 
+    ban:
+      __DEFAULT_REASON__: "No reason was provided"
+      land_not_found: "&cYou don't have a land!"
+      no_playername_provided: "&cYou must provide a player name to ban!"
+      player_already_banned: "&cThis player is already been banned."
+      player_owner_of_land: "&cYou are the owner of the land."
+      player_banned_success: "&aSuccessfully banned &6%player% &afor: &7%reason%"
+
+    banlist:
+      land_not_found: "&cYou don't have a land!"
+      stringlist:
+        # Note: Empty string OR "\n" = New line
+        - "&9Banlist | &6%land%"
+        - ""
+        - ""
+        - "%repeatstylelist%"
+      repeatstyle: "&7- &6%player%&7: %reason%\n"
+
     claim:
       chunk_already_claimed: "&cThis chunk has already been claimed."
       missing_land_name: "&cYou must provide your new land name because you will create one with this chunk!"
       land_name_not_alphanumeric: "&cYour land name must be alphanumeric; Do not use colors or any other symbols."
       land_name_already_taken: "&cThis land name is already been taken, please choose another one."
       chunk_claimed_success: "&aYou have successfully claimed the chunk! &9%chunk_x%, %chunk_z%"
+
+    delete:
+      land_not_found: "&cYou don't have a land!"
+      confirm_missing: "&7You must confirm to continue..."
+      land_deleted_success: "&cYour land has been deleted, it is now &4vulnerable&c."
 
     delete_role:
       land_not_found: "&cYou don't have a land!"
@@ -350,6 +374,12 @@ messages:
       role_not_found: "&cThis role was not found in your land."
       player_cannot_have_default_role: "&cThe player cannot have a default (Visitor) role!"
       player_trusted_success: "&aYou trusted &6%player% &ato join the land!"
+
+    unban:
+      land_not_found: "&cYou don't have a land!"
+      no_playername_provided: "&cYou must provide a player name to ban!"
+      player_not_banned: "&cThis player is not banned."
+      player_unbanned_success: "&aSuccessfully unbanned &6%player%&a."
 
     unclaim:
       land_not_found: "&cYou don't have a land!"

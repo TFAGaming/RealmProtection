@@ -65,7 +65,7 @@ public class LandMembersManager {
     }
 
     public static void removePlayerFromLand(Integer land_id, String player_name) {
-        String sql = "DELETE FROM land_members WHERE land_id = ? AND member_name = ?";
+        String sql = "DELETE FROM land_members WHERE land_id = ? AND member_name COLLATE NOCASE = ?";
 
         try {
             Connection connection = RealmProtection.database.getConnection();
@@ -90,7 +90,7 @@ public class LandMembersManager {
             return (String) data.get(3);
         }
 
-        String sql = "SELECT * FROM land_members WHERE land_id = ? AND member_name = ?";
+        String sql = "SELECT * FROM land_members WHERE land_id = ? AND member_name COLLATE NOCASE = ?";
 
         try {
             Connection connection = RealmProtection.database.getConnection();
@@ -120,30 +120,32 @@ public class LandMembersManager {
         return land_id_and_member_name_cache.containsKey(land_id + "," + player_name);
 
         /*
-        String sql = "SELECT COUNT (*) AS count FROM land_members WHERE land_id = ? AND member_name = ?";
-        boolean exists = false;
-
-        try {
-            Connection connection = RealmProtection.database.getConnection();
-            PreparedStatement statement = connection.prepareStatement(sql);
-
-            statement.setInt(1, land_id);
-            statement.setString(2, player_name);
-
-            ResultSet rs = statement.executeQuery();
-
-            if (rs.next()) {
-                int count = rs.getInt("count");
-                exists = count > 0;
-            }
-
-            statement.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return exists;
-        */
+         * String sql =
+         * "SELECT COUNT (*) AS count FROM land_members WHERE land_id = ? AND member_name = ?"
+         * ;
+         * boolean exists = false;
+         * 
+         * try {
+         * Connection connection = RealmProtection.database.getConnection();
+         * PreparedStatement statement = connection.prepareStatement(sql);
+         * 
+         * statement.setInt(1, land_id);
+         * statement.setString(2, player_name);
+         * 
+         * ResultSet rs = statement.executeQuery();
+         * 
+         * if (rs.next()) {
+         * int count = rs.getInt("count");
+         * exists = count > 0;
+         * }
+         * 
+         * statement.close();
+         * } catch (SQLException e) {
+         * e.printStackTrace();
+         * }
+         * 
+         * return exists;
+         */
     }
 
     public static boolean hasPlayerThePermissionToDo(Integer land_id, String player_name, String permission_name) {
@@ -184,7 +186,7 @@ public class LandMembersManager {
 
                 data.add(Lists.newArrayList(member_name, role_name));
             }
-            
+
             statement.close();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -214,5 +216,23 @@ public class LandMembersManager {
         }
 
         return 0;
+    }
+
+    public static void deleteAllMembersFromLand(Integer land_id) {
+        String sql = "DELETE FROM land_members WHERE land_id = ?";
+
+        try {
+            Connection connection = RealmProtection.database.getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql);
+
+            statement.setInt(1, land_id);
+
+            statement.executeUpdate();
+            statement.close();
+
+            cacheUpdateAll();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }
