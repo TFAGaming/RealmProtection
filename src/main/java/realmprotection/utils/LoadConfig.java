@@ -74,6 +74,12 @@ public class LoadConfig {
         return plugin.getConfig().getStringList("land_roles.default." + path);
     }
 
+    public static List<String> landsStringList(String path) {
+        RealmProtection plugin = RealmProtection.getPlugin(RealmProtection.class);
+
+        return plugin.getConfig().getStringList("lands." + path);
+    }
+
     public static boolean isVaultPluginLoaded() {
         return RealmProtection.vaultapi_economy != null ? true : false;
     }

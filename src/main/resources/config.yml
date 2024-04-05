@@ -30,6 +30,19 @@ lands:
       vip: 10
       admin: 20
       owner: 50
+  border-colors:
+    visitor: # Default: Red (255, 0, 0)
+      - 255 # R
+      - 0 # G
+      - 0 # B
+    trusted: # Default: Yellow (255, 255, 0)
+      - 255 # R
+      - 255 # G
+      - 0 # B
+    owner: # Default: Green (0, 255, 0)
+      - 0 # R
+      - 255 # G
+      - 0 # B
 
 # The messages configuration
 messages:
@@ -112,6 +125,7 @@ messages:
         frostwalker: "DIAMOND_BOOTS"
         shearentities: "SHEARS"
         itemframes: "ITEM_FRAME"
+        generalinteractions: "STRING"
         fencegates: "OAK_FENCE_GATE"
         buttons: "STONE_BUTTON"
         levers: "LEVER"
@@ -156,53 +170,6 @@ messages:
         pistonsfromwilderness: "PISTON"
         plantgrowth: "OAK_SAPLING"
 
-    flags_description:
-      # Role flags
-      role_flags:
-        breakblocks: "Allow players to break blocks?"
-        placeblocks: "Allow players to place blocks?"
-        containers: "Allow players to open containers?"
-        redstone: "Allow players to configure redstone components?"
-        doors: "Allow players to use doors?"
-        trapdoors: "Allow players to trapdoors?"
-        editsigns: "Allow players to edit signs and hanging signs?"
-        emptybuckets: "Allow players to empty any bucket?"
-        fillbuckets: "Allow players to fill any bucket?"
-        harvestcrops: "Allow players to harvest crops?"
-        frostwalker: "Allow players to use Frost Walker boots?"
-        shearentities: "Allow players to shear entities?"
-        itemframes: "Allow players to spin items from item frames?"
-        fencegates: "Allow players to use fence gates?"
-        buttons: "Allow players to use buttons?"
-        levers: "Allow players to use levers?"
-        pressureplates: "Allow players to step on pressure plates?"
-        bells: "Allow players to use bells?"
-        tripwires: "Allow players to step on tripwires and triggers them?"
-        armorstands: "Allow players to interact with armor stands?"
-        teleporttospawn: "Allow players to visit your land?"
-        throwenderpearls: "Allow players to teleport using ender pearls?"
-        throwpotions: "Allow players to throw splash potions?"
-        damagehostilemobs: "Allow players to hit and kill hostile mobs?"
-        damagepassivemobs: "Allow players to hit and kill passive mobs?"
-        pvp: "Allow players to PvP each other?"
-        usecauldron: "Allow players to interact with cauldrons?"
-        pickupitems: "Allow players to drop and pick up items?"
-        useanvil: "Allow players to use anvils?"
-        createfire: "Allow players to start fire?"
-        usevehicles: "Allow players to ride minecarts and boats?"
-
-      # Nature flags
-      nature_flags:
-        hostilemobsspawn: "Allow any hostile mob to spawn?"
-        passivemobsspawn: "Allow any passive mob to spawn?"
-        leavesdecay: "Allow leaves to decay?"
-        firespread: "Allow fire to spread in your land?"
-        liquidflow: "Allow any external liquid to enter to your land?"
-        tntblockdamage: "Allow TNT damage blocks in your land?"
-        respawnanchorblockdamage: "Allow respawn anchors and beds (Nether) damage blocks in your land?"
-        pistonsfromwilderness: "Allow blocks to be pushed/pulled by pistons to/from your land?"
-        plantgrowth: "Allow any plant to grow in your land?"
-
     flags_displayname:
       # Role flags
       role_flags:
@@ -219,6 +186,7 @@ messages:
         frostwalker: "Frost Walker"
         shearentities: "Shear entities"
         itemframes: "Item frames"
+        generalinteractions: "General interactions"
         fencegates: "Fence gates"
         buttons: "Buttons"
         levers: "Levers"
@@ -250,6 +218,54 @@ messages:
         pistonsfromwilderness: "Wilderness pistons"
         plantgrowth: "Plant growth"
 
+    flags_description:
+      # Role flags
+      role_flags:
+        breakblocks: "Allow players to break blocks?"
+        placeblocks: "Allow players to place blocks?"
+        containers: "Allow players to open containers?"
+        redstone: "Allow players to configure redstone components?"
+        doors: "Allow players to use doors?"
+        trapdoors: "Allow players to trapdoors?"
+        editsigns: "Allow players to edit signs and hanging signs?"
+        emptybuckets: "Allow players to empty any bucket?"
+        fillbuckets: "Allow players to fill any bucket?"
+        harvestcrops: "Allow players to harvest crops?"
+        frostwalker: "Allow players to use Frost Walker boots?"
+        shearentities: "Allow players to shear entities?"
+        itemframes: "Allow players to take items from item frames?"
+        generalinteractions: "Allow players to interact with anything?"
+        fencegates: "Allow players to use fence gates?"
+        buttons: "Allow players to use buttons?"
+        levers: "Allow players to use levers?"
+        pressureplates: "Allow players to step on pressure plates?"
+        bells: "Allow players to use bells?"
+        tripwires: "Allow players to step on tripwires and triggers them?"
+        armorstands: "Allow players to interact with armor stands?"
+        teleporttospawn: "Allow players to visit your land?"
+        throwenderpearls: "Allow players to teleport using ender pearls?"
+        throwpotions: "Allow players to throw splash potions?"
+        damagehostilemobs: "Allow players to hit and kill hostile mobs?"
+        damagepassivemobs: "Allow players to hit and kill passive mobs?"
+        pvp: "Allow players to PvP each other?"
+        usecauldron: "Allow players to interact with cauldrons?"
+        pickupitems: "Allow players to drop and pick up items?"
+        useanvil: "Allow players to use anvils?"
+        createfire: "Allow players to start fire?"
+        usevehicles: "Allow players to ride minecarts and boats?"
+
+      # Nature flags
+      nature_flags:
+        hostilemobsspawn: "Allow any hostile mob to spawn?"
+        passivemobsspawn: "Allow any passive mob to spawn?"
+        leavesdecay: "Allow leaves to decay?"
+        firespread: "Allow fire to spread in your land?"
+        liquidflow: "Allow any external liquid to enter to your land?"
+        tntblockdamage: "Allow TNT damage blocks in your land?"
+        respawnanchorblockdamage: "Allow respawn anchors and beds (Nether) damage blocks in your land?"
+        pistonsfromwilderness: "Allow blocks to be pushed/pulled by pistons to/from your land?"
+        plantgrowth: "Allow any plant to grow in your land?"
+
   # Command messages
   commands:
     balance:
@@ -267,9 +283,10 @@ messages:
 
     banlist:
       land_not_found: "&cYou don't have a land!"
+      no_bans_found: "&aThere are currently no banned players!"
       stringlist:
         # Note: Empty string OR "\n" = New line
-        - "&9Banlist | &6%land%"
+        - "&cBanlist | Land: &6%land%"
         - ""
         - ""
         - "%repeatstylelist%"
@@ -309,9 +326,11 @@ messages:
         - "&9Help | RealmProtection plugin"
         - ""
         - ""
-        - "&6The main command is: &7/lands [subcommand]"
+        - "&6The main command: &7/lands [subcommand]"
         - ""
         - "&6Available sub commands: &7balance, claim, deposit, help, info, leave, nature, rename, roles, setspawn, spawn, trust, unclaim, untrust, view, withdraw"
+        - ""
+        - "&6Permissions: &7realmprotection.lands.[subcommand]"
         - ""
         - ""
         - "&aCreated by TFAGaming" # You can remove my name, but it's good to keep the name of the original creator! :)
@@ -349,7 +368,7 @@ messages:
       role_not_found: "&cThis role does not exist in the land!"
       role_name_not_alphanumeric: "&cThe role name must be alphanumeric; Do not use colors or any other symbols."
       missing_new_role_name: "&cYou must provide a new role name!"
-      role_update_success: "&aSuccessfully renamed &9%old% &ato &&9%new%&a!"
+      role_update_success: "&aSuccessfully renamed &9%old% &ato &9%new%&a!"
 
     set_spawn:
       land_not_found: "&cYou don't have a land!"
@@ -361,6 +380,7 @@ messages:
       missing_land_name: "&cYou must provide the land name!"
       land_name_not_found: "&cThis land name doesn't exist."
       missing_permissions_to_teleport: "&cYou do not have permission to teleport to %land_name%."
+      player_banned: "&cYou are banned from the land &6%land%&c with the reason: &7%reason%"
       location_not_safe: "&cThe location is not safe, it could be a trap."
       spawn_teleport_success: "&aTeleported to &6%land_name%&a: &9%x%, %y%, %z% &a(%world%)"
 
@@ -454,6 +474,7 @@ messages:
       frostwalker: "&cYou do not have permission to use frost walker boots here"
       shearentities: "&cYou do not have permission to shear sheeps here"
       itemframes: "&cYou do not have permission to interact with item frames here"
+      generalinteractions: "&cYou do not have permission to do any interaction here"
       fencegates: "&cYou do not have permission to use fence gates here"
       buttons: "&cYou do not have permission to use buttons here"
       levers: "&cYou do not have permission to use levers here"
@@ -480,6 +501,8 @@ land_roles:
       - "Visitor"
       - "Member"
 
+    __DEFAULT_VISITOR_ROLE__: "Visitor" # Important, and unchangeable role name
+
     permissions:
       # Permissions for the role: Visitor
       Visitor:
@@ -496,6 +519,7 @@ land_roles:
         - false # frostwalker
         - false # shearentities
         - false # itemframes
+        - false # generalinteractions
         - false # fencegates
         - false # buttons
         - false # levers
@@ -530,6 +554,7 @@ land_roles:
         - false # frostwalker
         - true # shearentities
         - true # itemframes
+        - true # generalinteractions
         - true # fencegates
         - true # buttons
         - true # levers
@@ -564,6 +589,7 @@ land_roles:
         - false # frostwalker
         - false # shearentities
         - false # itemframes
+        - false # generalinteractions
         - false # fencegates
         - false # buttons
         - false # levers

@@ -84,6 +84,7 @@ public class Database {
                 "permissions_frostwalker BOOLEAN NOT NULL," +
                 "permissions_shearentities BOOLEAN NOT NULL," +
                 "permissions_itemframes BOOLEAN NOT NULL," +
+                "permissions_generalinteractions BOOLEAN NOT NULL," +
                 "permissions_fencegates BOOLEAN NOT NULL," +
                 "permissions_buttons BOOLEAN NOT NULL," +
                 "permissions_levers BOOLEAN NOT NULL," +

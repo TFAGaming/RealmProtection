@@ -52,6 +52,7 @@ public class RolesManager {
                 boolean permissions_frostwalker = result.getBoolean("permissions_frostwalker");
                 boolean permissions_shearentities = result.getBoolean("permissions_shearentities");
                 boolean permissions_itemframes = result.getBoolean("permissions_itemframes");
+                boolean permissions_generalinteractions = result.getBoolean("permissions_generalinteractions");
                 boolean permissions_fencegates = result.getBoolean("permissions_fencegates");
                 boolean permissions_buttons = result.getBoolean("permissions_buttons");
                 boolean permissions_levers = result.getBoolean("permissions_levers");
@@ -86,6 +87,7 @@ public class RolesManager {
                         permissions_frostwalker,
                         permissions_shearentities,
                         permissions_itemframes,
+                        permissions_generalinteractions,
                         permissions_fencegates,
                         permissions_buttons,
                         permissions_levers,
@@ -134,6 +136,7 @@ public class RolesManager {
                 "permissions_frostwalker, " +
                 "permissions_shearentities, " +
                 "permissions_itemframes, " +
+                "permissions_generalinteractions, " + 
                 "permissions_fencegates, " +
                 "permissions_buttons, " +
                 "permissions_levers, " +
@@ -152,7 +155,7 @@ public class RolesManager {
                 "permissions_useanvil, " +
                 "permissions_createfire, " +
                 "permissions_usevehicles) " +
-                "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
         try {
             Connection connection = RealmProtection.database.getConnection();
@@ -164,13 +167,13 @@ public class RolesManager {
             statement.setString(2, role_name);
 
             if (datapermissions.size() > 0) {
-                for (int i = 3; i < 34; i++) {
+                for (int i = 3; i < 35; i++) {
                     statement.setBoolean(i, datapermissions.get(i - 3));
                 }
             } else {
                 datapermissions = LoadConfig.landRolesDefaultBooleanList("permissions.__default__");
 
-                for (int i = 3; i < 34; i++) {
+                for (int i = 3; i < 35; i++) {
                     statement.setBoolean(i, datapermissions.get(i - 3));
                 }
             }
@@ -346,42 +349,44 @@ public class RolesManager {
                     return data.get(11);
                 case "permissions_itemframes":
                     return data.get(12);
-                case "permissions_fencegates":
+                case "permissions_generalinteractions":
                     return data.get(13);
-                case "permissions_buttons":
+                case "permissions_fencegates":
                     return data.get(14);
-                case "permissions_levers":
+                case "permissions_buttons":
                     return data.get(15);
-                case "permissions_pressureplates":
+                case "permissions_levers":
                     return data.get(16);
-                case "permissions_bells":
+                case "permissions_pressureplates":
                     return data.get(17);
-                case "permissions_tripwires":
+                case "permissions_bells":
                     return data.get(18);
-                case "permissions_armorstands":
+                case "permissions_tripwires":
                     return data.get(19);
-                case "permissions_teleporttospawn":
+                case "permissions_armorstands":
                     return data.get(20);
-                case "permissions_throwenderpearls":
+                case "permissions_teleporttospawn":
                     return data.get(21);
-                case "permissions_throwpotions":
+                case "permissions_throwenderpearls":
                     return data.get(22);
-                case "permissions_damagehostilemobs":
+                case "permissions_throwpotions":
                     return data.get(23);
-                case "permissions_damagepassivemobs":
+                case "permissions_damagehostilemobs":
                     return data.get(24);
-                case "permissions_pvp":
+                case "permissions_damagepassivemobs":
                     return data.get(25);
-                case "permissions_usecauldron":
+                case "permissions_pvp":
                     return data.get(26);
-                case "permissions_pickupitems":
+                case "permissions_usecauldron":
                     return data.get(27);
-                case "permissions_useanvil":
+                case "permissions_pickupitems":
                     return data.get(28);
-                case "permissions_createfire":
+                case "permissions_useanvil":
                     return data.get(29);
-                case "permissions_usevehicles":
+                case "permissions_createfire":
                     return data.get(30);
+                case "permissions_usevehicles":
+                    return data.get(31);
                 default:
                     return false;
             }
@@ -515,6 +520,7 @@ public class RolesManager {
                 allflags.add(Lists.newArrayList("frostwalker", result.getBoolean("permissions_frostwalker")));
                 allflags.add(Lists.newArrayList("shearentities", result.getBoolean("permissions_shearentities")));
                 allflags.add(Lists.newArrayList("itemframes", result.getBoolean("permissions_itemframes")));
+                allflags.add(Lists.newArrayList("generalinteractions", result.getBoolean("permissions_generalinteractions")));
                 allflags.add(Lists.newArrayList("fencegates", result.getBoolean("permissions_fencegates")));
                 allflags.add(Lists.newArrayList("buttons", result.getBoolean("permissions_buttons")));
                 allflags.add(Lists.newArrayList("levers", result.getBoolean("permissions_levers")));

@@ -238,6 +238,9 @@ public class LandsCommand implements TabExecutor {
                     break;
                 case "banlist":
                     break;
+                case "delete":
+                    arguments.add("confirm");
+                    break;
                 default:
                     break;
             }
@@ -314,6 +317,7 @@ public class LandsCommand implements TabExecutor {
             arguments.add("frostwalker");
             arguments.add("shearentities");
             arguments.add("itemframes");
+            arguments.add("generalinteractions");
             arguments.add("fencegates");
             arguments.add("buttons");
             arguments.add("levers");

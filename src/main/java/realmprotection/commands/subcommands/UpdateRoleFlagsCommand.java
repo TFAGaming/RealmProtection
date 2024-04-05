@@ -52,6 +52,7 @@ public class UpdateRoleFlagsCommand implements CommandExecutor {
                     listofflags.add("frostwalker");
                     listofflags.add("shearentities");
                     listofflags.add("itemframes");
+                    listofflags.add("generalinteractions");
                     listofflags.add("fencegates");
                     listofflags.add("buttons");
                     listofflags.add("levers");

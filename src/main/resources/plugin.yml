@@ -19,6 +19,9 @@ permissions:
   realmprotection.lands.ban:
     description: "Allow a player to run the command: /lands ban"
     default: true
+  realmprotection.lands.banlist:
+    description: "Allow a player to run the command: /lands banlist"
+    default: true
   realmprotection.lands.claim:
     description: "Allow a player to run the command: /lands claim"
     default: true

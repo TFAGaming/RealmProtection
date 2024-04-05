@@ -19,6 +19,7 @@ import org.bukkit.scheduler.BukkitTask;
 import com.google.common.collect.Lists;
 
 import realmprotection.RealmProtection;
+import realmprotection.utils.LoadConfig;
 
 public class ChunksManager {
     private static final Map<String, List<Object>> claimed_chunks_cache = new HashMap<>();
@@ -353,11 +354,17 @@ public class ChunksManager {
             DustOptions dustoptions;
 
             if (is_owner) {
-                dustoptions = new DustOptions(Color.fromRGB(0, 255, 0), 1.0F); // Green
+                List<String> bordercolor = LoadConfig.landsStringList("border-colors.owner");
+
+                dustoptions = new DustOptions(Color.fromRGB(new Integer(bordercolor.get(0)), new Integer(bordercolor.get(1)), new Integer(bordercolor.get(2))), 1.0F);
             } else if (is_trusted) {
-                dustoptions = new DustOptions(Color.fromRGB(255, 255, 0), 1.0F); // Yellow
+                List<String> bordercolor = LoadConfig.landsStringList("border-colors.trusted");
+
+                dustoptions = new DustOptions(Color.fromRGB(new Integer(bordercolor.get(0)), new Integer(bordercolor.get(1)), new Integer(bordercolor.get(2))), 1.0F);
             } else {
-                dustoptions = new DustOptions(Color.fromRGB(255, 0, 0), 1.0F); // Red
+                List<String> bordercolor = LoadConfig.landsStringList("border-colors.visitor");
+
+                dustoptions = new DustOptions(Color.fromRGB(new Integer(bordercolor.get(0)), new Integer(bordercolor.get(1)), new Integer(bordercolor.get(2))), 1.0F);
             }
 
             Chunk north = world.getChunkAt(chunkX, chunkZ - 1);

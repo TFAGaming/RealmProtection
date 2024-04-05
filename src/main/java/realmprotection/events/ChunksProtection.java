@@ -15,6 +15,7 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Animals;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Creeper;
+import org.bukkit.entity.EnderCrystal;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Fireball;
@@ -42,6 +43,7 @@ import org.bukkit.event.block.LeavesDecayEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
+import org.bukkit.event.entity.PlayerLeashEntityEvent;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.event.hanging.HangingBreakByEntityEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
@@ -85,7 +87,7 @@ public class ChunksProtection implements Listener {
                     .hasPlayerThePermissionToDo(new Integer(land_id), player.getName(), "placeblocks")) {
                 event.setCancelled(true);
 
-                realmprotection.RealmProtection._sendMessageWithTimeout(player, "placeblocks");
+                realmprotection.RealmProtection._sendMessageWithTimeout(player, "placeblocks", chunk);
 
                 new ParticleSpawner().spawnTemporaryParticle(chunk.getWorld(), event.getBlock().getX() + 0.5,
                         event.getBlock().getY() + 1, event.getBlock().getZ() + 0.5, 0, 0, 0, 0, 0);
@@ -110,7 +112,7 @@ public class ChunksProtection implements Listener {
             if (!player.getName().equalsIgnoreCase(land_owner_name) && !LandMembersManager
                     .hasPlayerThePermissionToDo(new Integer(land_id), player.getName(), "breakblocks")) {
                 event.setCancelled(true);
-                realmprotection.RealmProtection._sendMessageWithTimeout(player, "breakblocks");
+                realmprotection.RealmProtection._sendMessageWithTimeout(player, "breakblocks", chunk);
 
                 new ParticleSpawner().spawnTemporaryParticle(chunk.getWorld(), event.getBlock().getX() + 0.5,
                         event.getBlock().getY() + 1, event.getBlock().getZ() + 0.5, 0, 0, 0, 0, 0);
@@ -121,12 +123,13 @@ public class ChunksProtection implements Listener {
     // Containers
     @EventHandler
     public void onInventoryOpen(InventoryOpenEvent event) {
-        if (event.getInventory().getHolder() instanceof org.bukkit.block.Chest
-                || event.getInventory().getHolder() instanceof org.bukkit.block.DoubleChest
+        if (event.getInventory().getType().name().contains("CHEST")
                 || event.getInventory().getHolder() instanceof org.bukkit.block.Barrel
                 || event.getInventory().getHolder() instanceof org.bukkit.block.Furnace
                 || event.getInventory().getHolder() instanceof org.bukkit.block.BrewingStand
                 || event.getInventory().getHolder() instanceof org.bukkit.block.Hopper
+                || event.getInventory().getHolder() instanceof org.bukkit.block.Dispenser
+                || event.getInventory().getHolder() instanceof org.bukkit.block.Dropper
                 || event.getInventory().getHolder() instanceof org.bukkit.block.ShulkerBox
                 || event.getInventory().getHolder() instanceof org.bukkit.block.BlastFurnace
                 || event.getInventory().getHolder() instanceof org.bukkit.block.Smoker
@@ -143,7 +146,7 @@ public class ChunksProtection implements Listener {
                                 player.getName(),
                                 "containers")) {
                     event.setCancelled(true);
-                    realmprotection.RealmProtection._sendMessageWithTimeout(player, "containers");
+                    realmprotection.RealmProtection._sendMessageWithTimeout(player, "containers", chunk);
                 }
             }
         } else if (event.getInventory().getType().name().contains("ANVIL")) {
@@ -159,7 +162,7 @@ public class ChunksProtection implements Listener {
                                 player.getName(),
                                 "useanvil")) {
                     event.setCancelled(true);
-                    realmprotection.RealmProtection._sendMessageWithTimeout(player, "useanvil");
+                    realmprotection.RealmProtection._sendMessageWithTimeout(player, "useanvil", chunk);
                 }
             }
         }
@@ -198,7 +201,7 @@ public class ChunksProtection implements Listener {
                     && !LandMembersManager.hasPlayerThePermissionToDo(new Integer(land_id), player.getName(),
                             "emptybuckets")) {
                 event.setCancelled(true);
-                realmprotection.RealmProtection._sendMessageWithTimeout(player, "emptybuckets");
+                realmprotection.RealmProtection._sendMessageWithTimeout(player, "emptybuckets", chunk);
 
                 new ParticleSpawner().spawnTemporaryParticle(chunk.getWorld(), event.getBlock().getX() + 0.5,
                         event.getBlock().getY() + 1, event.getBlock().getZ() + 0.5, 0, 0, 0, 0, 0);
@@ -219,7 +222,7 @@ public class ChunksProtection implements Listener {
             if (!player.getName().equalsIgnoreCase(land_owner_name) && !LandMembersManager
                     .hasPlayerThePermissionToDo(new Integer(land_id), player.getName(), "fillbuckets")) {
                 event.setCancelled(true);
-                realmprotection.RealmProtection._sendMessageWithTimeout(player, "fillbuckets");
+                realmprotection.RealmProtection._sendMessageWithTimeout(player, "fillbuckets", chunk);
 
                 new ParticleSpawner().spawnTemporaryParticle(chunk.getWorld(), event.getBlock().getX() + 0.5,
                         event.getBlock().getY() + 1, event.getBlock().getZ() + 0.5, 0, 0, 0, 0, 0);
@@ -231,11 +234,12 @@ public class ChunksProtection implements Listener {
     @EventHandler
     public void onBreakCrop(PlayerInteractEvent event) {
         Player player = event.getPlayer();
-        Chunk chunk = player.getLocation().getChunk();
         Block clickedBlock = event.getClickedBlock();
 
         if (event.getAction() == Action.PHYSICAL) {
-            if (clickedBlock.getType() == Material.FARMLAND) {
+            if (clickedBlock != null && clickedBlock.getType() == Material.FARMLAND) {
+                Chunk chunk = event.getClickedBlock().getLocation().getChunk();
+
                 if (ChunksManager.isChunkClaimed(chunk)) {
                     String land_id = ChunksManager.getChunkDetail(chunk, "land_id");
                     String land_owner_name = LandsManager.getLandDetailById(new Integer(land_id), "owner_name");
@@ -244,7 +248,7 @@ public class ChunksProtection implements Listener {
                             && !LandMembersManager.hasPlayerThePermissionToDo(new Integer(land_id), player.getName(),
                                     "harvestcrops")) {
                         event.setCancelled(true);
-                        realmprotection.RealmProtection._sendMessageWithTimeout(player, "harvestcrops");
+                        realmprotection.RealmProtection._sendMessageWithTimeout(player, "harvestcrops", chunk);
 
                         new ParticleSpawner().spawnTemporaryParticle(chunk.getWorld(),
                                 event.getClickedBlock().getX() + 0.5,
@@ -254,6 +258,8 @@ public class ChunksProtection implements Listener {
                 }
             }
         } else if (clickedBlock != null && _isCropBlock(clickedBlock)) {
+            Chunk chunk = event.getClickedBlock().getLocation().getChunk();
+
             if (ChunksManager.isChunkClaimed(chunk)) {
                 String land_id = ChunksManager.getChunkDetail(chunk, "land_id");
                 String land_owner_name = LandsManager.getLandDetailById(new Integer(land_id), "owner_name");
@@ -262,7 +268,7 @@ public class ChunksProtection implements Listener {
                         && !LandMembersManager.hasPlayerThePermissionToDo(new Integer(land_id), player.getName(),
                                 "harvestcrops")) {
                     event.setCancelled(true);
-                    realmprotection.RealmProtection._sendMessageWithTimeout(player, "harvestcrops");
+                    realmprotection.RealmProtection._sendMessageWithTimeout(player, "harvestcrops", chunk);
 
                     new ParticleSpawner().spawnTemporaryParticle(chunk.getWorld(), event.getClickedBlock().getX() + 0.5,
                             event.getClickedBlock().getY() + 1, event.getClickedBlock().getZ() + 0.5, 0, 0, 0, 0, 0);
@@ -298,7 +304,7 @@ public class ChunksProtection implements Listener {
                             && !LandMembersManager.hasPlayerThePermissionToDo(new Integer(land_id), player.getName(),
                                     "frostwalker")) {
                         event.setCancelled(true);
-                        realmprotection.RealmProtection._sendMessageWithTimeout(player, "frostwalker");
+                        realmprotection.RealmProtection._sendMessageWithTimeout(player, "frostwalker", chunk);
 
                         new ParticleSpawner().spawnTemporaryParticle(chunk.getWorld(), event.getBlock().getX() + 0.5,
                                 event.getBlock().getY() + 1, event.getBlock().getZ() + 0.5, 0, 0, 0, 0, 0);
@@ -312,7 +318,8 @@ public class ChunksProtection implements Listener {
     @EventHandler
     public void onEntityExplode(EntityExplodeEvent event) {
         if (event.getEntity() instanceof TNTPrimed || event.getEntity() instanceof Creeper
-                || event.getEntity() instanceof Fireball) {
+                || event.getEntity() instanceof Fireball || event.getEntity() instanceof EnderCrystal
+                || event.getEntity().getType() == EntityType.MINECART_TNT) {
             Chunk explosionChunk = event.getLocation().getChunk();
 
             if (ChunksManager.isChunkClaimed(explosionChunk)) {
@@ -381,7 +388,7 @@ public class ChunksProtection implements Listener {
 
             if (!player.getName().equalsIgnoreCase(land_owner_name) && !LandMembersManager
                     .hasPlayerThePermissionToDo(new Integer(land_id), player.getName(), "shearentities")) {
-                realmprotection.RealmProtection._sendMessageWithTimeout(player, "shearentities");
+                realmprotection.RealmProtection._sendMessageWithTimeout(player, "shearentities", chunk);
                 event.setCancelled(true);
             }
         }
@@ -426,7 +433,7 @@ public class ChunksProtection implements Listener {
             if (!player.getName().equalsIgnoreCase(land_owner_name) && !LandMembersManager
                     .hasPlayerThePermissionToDo(new Integer(land_id), player.getName(), "createfire")) {
                 event.setCancelled(true);
-                realmprotection.RealmProtection._sendMessageWithTimeout(player, "createfire");
+                realmprotection.RealmProtection._sendMessageWithTimeout(player, "createfire", chunk);
 
                 new ParticleSpawner().spawnTemporaryParticle(chunk.getWorld(), event.getBlock().getX() + 0.5,
                         event.getBlock().getY() + 1, event.getBlock().getZ() + 0.5, 0, 0, 0, 0, 0);
@@ -482,8 +489,6 @@ public class ChunksProtection implements Listener {
         Entity damager = event.getDamager();
         Chunk chunk = entity.getLocation().getChunk();
 
-        System.out.println(entity.getName());
-
         if (ChunksManager.isChunkClaimed(chunk)) {
             String land_id = ChunksManager.getChunkDetail(chunk, "land_id");
             String land_owner_name = LandsManager.getLandDetailById(new Integer(land_id), "owner_name");
@@ -493,7 +498,7 @@ public class ChunksProtection implements Listener {
                         && !LandMembersManager.hasPlayerThePermissionToDo(new Integer(land_id), damager.getName(),
                                 "breakblocks")) {
                     event.setCancelled(true);
-                    realmprotection.RealmProtection._sendMessageWithTimeout((Player) damager, "breakblocks");
+                    realmprotection.RealmProtection._sendMessageWithTimeout((Player) damager, "breakblocks", chunk);
 
                     return;
                 }
@@ -501,7 +506,7 @@ public class ChunksProtection implements Listener {
                 if (!LandMembersManager.hasPlayerThePermissionToDo(new Integer(land_id), damager.getName(),
                         "pvp")) {
                     event.setCancelled(true);
-                    realmprotection.RealmProtection._sendMessageWithTimeout((Player) damager, "pvp");
+                    realmprotection.RealmProtection._sendMessageWithTimeout((Player) damager, "pvp", chunk);
 
                     return;
                 }
@@ -510,7 +515,8 @@ public class ChunksProtection implements Listener {
                         && !LandMembersManager.hasPlayerThePermissionToDo(new Integer(land_id), damager.getName(),
                                 "damagehostilemobs")) {
                     event.setCancelled(true);
-                    realmprotection.RealmProtection._sendMessageWithTimeout((Player) damager, "damagehostilemobs");
+                    realmprotection.RealmProtection._sendMessageWithTimeout((Player) damager, "damagehostilemobs",
+                            chunk);
 
                     return;
                 }
@@ -519,15 +525,20 @@ public class ChunksProtection implements Listener {
                         && !LandMembersManager.hasPlayerThePermissionToDo(new Integer(land_id), damager.getName(),
                                 "damagepassivemobs")) {
                     event.setCancelled(true);
-                    realmprotection.RealmProtection._sendMessageWithTimeout((Player) damager, "damagepassivemobs");
+                    realmprotection.RealmProtection._sendMessageWithTimeout((Player) damager, "damagepassivemobs",
+                            chunk);
 
                     return;
                 }
-            } else if (damager instanceof Creeper || damager instanceof TNTPrimed) {
-                event.setCancelled(true);
-                return;
+            } else if (damager instanceof Creeper || damager instanceof TNTPrimed || damager instanceof Fireball
+                    || damager instanceof EnderCrystal || damager.getType() == EntityType.MINECART_TNT) {
+                if (!LandsManager.getFlagValue(new Integer(land_id), "tntblockdamage")) {
+                    event.setCancelled(true);
+                    return;
+                }
             }
         }
+
     }
 
     // Pistons
@@ -638,6 +649,7 @@ public class ChunksProtection implements Listener {
         if (ChunksManager.isChunkClaimed(chunk)) {
             if (event.getItem() != null) {
                 if (event.getItem().getType().name().contains("BOAT")
+                        || event.getItem().getType().name().contains("ARMOR_STAND")
                         || event.getItem().getType().name().contains("MINECART")
                         || event.getItem().getType().name().contains("PAINTING")) {
                     String land_id = ChunksManager.getChunkDetail(chunk, "land_id");
@@ -647,7 +659,7 @@ public class ChunksProtection implements Listener {
                             && !LandMembersManager.hasPlayerThePermissionToDo(new Integer(land_id), player.getName(),
                                     "placeblocks")) {
                         event.setCancelled(true);
-                        realmprotection.RealmProtection._sendMessageWithTimeout(player, "placeblocks");
+                        realmprotection.RealmProtection._sendMessageWithTimeout(player, "placeblocks", chunk);
 
                         return;
                     }
@@ -667,7 +679,7 @@ public class ChunksProtection implements Listener {
                             && !LandMembersManager.hasPlayerThePermissionToDo(new Integer(land_id), player.getName(),
                                     "trapdoors")) {
                         event.setCancelled(true);
-                        realmprotection.RealmProtection._sendMessageWithTimeout(player, "trapdoors");
+                        realmprotection.RealmProtection._sendMessageWithTimeout(player, "trapdoors", chunk);
 
                         spawn_particle = true;
                     }
@@ -676,7 +688,7 @@ public class ChunksProtection implements Listener {
                             && !LandMembersManager.hasPlayerThePermissionToDo(new Integer(land_id), player.getName(),
                                     "doors")) {
                         event.setCancelled(true);
-                        realmprotection.RealmProtection._sendMessageWithTimeout(player, "doors");
+                        realmprotection.RealmProtection._sendMessageWithTimeout(player, "doors", chunk);
 
                         spawn_particle = true;
                     }
@@ -685,7 +697,7 @@ public class ChunksProtection implements Listener {
                             && !LandMembersManager.hasPlayerThePermissionToDo(new Integer(land_id), player.getName(),
                                     "editsigns")) {
                         event.setCancelled(true);
-                        realmprotection.RealmProtection._sendMessageWithTimeout(player, "editsigns");
+                        realmprotection.RealmProtection._sendMessageWithTimeout(player, "editsigns", chunk);
 
                         spawn_particle = true;
                     }
@@ -694,7 +706,7 @@ public class ChunksProtection implements Listener {
                             && !LandMembersManager.hasPlayerThePermissionToDo(new Integer(land_id), player.getName(),
                                     "buttons")) {
                         event.setCancelled(true);
-                        realmprotection.RealmProtection._sendMessageWithTimeout(player, "buttons");
+                        realmprotection.RealmProtection._sendMessageWithTimeout(player, "buttons", chunk);
 
                         spawn_particle = true;
                     }
@@ -703,7 +715,20 @@ public class ChunksProtection implements Listener {
                             && !LandMembersManager.hasPlayerThePermissionToDo(new Integer(land_id), player.getName(),
                                     "fencegates")) {
                         event.setCancelled(true);
-                        realmprotection.RealmProtection._sendMessageWithTimeout(player, "fencegates");
+                        realmprotection.RealmProtection._sendMessageWithTimeout(player, "fencegates", chunk);
+
+                        spawn_particle = true;
+                    }
+                } else if (material.name().contains("POT")
+                        || material.name().contains("CANDLE")
+                        || material.equals(Material.CAKE)
+                        || material.equals(Material.DAYLIGHT_DETECTOR)
+                        || material.equals(Material.CHISELED_BOOKSHELF)) {
+                    if (!player.getName().equalsIgnoreCase(land_owner_name)
+                            && !LandMembersManager.hasPlayerThePermissionToDo(new Integer(land_id), player.getName(),
+                                    "generalinteractions")) {
+                        event.setCancelled(true);
+                        realmprotection.RealmProtection._sendMessageWithTimeout(player, "generalinteractions", chunk);
 
                         spawn_particle = true;
                     }
@@ -712,7 +737,7 @@ public class ChunksProtection implements Listener {
                             && !LandMembersManager.hasPlayerThePermissionToDo(new Integer(land_id), player.getName(),
                                     "levers")) {
                         event.setCancelled(true);
-                        realmprotection.RealmProtection._sendMessageWithTimeout(player, "levers");
+                        realmprotection.RealmProtection._sendMessageWithTimeout(player, "levers", chunk);
 
                         spawn_particle = true;
                     }
@@ -723,7 +748,7 @@ public class ChunksProtection implements Listener {
                             && !LandMembersManager.hasPlayerThePermissionToDo(new Integer(land_id), player.getName(),
                                     "redstone")) {
                         event.setCancelled(true);
-                        realmprotection.RealmProtection._sendMessageWithTimeout(player, "redstone");
+                        realmprotection.RealmProtection._sendMessageWithTimeout(player, "redstone", chunk);
 
                         spawn_particle = true;
                     }
@@ -732,7 +757,7 @@ public class ChunksProtection implements Listener {
                             && !LandMembersManager.hasPlayerThePermissionToDo(new Integer(land_id), player.getName(),
                                     "bells")) {
                         event.setCancelled(true);
-                        realmprotection.RealmProtection._sendMessageWithTimeout(player, "bells");
+                        realmprotection.RealmProtection._sendMessageWithTimeout(player, "bells", chunk);
 
                         spawn_particle = true;
                     }
@@ -742,7 +767,7 @@ public class ChunksProtection implements Listener {
                             && !LandMembersManager.hasPlayerThePermissionToDo(new Integer(land_id), player.getName(),
                                     "usecauldron")) {
                         event.setCancelled(true);
-                        realmprotection.RealmProtection._sendMessageWithTimeout(player, "usecauldron");
+                        realmprotection.RealmProtection._sendMessageWithTimeout(player, "usecauldron", chunk);
 
                         spawn_particle = true;
                     }
@@ -763,7 +788,7 @@ public class ChunksProtection implements Listener {
                                         player.getName(),
                                         "pressureplates")) {
                             event.setCancelled(true);
-                            realmprotection.RealmProtection._sendMessageWithTimeout(player, "pressureplates");
+                            realmprotection.RealmProtection._sendMessageWithTimeout(player, "pressureplates", chunk);
 
                             new ParticleSpawner().spawnTemporaryParticle(chunk.getWorld(),
                                     event.getClickedBlock().getX() + 0.5,
@@ -781,7 +806,7 @@ public class ChunksProtection implements Listener {
                                             player.getName(),
                                             "tripwires")) {
                                 event.setCancelled(true);
-                                realmprotection.RealmProtection._sendMessageWithTimeout(player, "tripwires");
+                                realmprotection.RealmProtection._sendMessageWithTimeout(player, "tripwires", chunk);
 
                                 new ParticleSpawner().spawnTemporaryParticle(chunk.getWorld(),
                                         event.getClickedBlock().getX() + 0.5,
@@ -815,7 +840,7 @@ public class ChunksProtection implements Listener {
                             && !LandMembersManager.hasPlayerThePermissionToDo(new Integer(land_id), player.getName(),
                                     "throwenderpearls")) {
                         event.setCancelled(true);
-                        realmprotection.RealmProtection._sendMessageWithTimeout(player, "throwenderpearls");
+                        realmprotection.RealmProtection._sendMessageWithTimeout(player, "throwenderpearls", chunk);
 
                         return;
                     }
@@ -830,7 +855,7 @@ public class ChunksProtection implements Listener {
                             && !LandMembersManager.hasPlayerThePermissionToDo(new Integer(land_id), player.getName(),
                                     "throwpotions")) {
                         event.setCancelled(true);
-                        realmprotection.RealmProtection._sendMessageWithTimeout(player, "throwpotions");
+                        realmprotection.RealmProtection._sendMessageWithTimeout(player, "throwpotions", chunk);
 
                         return;
                     }
@@ -854,7 +879,7 @@ public class ChunksProtection implements Listener {
                         && !LandMembersManager.hasPlayerThePermissionToDo(new Integer(land_id), player.getName(),
                                 "armorstands")) {
                     event.setCancelled(true);
-                    realmprotection.RealmProtection._sendMessageWithTimeout(player, "armorstands");
+                    realmprotection.RealmProtection._sendMessageWithTimeout(player, "armorstands", chunk);
 
                     return;
                 }
@@ -877,7 +902,7 @@ public class ChunksProtection implements Listener {
                     && !LandMembersManager.hasPlayerThePermissionToDo(new Integer(land_id), ((Player) source).getName(),
                             "pvp")) {
                 event.setCancelled(true);
-                realmprotection.RealmProtection._sendMessageWithTimeout((Player) source, "pvp");
+                realmprotection.RealmProtection._sendMessageWithTimeout((Player) source, "pvp", chunk);
 
                 return;
             }
@@ -899,9 +924,9 @@ public class ChunksProtection implements Listener {
 
                 if (!player.getName().equalsIgnoreCase(land_owner_name)
                         && !LandMembersManager.hasPlayerThePermissionToDo(new Integer(land_id), player.getName(),
-                                "itemframes")) {
+                                "generalinteractions")) {
                     event.setCancelled(true);
-                    realmprotection.RealmProtection._sendMessageWithTimeout(player, "itemframes");
+                    realmprotection.RealmProtection._sendMessageWithTimeout(player, "generalinteractions", chunk);
 
                     return;
                 }
@@ -922,9 +947,9 @@ public class ChunksProtection implements Listener {
 
                     if (!player.getName().equalsIgnoreCase(land_owner_name)
                             && !LandMembersManager.hasPlayerThePermissionToDo(new Integer(land_id), player.getName(),
-                                    "breakblocks")) {
+                                    "itemframes")) {
                         event.setCancelled(true);
-                        realmprotection.RealmProtection._sendMessageWithTimeout(player, "breakblocks");
+                        realmprotection.RealmProtection._sendMessageWithTimeout(player, "itemframes", chunk);
 
                         return;
                     }
@@ -952,7 +977,7 @@ public class ChunksProtection implements Listener {
                         && !LandMembersManager.hasPlayerThePermissionToDo(new Integer(land_id), player.getName(),
                                 "breakblocks")) {
                     event.setCancelled(true);
-                    realmprotection.RealmProtection._sendMessageWithTimeout(player, "breakblocks");
+                    realmprotection.RealmProtection._sendMessageWithTimeout(player, "breakblocks", chunk);
 
                     return;
                 }
@@ -972,7 +997,7 @@ public class ChunksProtection implements Listener {
                         && !LandMembersManager.hasPlayerThePermissionToDo(new Integer(land_id), player.getName(),
                                 "breakblocks")) {
                     event.setCancelled(true);
-                    realmprotection.RealmProtection._sendMessageWithTimeout(player, "breakblocks");
+                    realmprotection.RealmProtection._sendMessageWithTimeout(player, "breakblocks", chunk);
 
                     return;
                 }
@@ -994,7 +1019,7 @@ public class ChunksProtection implements Listener {
                     && !LandMembersManager.hasPlayerThePermissionToDo(new Integer(land_id), player.getName(),
                             "pickupitems")) {
                 event.setCancelled(true);
-                realmprotection.RealmProtection._sendMessageWithTimeout(player, "pickupitems");
+                realmprotection.RealmProtection._sendMessageWithTimeout(player, "pickupitems", chunk);
 
                 return;
             }
@@ -1015,7 +1040,7 @@ public class ChunksProtection implements Listener {
                     && !LandMembersManager.hasPlayerThePermissionToDo(new Integer(land_id), player.getName(),
                             "pickupitems")) {
                 event.setCancelled(true);
-                realmprotection.RealmProtection._sendMessageWithTimeout(player, "pickupitems");
+                realmprotection.RealmProtection._sendMessageWithTimeout(player, "pickupitems", chunk);
 
                 return;
             }
@@ -1061,7 +1086,7 @@ public class ChunksProtection implements Listener {
                         && !LandMembersManager.hasPlayerThePermissionToDo(new Integer(land_id), entity.getName(),
                                 "usevehicles")) {
                     event.setCancelled(true);
-                    realmprotection.RealmProtection._sendMessageWithTimeout((Player) entity, "usevehicles");
+                    realmprotection.RealmProtection._sendMessageWithTimeout((Player) entity, "usevehicles", chunk);
 
                     return;
                 }
@@ -1084,7 +1109,51 @@ public class ChunksProtection implements Listener {
                         && !LandMembersManager.hasPlayerThePermissionToDo(new Integer(land_id), entity.getName(),
                                 "breakblocks")) {
                     event.setCancelled(true);
-                    realmprotection.RealmProtection._sendMessageWithTimeout((Player) entity, "breakblocks");
+                    realmprotection.RealmProtection._sendMessageWithTimeout((Player) entity, "breakblocks", chunk);
+
+                    return;
+                }
+            }
+        }
+    }
+
+    // Leash event
+    @EventHandler
+    public void onPlayerLeashEntity(PlayerLeashEntityEvent event) {
+        Player player = (Player) event.getPlayer();
+        Chunk chunk = player.getLocation().getChunk();
+
+        if (ChunksManager.isChunkClaimed(chunk)) {
+            String land_id = ChunksManager.getChunkDetail(chunk, "land_id");
+            String land_owner_name = LandsManager.getLandDetailById(new Integer(land_id), "owner_name");
+
+            if (!player.getName().equalsIgnoreCase(land_owner_name)
+                    && !LandMembersManager.hasPlayerThePermissionToDo(new Integer(land_id), player.getName(),
+                            "generalinteractions")) {
+                event.setCancelled(true);
+                realmprotection.RealmProtection._sendMessageWithTimeout(player, "generalinteractions", chunk);
+
+                return;
+            }
+        }
+    }
+
+    @EventHandler
+    public void onLeashEvent(PlayerLeashEntityEvent event) {
+        Player player = event.getPlayer();
+        Block block = event.getEntity().getLocation().getBlock();
+        Chunk chunk = block.getLocation().getChunk();
+
+        if (block.getType().name().contains("FENCE")) {
+            if (ChunksManager.isChunkClaimed(chunk)) {
+                String land_id = ChunksManager.getChunkDetail(chunk, "land_id");
+                String land_owner_name = LandsManager.getLandDetailById(new Integer(land_id), "owner_name");
+
+                if (!player.getName().equalsIgnoreCase(land_owner_name)
+                        && !LandMembersManager.hasPlayerThePermissionToDo(new Integer(land_id), player.getName(),
+                                "generalinteractions")) {
+                    event.setCancelled(true);
+                    realmprotection.RealmProtection._sendMessageWithTimeout(player, "generalinteractions", chunk);
 
                     return;
                 }

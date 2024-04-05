@@ -6,6 +6,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.logging.Logger;
 
+import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -105,10 +106,10 @@ public class RealmProtection extends JavaPlugin implements Listener {
         return vaultapi_economy;
     }
 
-    public static void _sendMessageWithTimeout(Player player, String permission) {
+    public static void _sendMessageWithTimeout(Player player, String permission, Chunk claimed_chunk) {
         UUID playerId = player.getUniqueId();
         if (!cooldownPlayers.contains(playerId)) {
-            String message = _getConfigurationStringMessage(permission, player);
+            String message = _getConfigurationStringMessage(permission, player, claimed_chunk);
 
             player.sendMessage(ColoredString.translate(message));
 
@@ -119,12 +120,12 @@ public class RealmProtection extends JavaPlugin implements Listener {
         }
     }
 
-    private static String _getConfigurationStringMessage(String permission, Player player) {
+    private static String _getConfigurationStringMessage(String permission, Player player, Chunk claimed_chunk) {
         RealmProtection plugin = RealmProtection.getPlugin(RealmProtection.class);
 
         String final_string = "";
 
-        String land_id = ChunksManager.getChunkDetail(player.getLocation().getChunk(), "land_id");
+        String land_id = ChunksManager.getChunkDetail(claimed_chunk, "land_id");
         String land_name = LandsManager.getLandDetailById(new Integer(land_id), "land_name");
 
         String message = plugin.getConfig().getString("messages.permissions.messages." + permission);

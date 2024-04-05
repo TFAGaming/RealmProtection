@@ -28,6 +28,11 @@ public class BanlistCommand implements CommandExecutor {
 
             List<List<String>> alldata = LandBansManager.listAllBannedPlayersData(new Integer(land_id));
 
+            if (alldata.size() == 0) {
+                player.sendMessage(LoadConfig.commandString("banlist.no_bans_found"));
+                return true;
+            }
+
             String repeatstyle = LoadConfig.commandStringWithoutPrefix("banlist.repeatstyle");
             String repeatstylefinalstring = "";
 
