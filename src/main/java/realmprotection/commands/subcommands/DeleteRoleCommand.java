@@ -39,6 +39,11 @@ public class DeleteRoleCommand implements CommandExecutor {
                 return true;
             }
 
+            if (args[2].equalsIgnoreCase(LoadConfig.landRolesDefaultString("__DEFAULT_VISITOR_ROLE__"))) {
+                player.sendMessage(LoadConfig.commandString("delete_role.role_name_is_visitor"));
+                return true;
+            }
+
             RolesManager.deleteRole(new Integer(land_id), args[2]);
 
             player.sendMessage(LoadConfig.commandString("delete_role.role_delete_success").replace("%role%", args[2]));

@@ -33,13 +33,18 @@ public class RenameRoleCommand implements CommandExecutor {
                 return true;
             }
 
-            if (!StringValidator.isCleanString(args[2])) {
-                player.sendMessage(LoadConfig.commandString("rename_role.role_name_not_alphanumeric"));
+            if (args[2].equalsIgnoreCase(LoadConfig.landRolesDefaultString("__DEFAULT_VISITOR_ROLE__"))) {
+                player.sendMessage(LoadConfig.commandString("rename_role.role_name_is_visitor"));
                 return true;
             }
 
             if (args.length == 3) {
                 player.sendMessage(LoadConfig.commandString("rename_role.missing_new_role_name"));
+                return true;
+            }
+
+            if (!StringValidator.isCleanString(args[3])) {
+                player.sendMessage(LoadConfig.commandString("rename_role.role_name_not_alphanumeric"));
                 return true;
             }
 

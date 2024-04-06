@@ -12,6 +12,7 @@ import java.util.Map;
 import com.google.common.collect.Lists;
 
 import realmprotection.RealmProtection;
+import realmprotection.utils.LoadConfig;
 
 public class LandMembersManager {
     private static final Map<String, List<Object>> land_id_and_member_name_cache = new HashMap<>();
@@ -113,7 +114,7 @@ public class LandMembersManager {
             e.printStackTrace();
         }
 
-        return "Visitor";
+        return LoadConfig.landRolesDefaultString("__DEFAULT_VISITOR_ROLE__");
     }
 
     public static boolean isPlayerInTheLand(Integer land_id, String player_name) {
@@ -154,15 +155,15 @@ public class LandMembersManager {
         if (isTrusted) {
             String role_name = getRoleNameFromPlayername(land_id, player_name);
 
-            if (role_name == "Visitor") {
-                boolean value = RolesManager.getPermissionValue(land_id, "Visitor", permission_name);
+            if (role_name == LoadConfig.landRolesDefaultString("__DEFAULT_VISITOR_ROLE__")) {
+                boolean value = RolesManager.getPermissionValue(land_id, LoadConfig.landRolesDefaultString("__DEFAULT_VISITOR_ROLE__"), permission_name);
                 return value;
             } else {
                 boolean value = RolesManager.getPermissionValue(land_id, role_name, permission_name);
                 return value;
             }
         } else {
-            boolean value = RolesManager.getPermissionValue(land_id, "Visitor", permission_name);
+            boolean value = RolesManager.getPermissionValue(land_id, LoadConfig.landRolesDefaultString("__DEFAULT_VISITOR_ROLE__"), permission_name);
             return value;
         }
     }

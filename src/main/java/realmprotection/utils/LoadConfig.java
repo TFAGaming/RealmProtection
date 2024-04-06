@@ -68,6 +68,12 @@ public class LoadConfig {
         return plugin.getConfig().getBooleanList("land_roles.default." + path);
     }
 
+    public static String landRolesDefaultString(String path) {
+        RealmProtection plugin = RealmProtection.getPlugin(RealmProtection.class);
+
+        return plugin.getConfig().getString("land_roles.default." + path);
+    }
+
     public static List<String> landRolesDefaultStringList(String path) {
         RealmProtection plugin = RealmProtection.getPlugin(RealmProtection.class);
 

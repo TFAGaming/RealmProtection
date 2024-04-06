@@ -309,6 +309,7 @@ messages:
       min_roles_reached: "&cYou cannot delete any role, it should be there at least 2 roles to maintain the land!"
       no_role_provided: "&cYou must provide a role name to delete."
       role_not_found: "&cThis role was not found in your land."
+      role_name_is_visitor: "&cThe role is default Visitor role, cannot be deleted."
       role_delete_success: "&aSuccessfully deleted the role %role%!"
 
     deposit:
@@ -328,14 +329,14 @@ messages:
         - ""
         - "&6The main command: &7/lands [subcommand]"
         - ""
-        - "&6Available sub commands: &7balance, claim, deposit, help, info, leave, nature, rename, roles, setspawn, spawn, trust, unclaim, untrust, view, withdraw"
+        - "&6Available sub commands: &7balance, ban, banlist, claim, deposit, delete, help, info, leave, nature, rename, roles, setspawn, spawn, trust, unban, unclaim, untrust, view, withdraw"
         - ""
         - "&6Permissions: &7realmprotection.lands.[subcommand]"
         - ""
         - ""
         - "&aCreated by TFAGaming" # You can remove my name, but it's good to keep the name of the original creator! :)
         - ""
-        - "&aSource: https://github.com/TFAGaming/RealmProtection/"
+        - "&aSource: &fhttps://github.com/TFAGaming/RealmProtection/"
 
     info:
       chunk_wilderness: "&cThis is wilderness, you must use this command inside a claimed chunk!"
@@ -366,6 +367,7 @@ messages:
       land_not_found: "&cYou don't have a land!"
       no_role_provided: "&cYou must provide an existing role name to rename."
       role_not_found: "&cThis role does not exist in the land!"
+      role_name_is_visitor: "&cThe role is default Visitor role, cannot be renamed."
       role_name_not_alphanumeric: "&cThe role name must be alphanumeric; Do not use colors or any other symbols."
       missing_new_role_name: "&cYou must provide a new role name!"
       role_update_success: "&aSuccessfully renamed &9%old% &ato &9%new%&a!"

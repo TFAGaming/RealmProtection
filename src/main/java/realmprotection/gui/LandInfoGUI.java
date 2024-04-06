@@ -53,8 +53,6 @@ public class LandInfoGUI {
         double land_balance = Double
                 .parseDouble(LandsManager.getLandDetailById(new Integer(land_id), "balance"));
 
-        System.out.println(land_balance);
-
         for (String lore : loreConfigData) {
             landInformationButtonLore.add(ColoredString.translate(lore
                     .replace("%land_id%", land_id)

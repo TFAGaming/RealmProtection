@@ -294,7 +294,7 @@ public class RolesManager {
 
     public static boolean hasRole(Integer land_id, String role_name) {
         String sql = "SELECT COUNT (*) AS count FROM land_roles WHERE land_id = ? AND role_name COLLATE NOCASE = ?";
-        boolean exists = false;
+        boolean bool = false;
 
         try {
             Connection connection = RealmProtection.database.getConnection();
@@ -307,7 +307,7 @@ public class RolesManager {
 
             if (rs.next()) {
                 int count = rs.getInt("count");
-                exists = count > 0;
+                bool = count > 0;
             }
 
             statement.close();
@@ -315,7 +315,7 @@ public class RolesManager {
             e.printStackTrace();
         }
 
-        return exists;
+        return bool;
     }
 
     public static boolean getPermissionValue(Integer land_id, String role_name, String permission_name) {
