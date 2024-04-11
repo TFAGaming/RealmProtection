@@ -147,48 +147,47 @@ public class LandsCommand implements TabExecutor {
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+        List<String> arraylist = new ArrayList<>();
+        int currentindex = 0;
+
         if (args.length == 1) {
-            List<String> subcommands = new ArrayList<>();
+            arraylist.add("claim");
+            arraylist.add("unclaim");
+            arraylist.add("info");
+            arraylist.add("roles");
+            arraylist.add("view");
+            arraylist.add("trust");
+            arraylist.add("untrust");
+            arraylist.add("spawn");
+            arraylist.add("setspawn");
+            arraylist.add("nature");
+            arraylist.add("deposit");
+            arraylist.add("withdraw");
+            arraylist.add("balance");
+            arraylist.add("rename");
+            arraylist.add("leave");
+            arraylist.add("help");
+            arraylist.add("ban");
+            arraylist.add("unban");
+            arraylist.add("banlist");
+            arraylist.add("delete");
 
-            subcommands.add("claim");
-            subcommands.add("unclaim");
-            subcommands.add("info");
-            subcommands.add("roles");
-            subcommands.add("view");
-            subcommands.add("trust");
-            subcommands.add("untrust");
-            subcommands.add("spawn");
-            subcommands.add("setspawn");
-            subcommands.add("nature");
-            subcommands.add("deposit");
-            subcommands.add("withdraw");
-            subcommands.add("balance");
-            subcommands.add("rename");
-            subcommands.add("leave");
-            subcommands.add("help");
-            subcommands.add("ban");
-            subcommands.add("unban");
-            subcommands.add("banlist");
-            subcommands.add("delete");
-
-            return subcommands;
+            currentindex = 1;
         } else if (args.length == 2) {
-            List<String> arguments = new ArrayList<>();
-
             switch (args[0]) {
                 case "claim":
                     break;
                 case "unclaim":
-                    arguments.add("confirm");
+                    arraylist.add("confirm");
                     break;
                 case "info":
-                    arguments = LandsManager.listAllLandNames();
+                    arraylist = LandsManager.listAllLandNames();
                     break;
                 case "roles":
-                    arguments.add("create");
-                    arguments.add("delete");
-                    arguments.add("flags");
-                    arguments.add("rename");
+                    arraylist.add("create");
+                    arraylist.add("delete");
+                    arraylist.add("flags");
+                    arraylist.add("rename");
                     break;
                 case "view":
                     break;
@@ -202,27 +201,27 @@ public class LandsCommand implements TabExecutor {
                         playernames.add(players[i].getName());
                     }
 
-                    arguments = playernames;
+                    arraylist = playernames;
                     break;
                 case "untrust":
-                    arguments = getOnlinePlayersList();
+                    arraylist = getOnlinePlayersList();
 
                     break;
                 case "spawn":
-                    arguments = LandsManager.listAllLandNames();
+                    arraylist = LandsManager.listAllLandNames();
                     break;
                 case "setspawn":
                     break;
                 case "nature":
-                    arguments.add("flags");
+                    arraylist.add("flags");
                     break;
                 case "leave":
-                    arguments = LandsManager.listAllLandNames();
+                    arraylist = LandsManager.listAllLandNames();
                     break;
                 case "help":
                     break;
                 case "ban":
-                    arguments = getOnlinePlayersList();
+                    arraylist = getOnlinePlayersList();
                     break;
                 case "unban":
                     if (LandsManager.hasLand(sender.getName())) {
@@ -231,7 +230,7 @@ public class LandsCommand implements TabExecutor {
                         List<List<String>> alldata = LandBansManager.listAllBannedPlayersData(new Integer(land_id));
 
                         for (List<String> data : alldata) {
-                            arguments.add(data.get(0));
+                            arraylist.add(data.get(0));
                         }
                     }
 
@@ -239,16 +238,14 @@ public class LandsCommand implements TabExecutor {
                 case "banlist":
                     break;
                 case "delete":
-                    arguments.add("confirm");
+                    arraylist.add("confirm");
                     break;
                 default:
                     break;
             }
 
-            return arguments;
+            currentindex = 2;
         } else if (args.length == 3 && args[0].equalsIgnoreCase("roles")) {
-            List<String> arguments = new ArrayList<>();
-
             switch (args[1]) {
                 case "create":
                     break;
@@ -256,109 +253,109 @@ public class LandsCommand implements TabExecutor {
                     if (LandsManager.hasLand(sender.getName())) {
                         String land_id = LandsManager.getLandDetail(sender.getName(), "id");
 
-                        arguments = RolesManager.listAllRolesNames(new Integer(land_id));
+                        arraylist = RolesManager.listAllRolesNames(new Integer(land_id));
                     }
                     break;
                 case "flags":
                     if (LandsManager.hasLand(sender.getName())) {
                         String land_id = LandsManager.getLandDetail(sender.getName(), "id");
 
-                        arguments = RolesManager.listAllRolesNames(new Integer(land_id));
+                        arraylist = RolesManager.listAllRolesNames(new Integer(land_id));
                     }
                     break;
                 case "rename":
                     if (LandsManager.hasLand(sender.getName())) {
                         String land_id = LandsManager.getLandDetail(sender.getName(), "id");
 
-                        arguments = RolesManager.listAllRolesNames(new Integer(land_id));
+                        arraylist = RolesManager.listAllRolesNames(new Integer(land_id));
                     }
                 default:
                     break;
             }
 
-            return arguments;
+            currentindex = 3;
         } else if (args.length == 3 && args[0].equalsIgnoreCase("trust")) {
-            List<String> arguments = new ArrayList<>();
-
             if (LandsManager.hasLand(sender.getName())) {
                 String land_id = LandsManager.getLandDetail(sender.getName(), "id");
 
-                arguments = RolesManager.listAllRolesNames(new Integer(land_id));
+                arraylist = RolesManager.listAllRolesNames(new Integer(land_id));
             }
 
-            return arguments;
+            currentindex = 3;
         } else if (args.length == 3 && args[0].equalsIgnoreCase("nature") && args[1].equalsIgnoreCase("flags")) {
-            List<String> arguments = new ArrayList<>();
+            arraylist.add("hostilemobsspawn");
+            arraylist.add("passivemobsspawn");
+            arraylist.add("leavesdecay");
+            arraylist.add("firespread");
+            arraylist.add("liquidflow");
+            arraylist.add("tntblockdamage");
+            arraylist.add("respawnanchorblockdamage");
+            arraylist.add("pistonsfromwilderness");
+            arraylist.add("plantgrowth");
 
-            arguments.add("hostilemobsspawn");
-            arguments.add("passivemobsspawn");
-            arguments.add("leavesdecay");
-            arguments.add("firespread");
-            arguments.add("liquidflow");
-            arguments.add("tntblockdamage");
-            arguments.add("respawnanchorblockdamage");
-            arguments.add("pistonsfromwilderness");
-            arguments.add("plantgrowth");
-
-            return arguments;
+            currentindex = 3;
         } else if (args.length == 4 && args[0].equalsIgnoreCase("roles") && args[1].equalsIgnoreCase("flags")) {
-            List<String> arguments = new ArrayList<>();
+            arraylist.add("breakblocks");
+            arraylist.add("placeblocks");
+            arraylist.add("containers");
+            arraylist.add("redstone");
+            arraylist.add("doors");
+            arraylist.add("trapdoors");
+            arraylist.add("editsigns");
+            arraylist.add("emptybuckets");
+            arraylist.add("fillbuckets");
+            arraylist.add("harvestcrops");
+            arraylist.add("frostwalker");
+            arraylist.add("shearentities");
+            arraylist.add("itemframes");
+            arraylist.add("generalinteractions");
+            arraylist.add("fencegates");
+            arraylist.add("buttons");
+            arraylist.add("levers");
+            arraylist.add("pressureplates");
+            arraylist.add("bells");
+            arraylist.add("tripwires");
+            arraylist.add("armorstands");
+            arraylist.add("teleporttospawn");
+            arraylist.add("throwenderpearls");
+            arraylist.add("throwpotions");
+            arraylist.add("damagehostilemobs");
+            arraylist.add("damagepassivemobs");
+            arraylist.add("pvp");
+            arraylist.add("usecauldron");
+            arraylist.add("pickupitems");
+            arraylist.add("useanvil");
+            arraylist.add("createfire");
+            arraylist.add("usevehicles");
 
-            arguments.add("breakblocks");
-            arguments.add("placeblocks");
-            arguments.add("containers");
-            arguments.add("redstone");
-            arguments.add("doors");
-            arguments.add("trapdoors");
-            arguments.add("editsigns");
-            arguments.add("emptybuckets");
-            arguments.add("fillbuckets");
-            arguments.add("harvestcrops");
-            arguments.add("frostwalker");
-            arguments.add("shearentities");
-            arguments.add("itemframes");
-            arguments.add("generalinteractions");
-            arguments.add("fencegates");
-            arguments.add("buttons");
-            arguments.add("levers");
-            arguments.add("pressureplates");
-            arguments.add("bells");
-            arguments.add("tripwires");
-            arguments.add("armorstands");
-            arguments.add("teleporttospawn");
-            arguments.add("throwenderpearls");
-            arguments.add("throwpotions");
-            arguments.add("damagehostilemobs");
-            arguments.add("damagepassivemobs");
-            arguments.add("pvp");
-            arguments.add("usecauldron");
-            arguments.add("pickupitems");
-            arguments.add("useanvil");
-            arguments.add("createfire");
-            arguments.add("usevehicles");
-
-            return arguments;
+            currentindex = 4;
         } else if (args.length == 4 && args[0].equalsIgnoreCase("nature") && args[1].equalsIgnoreCase("flags")) {
-            List<String> arguments = new ArrayList<>();
+            arraylist.add("true");
+            arraylist.add("false");
+            arraylist.add("1");
+            arraylist.add("0");
 
-            arguments.add("true");
-            arguments.add("false");
-            arguments.add("1");
-            arguments.add("0");
-
-            return arguments;
+            currentindex = 4;
         } else if (args.length == 5 && args[0].equalsIgnoreCase("roles") && args[1].equalsIgnoreCase("flags")) {
-            List<String> arguments = new ArrayList<>();
+            arraylist.add("true");
+            arraylist.add("false");
+            arraylist.add("1");
+            arraylist.add("0");
 
-            arguments.add("true");
-            arguments.add("false");
-            arguments.add("1");
-            arguments.add("0");
-
-            return arguments;
+            currentindex = 5;
+        } else {
+            return null;
         }
 
-        return null;
+        List<String> filteredlist = new ArrayList<>();
+
+        for (String element : arraylist) {
+            if (element.toLowerCase().startsWith(args[currentindex - 1].toLowerCase())) {
+                filteredlist.add(element);
+            }
+        }
+
+        return filteredlist;
     }
 
     public List<String> getOnlinePlayersList() {
