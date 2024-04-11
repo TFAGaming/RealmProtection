@@ -44,7 +44,7 @@ import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.PlayerLeashEntityEvent;
-import org.bukkit.event.entity.ProjectileLaunchEvent;
+import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.hanging.HangingBreakByEntityEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
@@ -894,23 +894,56 @@ public class ChunksProtection implements Listener {
         }
     }
 
-    // Projectile launch
+    // Projectile hit
     @EventHandler
-    public void onProjectileLaunch(ProjectileLaunchEvent event) {
+    public void onProjectileHit(ProjectileHitEvent event) {
         ProjectileSource source = event.getEntity().getShooter();
         Chunk chunk = event.getEntity().getLocation().getChunk();
+        Entity entityhit = event.getHitEntity();
 
         if (ChunksManager.isChunkClaimed(chunk)) {
             String land_id = ChunksManager.getChunkDetail(chunk, "land_id");
+            String land_owner_name = LandsManager.getLandDetailById(new Integer(land_id), "owner_name");
 
-            if (source instanceof Player
-                    && event.getEntityType().name().contains("ARROW")
-                    && !LandMembersManager.hasPlayerThePermissionToDo(new Integer(land_id), ((Player) source).getName(),
+            if (source instanceof Player) {
+                if (entityhit instanceof Player) {
+                    if (!LandMembersManager.hasPlayerThePermissionToDo(new Integer(land_id),
+                            ((Player) source).getName(),
                             "pvp")) {
-                event.setCancelled(true);
-                realmprotection.RealmProtection._sendMessageWithTimeout((Player) source, "pvp", chunk);
+                        event.setCancelled(true);
+                        event.getEntity().remove();
 
-                return;
+                        realmprotection.RealmProtection._sendMessageWithTimeout((Player) source, "pvp", chunk);
+
+                        return;
+                    }
+                } else if (entityhit instanceof Monster || entityhit instanceof IronGolem) {
+                    if (!((Player) source).getName().equalsIgnoreCase(land_owner_name)
+                            && !LandMembersManager.hasPlayerThePermissionToDo(new Integer(land_id),
+                                    ((Player) source).getName(),
+                                    "damagehostilemobs")) {
+                        event.setCancelled(true);
+                        event.getEntity().remove();
+
+                        realmprotection.RealmProtection._sendMessageWithTimeout((Player) source, "damagehostilemobs",
+                                chunk);
+
+                        return;
+                    }
+                } else if (entityhit instanceof Animals || entityhit instanceof Mob) {
+                    if (!((Player) source).getName().equalsIgnoreCase(land_owner_name)
+                            && !LandMembersManager.hasPlayerThePermissionToDo(new Integer(land_id),
+                                    ((Player) source).getName(),
+                                    "damagepassivemobs")) {
+                        event.setCancelled(true);
+                        event.getEntity().remove();
+
+                        realmprotection.RealmProtection._sendMessageWithTimeout((Player) source, "damagepassivemobs",
+                                chunk);
+
+                        return;
+                    }
+                }
             }
         }
 

@@ -56,11 +56,11 @@ public class RealmProtection extends JavaPlugin implements Listener {
         if (getConfig().getBoolean("lands.plugins.vaultapi_economy") == true) {
             if (!setupEconomy()) {
                 logger.severe(ANSI_COLOR_RED
-                        + "RealmProtector: Unable to load the economy API from Vault."
+                        + "RealmProtector: Unable to load the Economy API from Vault."
                         + ANSI_COLOR_RESET);
             } else {
                 logger.info(ANSI_COLOR_GREEN
-                        + "RealmProtector: Vault API economy has been enabled!"
+                        + "RealmProtector: Vault API Economy has been enabled!"
                         + ANSI_COLOR_RESET);
             }
         }
