@@ -5,9 +5,9 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import realmprotection.RealmProtection;
 import realmprotection.managers.LandsManager;
 import realmprotection.utils.LoadConfig;
+import realmprotection.utils.VaultAPIEconomy;
 
 public class DepositCommand implements CommandExecutor {
     @Override
@@ -15,7 +15,7 @@ public class DepositCommand implements CommandExecutor {
         if (sender instanceof Player) {
             Player player = (Player) sender;
 
-            if (!LoadConfig.isVaultPluginLoaded()) {
+            if (!VaultAPIEconomy.isReady()) {
                 player.sendMessage(LoadConfig.commandString("deposit.vault_plugin_not_ready"));
                 return true;
             }
@@ -33,7 +33,7 @@ public class DepositCommand implements CommandExecutor {
                 return true;
             }
 
-            double player_balance = RealmProtection.getEconomy().getBalance(player);
+            double player_balance = VaultAPIEconomy.getEconomy().getBalance(player);
 
             try {
                 double balance_input = Double.parseDouble(args[1]);
@@ -49,7 +49,7 @@ public class DepositCommand implements CommandExecutor {
                 }
 
                 LandsManager.updateBalance(new Integer(land_id), land_balance + balance_input);
-                RealmProtection.getEconomy().withdrawPlayer(player, balance_input);
+                VaultAPIEconomy.getEconomy().withdrawPlayer(player, balance_input);
 
                 player.sendMessage(LoadConfig.commandString("deposit.deposited_success").replace("%amount%", args[1]).replace("%land_balance%", String.format("%.2f", (land_balance + balance_input))));
 

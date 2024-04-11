@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 
 import realmprotection.managers.LandsManager;
 import realmprotection.utils.LoadConfig;
+import realmprotection.utils.VaultAPIEconomy;
 
 public class BalanceCommand implements CommandExecutor {
     @Override
@@ -14,7 +15,7 @@ public class BalanceCommand implements CommandExecutor {
         if (sender instanceof Player) {
             Player player = (Player) sender;
 
-            if (!LoadConfig.isVaultPluginLoaded()) {
+            if (!VaultAPIEconomy.isReady()) {
                 player.sendMessage(LoadConfig.commandString("balance.vault_plugin_not_ready"));
                 return true;
             }

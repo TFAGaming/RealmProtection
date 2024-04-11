@@ -9,10 +9,8 @@ import java.util.logging.Logger;
 import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
-import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import net.milkbowl.vault.economy.Economy;
 import realmprotection.commands.LandsCommand;
 import realmprotection.database.Database;
 import realmprotection.events.ChunksProtection;
@@ -20,14 +18,11 @@ import realmprotection.events.GUIListener;
 import realmprotection.managers.ChunksManager;
 import realmprotection.managers.LandsManager;
 import realmprotection.utils.ColoredString;
+import realmprotection.utils.LuckPermsAPI;
+import realmprotection.utils.VaultAPIEconomy;
 
 public class RealmProtection extends JavaPlugin implements Listener {
-    public static final Logger logger = Logger.getLogger("RealmProtector");
-    public static final String ANSI_COLOR_RESET = "\u001B[0m";
-    public static final String ANSI_COLOR_GREEN = "\u001B[32m";
-    public static final String ANSI_COLOR_RED = "\u001B[31m";
-
-    public static Economy vaultapi_economy = null;
+    public static final Logger logger = Logger.getLogger("RealmProtection");
 
     private static Set<UUID> cooldownPlayers = new HashSet<>();
 
@@ -35,7 +30,7 @@ public class RealmProtection extends JavaPlugin implements Listener {
 
     @Override
     public void onEnable() {
-        logger.info(ANSI_COLOR_GREEN + "RealmProtector: The plugin has been enabled." + ANSI_COLOR_RESET);
+        logger.info("[RealmProtection] The plugin has been enabled.");
 
         saveDefaultConfig();
 
@@ -50,18 +45,22 @@ public class RealmProtection extends JavaPlugin implements Listener {
             RealmProtection.database.initialize();
         } catch (SQLException error) {
             error.printStackTrace();
-            logger.severe(ANSI_COLOR_RED + "RealmProtector: Failed to connect to the database." + ANSI_COLOR_RESET);
+            logger.severe("[RealmProtection] Failed to connect to the database.");
         }
 
         if (getConfig().getBoolean("lands.plugins.vaultapi_economy") == true) {
-            if (!setupEconomy()) {
-                logger.severe(ANSI_COLOR_RED
-                        + "RealmProtector: Unable to load the Economy API from Vault."
-                        + ANSI_COLOR_RESET);
+            if (!VaultAPIEconomy.setupVault()) {
+                logger.severe("[RealmProtection] Unable to load Vault API.");
             } else {
-                logger.info(ANSI_COLOR_GREEN
-                        + "RealmProtector: Vault API Economy has been enabled!"
-                        + ANSI_COLOR_RESET);
+                logger.info("[RealmProtection] Vault API is loaded.");
+            }
+        }
+
+        if (getConfig().getBoolean("lands.plugins.luckpermsapi") == true) {
+            if (!LuckPermsAPI.setupLuckperms()) {
+                logger.severe("[RealmProtection] Unable to load LuckPerms API.");
+            } else {
+                logger.info("[RealmProtection] LuckPerms API is loaded.");
             }
         }
 
@@ -74,36 +73,16 @@ public class RealmProtection extends JavaPlugin implements Listener {
 
     @Override
     public void onDisable() {
-        logger.info(ANSI_COLOR_GREEN + "RealmProtector: The plugin has been disabled." + ANSI_COLOR_RESET);
+        logger.info("[RealmProtection] The plugin has been disabled.");
 
         try {
             RealmProtection.database.closeConnection();
 
-            logger.info(ANSI_COLOR_GREEN + "RealmProtector: Successfully closed the database." + ANSI_COLOR_RESET);
+            logger.info("[RealmProtection] Successfully closed the database.");
         } catch (SQLException error) {
             error.printStackTrace();
-            logger.severe(ANSI_COLOR_RED + "RealmProtector: Failed to close the database." + ANSI_COLOR_RESET);
+            logger.severe("[RealmProtection] Failed to close the database.");
         }
-    }
-
-    private boolean setupEconomy() {
-        if (getServer().getPluginManager().getPlugin("Vault") == null) {
-            return false;
-        }
-
-        RegisteredServiceProvider<Economy> registerer = getServer().getServicesManager().getRegistration(Economy.class);
-
-        if (registerer == null) {
-            return false;
-        }
-
-        vaultapi_economy = registerer.getProvider();
-
-        return vaultapi_economy != null;
-    }
-
-    public static Economy getEconomy() {
-        return vaultapi_economy;
     }
 
     public static void _sendMessageWithTimeout(Player player, String permission, Chunk claimed_chunk) {

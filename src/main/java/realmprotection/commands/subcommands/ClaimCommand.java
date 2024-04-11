@@ -49,6 +49,11 @@ public class ClaimCommand implements CommandExecutor {
                         player.getLocation().getX(), player.getLocation().getY(), player.getLocation().getZ());
             }
 
+            if (!ChunksManager.hasEnoughChunksToClaim(player)) {
+                player.sendMessage(LoadConfig.commandString("claim.max_chunks_claimed"));
+                return true;
+            }
+
             String land_id = LandsManager.getLandDetail(player.getName(), "id");
 
             Boolean hasOneChunkClaimedForLand = ChunksManager.isLandHaveAtLeastOneChunk(new Integer(land_id));

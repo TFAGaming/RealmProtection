@@ -17,15 +17,18 @@ database:
 lands:
   plugins:
     vaultapi_economy: true # If enabled, this will make any player to use /land deposit, /land withdraw and /land balance in their land
+    luckpermsapi: true # If enabled, this will allow players to have ratelimits for chunks, l
   ratelimits:
-    # Player's land limits for chunks
+    # Player's chunks limit for land
     chunks:
+      __DEFAULT__: 10 # If the player's group not found
       default: 10
       vip: 20
       admin: 50
       owner: 100
-    # Player's land limits for roles
+    # Player's chunks limit for land
     roles:
+      __DEFAULT__: 10 # If the player's group not found
       default: 5
       vip: 10
       admin: 20
@@ -297,6 +300,7 @@ messages:
       missing_land_name: "&cYou must provide your new land name because you will create one with this chunk!"
       land_name_not_alphanumeric: "&cYour land name must be alphanumeric; Do not use colors or any other symbols."
       land_name_already_taken: "&cThis land name is already been taken, please choose another one."
+      max_chunks_claimed: "&cYou have claimed the maximum of chunks you have!"
       chunk_claimed_success: "&aYou have successfully claimed the chunk! &9%chunk_x%, %chunk_z%"
 
     delete:
@@ -354,6 +358,7 @@ messages:
       no_role_provided: "&cYou must provide a new role name to create."
       role_found: "&cThis role does already exist in the land!"
       role_name_not_alphanumeric: "&cThe role name must be alphanumeric; Do not use colors or any other symbols."
+      max_roles_created: "&cYou have created the maximum of roles in your land!"
       role_create_success: "&aSuccessfully created a new role!"
 
     rename:
@@ -577,7 +582,7 @@ land_roles:
         - true # usevehicles
 
       # Default permissions if there is a new role created:
-      __default__:
+      __DEFAULT__:
         - false # breakblocks
         - false # placeblocks
         - false # containers

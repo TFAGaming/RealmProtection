@@ -86,7 +86,9 @@ public class LoadConfig {
         return plugin.getConfig().getStringList("lands." + path);
     }
 
-    public static boolean isVaultPluginLoaded() {
-        return RealmProtection.vaultapi_economy != null ? true : false;
+    public static int landsInteger(String path) {
+        RealmProtection plugin = RealmProtection.getPlugin(RealmProtection.class);
+
+        return plugin.getConfig().getInt("lands." + path);
     }
 }

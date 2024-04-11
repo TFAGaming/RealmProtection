@@ -21,6 +21,11 @@ public class NewRoleCommand implements CommandExecutor {
                 return true;
             }
 
+            if (RolesManager.hasReachedMaximumRolesCountForLand(player)) {
+                player.sendMessage(LoadConfig.commandString("new_role.max_roles_created"));
+                return true;
+            }
+
             if (args.length == 2) {
                 player.sendMessage(LoadConfig.commandString("new_role.no_role_provided"));
                 return true;

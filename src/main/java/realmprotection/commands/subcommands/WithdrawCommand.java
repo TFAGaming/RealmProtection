@@ -5,9 +5,9 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import realmprotection.RealmProtection;
 import realmprotection.managers.LandsManager;
 import realmprotection.utils.LoadConfig;
+import realmprotection.utils.VaultAPIEconomy;
 
 public class WithdrawCommand implements CommandExecutor {
     @Override
@@ -15,7 +15,7 @@ public class WithdrawCommand implements CommandExecutor {
         if (sender instanceof Player) {
             Player player = (Player) sender;
 
-            if (!LoadConfig.isVaultPluginLoaded()) {
+            if (!VaultAPIEconomy.isReady()) {
                 player.sendMessage(LoadConfig.commandString("withdraw.vault_plugin_not_ready"));
                 return true;
             }
@@ -47,7 +47,7 @@ public class WithdrawCommand implements CommandExecutor {
                 }
 
                 LandsManager.updateBalance(new Integer(land_id), land_balance - balance_input);
-                RealmProtection.getEconomy().depositPlayer(player, balance_input);
+                VaultAPIEconomy.getEconomy().depositPlayer(player, balance_input);
 
                 player.sendMessage(LoadConfig.commandString("withdraw.withdrew_success").replace("%amount%", args[1]).replace("%land_balance%", String.format("%.2f", (land_balance - balance_input))));
 

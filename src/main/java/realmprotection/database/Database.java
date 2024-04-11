@@ -26,8 +26,7 @@ public class Database {
         Connection connection = DriverManager.getConnection("jdbc:sqlite:" + this.DATABASE_PATH);
         this.connection = connection;
 
-        RealmProtection.logger.info(RealmProtection.ANSI_COLOR_GREEN + "RealmProtector: Successfully connected to the database!"
-                + RealmProtection.ANSI_COLOR_RESET);
+        RealmProtection.logger.info("[RealmProtection] Successfully connected to the database!");
 
         return connection;
     }
