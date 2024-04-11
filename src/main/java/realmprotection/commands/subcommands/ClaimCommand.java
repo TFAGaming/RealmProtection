@@ -29,6 +29,11 @@ public class ClaimCommand implements CommandExecutor {
                 return true;
             }
 
+            if (ChunksManager.isThereNeighborChunkClaimed(player)) {
+                player.sendMessage(LoadConfig.commandString("claim.neighbor_chunk_claimed"));
+                return true;
+            }
+
             if (!LandsManager.hasLand(player.getName())) {
                 if (args.length == 1) {
                     player.sendMessage(LoadConfig.commandString("claim.missing_land_name"));

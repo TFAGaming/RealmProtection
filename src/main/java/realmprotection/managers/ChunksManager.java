@@ -360,6 +360,56 @@ public class ChunksManager {
         }
     }
 
+    public static boolean isThereNeighborChunkClaimed(Player player) {
+        Chunk chunk = player.getLocation().getChunk();
+        World world = player.getWorld();
+        Integer chunkX = chunk.getX();
+        Integer chunkZ = chunk.getZ();
+        String chunkWorldName = chunk.getWorld().getName();
+
+        if (!player.getLocation().getWorld().getName().equals(chunkWorldName))
+            return false;
+
+        Chunk north = world.getChunkAt(chunkX, chunkZ - 1);
+        Chunk south = world.getChunkAt(chunkX, chunkZ + 1);
+        Chunk west = world.getChunkAt(chunkX - 1, chunkZ);
+        Chunk east = world.getChunkAt(chunkX + 1, chunkZ);
+
+        if (ChunksManager.isChunkClaimed(north)) {
+            String temp_land_id = ChunksManager.getChunkDetail(north, "land_id");
+            String temp_land_owner = LandsManager.getLandDetailById(new Integer(temp_land_id), "owner_name");
+
+            if (!temp_land_owner.equalsIgnoreCase(player.getName()))
+                return true;
+        }
+
+        if (ChunksManager.isChunkClaimed(south)) {
+            String temp_land_id = ChunksManager.getChunkDetail(south, "land_id");
+            String temp_land_owner = LandsManager.getLandDetailById(new Integer(temp_land_id), "owner_name");
+
+            if (!temp_land_owner.equalsIgnoreCase(player.getName()))
+                return true;
+        }
+
+        if (ChunksManager.isChunkClaimed(west)) {
+            String temp_land_id = ChunksManager.getChunkDetail(west, "land_id");
+            String temp_land_owner = LandsManager.getLandDetailById(new Integer(temp_land_id), "owner_name");
+
+            if (!temp_land_owner.equalsIgnoreCase(player.getName()))
+                return true;
+        }
+
+        if (ChunksManager.isChunkClaimed(east)) {
+            String temp_land_id = ChunksManager.getChunkDetail(east, "land_id");
+            String temp_land_owner = LandsManager.getLandDetailById(new Integer(temp_land_id), "owner_name");
+
+            if (!temp_land_owner.equalsIgnoreCase(player.getName()))
+                return true;
+        }
+
+        return false;
+    }
+
     public static void spawnParticlesAroundChunk(Player player, Integer land_id, double y, boolean is_owner,
             boolean is_trusted) {
         List<List<Object>> chunks = listChunksFromLandId(land_id);

@@ -297,6 +297,7 @@ messages:
 
     claim:
       chunk_already_claimed: "&cThis chunk has already been claimed."
+      neighbor_chunk_claimed: "&cThere is a chunk next to this one is claimed! Always keep a 1 chunk distance between claimed chunks."
       missing_land_name: "&cYou must provide your new land name because you will create one with this chunk!"
       land_name_not_alphanumeric: "&cYour land name must be alphanumeric; Do not use colors or any other symbols."
       land_name_already_taken: "&cThis land name is already been taken, please choose another one."
