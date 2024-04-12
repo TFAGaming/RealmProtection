@@ -76,7 +76,11 @@ public class ChunksProtection implements Listener {
         Player player = event.getPlayer();
         Chunk chunk = event.getBlock().getChunk();
 
-        if (ChunksManager.isChunkClaimed(chunk)) {
+        if (player != null && ChunksManager.isChunkClaimed(chunk)) {
+            if (isPlayerAnOperator(player)) {
+                return;
+            }
+
             if (event.getBlock().getType() == Material.FIRE) {
                 return;
             }
@@ -102,7 +106,11 @@ public class ChunksProtection implements Listener {
         Player player = event.getPlayer();
         Chunk chunk = event.getBlock().getChunk();
 
-        if (ChunksManager.isChunkClaimed(chunk)) {
+        if (player != null && ChunksManager.isChunkClaimed(chunk)) {
+            if (isPlayerAnOperator(player)) {
+                return;
+            }
+
             if (_isCropBlock(event.getBlock())) {
                 return;
             }
@@ -133,6 +141,10 @@ public class ChunksProtection implements Listener {
             Chunk chunk = player.getLocation().getChunk();
 
             if (ChunksManager.isChunkClaimed(chunk)) {
+                if (isPlayerAnOperator(player)) {
+                    return;
+                }
+
                 String land_id = ChunksManager.getChunkDetail(chunk, "land_id");
                 String land_owner_name = LandsManager.getLandDetailById(new Integer(land_id),
                         "owner_name");
@@ -175,6 +187,10 @@ public class ChunksProtection implements Listener {
         Player player = event.getPlayer();
 
         if (ChunksManager.isChunkClaimed(chunk)) {
+            if (isPlayerAnOperator(player)) {
+                return;
+            }
+
             String land_id = ChunksManager.getChunkDetail(chunk, "land_id");
             String land_owner_name = LandsManager.getLandDetailById(new Integer(land_id), "owner_name");
 
@@ -197,6 +213,10 @@ public class ChunksProtection implements Listener {
         Player player = event.getPlayer();
 
         if (ChunksManager.isChunkClaimed(chunk)) {
+            if (isPlayerAnOperator(player)) {
+                return;
+            }
+
             String land_id = ChunksManager.getChunkDetail(chunk, "land_id");
             String land_owner_name = LandsManager.getLandDetailById(new Integer(land_id), "owner_name");
 
@@ -222,6 +242,10 @@ public class ChunksProtection implements Listener {
                 Chunk chunk = event.getClickedBlock().getLocation().getChunk();
 
                 if (ChunksManager.isChunkClaimed(chunk)) {
+                    if (isPlayerAnOperator(player)) {
+                        return;
+                    }
+
                     String land_id = ChunksManager.getChunkDetail(chunk, "land_id");
                     String land_owner_name = LandsManager.getLandDetailById(new Integer(land_id), "owner_name");
 
@@ -242,6 +266,10 @@ public class ChunksProtection implements Listener {
             Chunk chunk = event.getClickedBlock().getLocation().getChunk();
 
             if (ChunksManager.isChunkClaimed(chunk)) {
+                if (isPlayerAnOperator(player)) {
+                    return;
+                }
+
                 String land_id = ChunksManager.getChunkDetail(chunk, "land_id");
                 String land_owner_name = LandsManager.getLandDetailById(new Integer(land_id), "owner_name");
 
@@ -278,6 +306,10 @@ public class ChunksProtection implements Listener {
 
             if (boots != null && boots.getEnchantments().containsKey(Enchantment.FROST_WALKER)) {
                 if (ChunksManager.isChunkClaimed(chunk)) {
+                    if (isPlayerAnOperator(player)) {
+                        return;
+                    }
+
                     String land_id = ChunksManager.getChunkDetail(chunk, "land_id");
                     String land_owner_name = LandsManager.getLandDetailById(new Integer(land_id), "owner_name");
 
@@ -364,6 +396,10 @@ public class ChunksProtection implements Listener {
         Chunk chunk = event.getEntity().getLocation().getChunk();
 
         if (ChunksManager.isChunkClaimed(chunk)) {
+            if (isPlayerAnOperator(player)) {
+                return;
+            }
+
             String land_id = ChunksManager.getChunkDetail(chunk, "land_id");
             String land_owner_name = LandsManager.getLandDetailById(new Integer(land_id), "owner_name");
 
@@ -403,6 +439,10 @@ public class ChunksProtection implements Listener {
         Chunk chunk = event.getBlock().getLocation().getChunk();
 
         if (ChunksManager.isChunkClaimed(chunk)) {
+            if (isPlayerAnOperator(player)) {
+                return;
+            }
+
             String land_id = ChunksManager.getChunkDetail(chunk, "land_id");
             String land_owner_name = LandsManager.getLandDetailById(new Integer(land_id), "owner_name");
 
@@ -471,6 +511,10 @@ public class ChunksProtection implements Listener {
         Chunk chunk = entity.getLocation().getChunk();
 
         if (ChunksManager.isChunkClaimed(chunk)) {
+            if (damager instanceof Player && isPlayerAnOperator((Player) damager)) {
+                return;
+            }
+
             String land_id = ChunksManager.getChunkDetail(chunk, "land_id");
             String land_owner_name = LandsManager.getLandDetailById(new Integer(land_id), "owner_name");
 
@@ -628,6 +672,10 @@ public class ChunksProtection implements Listener {
         }
 
         if (ChunksManager.isChunkClaimed(chunk)) {
+            if (isPlayerAnOperator(player)) {
+                return;
+            }
+
             if (event.getItem() != null) {
                 if (event.getItem().getType().name().contains("BOAT")
                         || event.getItem().getType().name().contains("ARMOR_STAND")
@@ -839,6 +887,10 @@ public class ChunksProtection implements Listener {
         if (event.getItem() != null) {
             if (event.getItem().getType().equals(Material.ENDER_PEARL)) {
                 if (ChunksManager.isChunkClaimed(chunk)) {
+                    if (isPlayerAnOperator(player)) {
+                        return;
+                    }
+
                     String land_id = ChunksManager.getChunkDetail(chunk, "land_id");
                     String land_owner_name = LandsManager.getLandDetailById(new Integer(land_id), "owner_name");
 
@@ -854,6 +906,10 @@ public class ChunksProtection implements Listener {
             } else if (event.getItem().getType().equals(Material.SPLASH_POTION)
                     || event.getItem().getType().equals(Material.LINGERING_POTION)) {
                 if (ChunksManager.isChunkClaimed(chunk)) {
+                    if (isPlayerAnOperator(player)) {
+                        return;
+                    }
+
                     String land_id = ChunksManager.getChunkDetail(chunk, "land_id");
                     String land_owner_name = LandsManager.getLandDetailById(new Integer(land_id), "owner_name");
 
@@ -878,6 +934,10 @@ public class ChunksProtection implements Listener {
             Chunk chunk = event.getRightClicked().getLocation().getChunk();
 
             if (ChunksManager.isChunkClaimed(chunk)) {
+                if (isPlayerAnOperator(player)) {
+                    return;
+                }
+
                 String land_id = ChunksManager.getChunkDetail(chunk, "land_id");
                 String land_owner_name = LandsManager.getLandDetailById(new Integer(land_id), "owner_name");
 
@@ -902,6 +962,10 @@ public class ChunksProtection implements Listener {
         Entity entityhit = event.getHitEntity();
 
         if (ChunksManager.isChunkClaimed(chunk)) {
+            if (source instanceof Player && isPlayerAnOperator((Player) source)) {
+                return;
+            }
+
             String land_id = ChunksManager.getChunkDetail(chunk, "land_id");
             String land_owner_name = LandsManager.getLandDetailById(new Integer(land_id), "owner_name");
 
@@ -958,6 +1022,10 @@ public class ChunksProtection implements Listener {
             Chunk chunk = event.getRightClicked().getLocation().getChunk();
 
             if (ChunksManager.isChunkClaimed(chunk)) {
+                if (isPlayerAnOperator(player)) {
+                    return;
+                }
+
                 String land_id = ChunksManager.getChunkDetail(chunk, "land_id");
                 String land_owner_name = LandsManager.getLandDetailById(new Integer(land_id), "owner_name");
 
@@ -981,6 +1049,10 @@ public class ChunksProtection implements Listener {
                 Chunk chunk = event.getEntity().getLocation().getChunk();
 
                 if (ChunksManager.isChunkClaimed(chunk)) {
+                    if (isPlayerAnOperator(player)) {
+                        return;
+                    }
+
                     String land_id = ChunksManager.getChunkDetail(chunk, "land_id");
                     String land_owner_name = LandsManager.getLandDetailById(new Integer(land_id), "owner_name");
 
@@ -1009,6 +1081,10 @@ public class ChunksProtection implements Listener {
             if (ChunksManager.isChunkClaimed(chunk)) {
                 player = (Player) event.getRemover();
 
+                if (isPlayerAnOperator(player)) {
+                    return;
+                }
+
                 String land_id = ChunksManager.getChunkDetail(chunk, "land_id");
                 String land_owner_name = LandsManager.getLandDetailById(new Integer(land_id), "owner_name");
 
@@ -1028,6 +1104,10 @@ public class ChunksProtection implements Listener {
 
             if (ChunksManager.isChunkClaimed(chunk)) {
                 player = (Player) event.getRemover();
+
+                if (isPlayerAnOperator(player)) {
+                    return;
+                }
 
                 String land_id = ChunksManager.getChunkDetail(chunk, "land_id");
                 String land_owner_name = LandsManager.getLandDetailById(new Integer(land_id), "owner_name");
@@ -1051,6 +1131,10 @@ public class ChunksProtection implements Listener {
         Chunk chunk = player.getLocation().getChunk();
 
         if (ChunksManager.isChunkClaimed(chunk)) {
+            if (isPlayerAnOperator(player)) {
+                return;
+            }
+
             String land_id = ChunksManager.getChunkDetail(chunk, "land_id");
             String land_owner_name = LandsManager.getLandDetailById(new Integer(land_id), "owner_name");
 
@@ -1072,6 +1156,10 @@ public class ChunksProtection implements Listener {
         Chunk chunk = player.getLocation().getChunk();
 
         if (ChunksManager.isChunkClaimed(chunk)) {
+            if (isPlayerAnOperator(player)) {
+                return;
+            }
+
             String land_id = ChunksManager.getChunkDetail(chunk, "land_id");
             String land_owner_name = LandsManager.getLandDetailById(new Integer(land_id), "owner_name");
 
@@ -1118,6 +1206,10 @@ public class ChunksProtection implements Listener {
 
         if (vehicle != null) {
             if (entity instanceof Player && ChunksManager.isChunkClaimed(chunk)) {
+                if (isPlayerAnOperator((Player) entity)) {
+                    return;
+                }
+
                 String land_id = ChunksManager.getChunkDetail(chunk, "land_id");
                 String land_owner_name = LandsManager.getLandDetailById(new Integer(land_id), "owner_name");
 
@@ -1141,6 +1233,10 @@ public class ChunksProtection implements Listener {
 
         if (vehicle != null) {
             if (entity instanceof Player && ChunksManager.isChunkClaimed(chunk)) {
+                if (isPlayerAnOperator((Player) entity)) {
+                    return;
+                }
+
                 String land_id = ChunksManager.getChunkDetail(chunk, "land_id");
                 String land_owner_name = LandsManager.getLandDetailById(new Integer(land_id), "owner_name");
 
@@ -1163,6 +1259,10 @@ public class ChunksProtection implements Listener {
         Chunk chunk = player.getLocation().getChunk();
 
         if (ChunksManager.isChunkClaimed(chunk)) {
+            if (isPlayerAnOperator(player)) {
+                return;
+            }
+
             String land_id = ChunksManager.getChunkDetail(chunk, "land_id");
             String land_owner_name = LandsManager.getLandDetailById(new Integer(land_id), "owner_name");
 
@@ -1185,6 +1285,10 @@ public class ChunksProtection implements Listener {
 
         if (block.getType().name().contains("FENCE")) {
             if (ChunksManager.isChunkClaimed(chunk)) {
+                if (isPlayerAnOperator(player)) {
+                    return;
+                }
+
                 String land_id = ChunksManager.getChunkDetail(chunk, "land_id");
                 String land_owner_name = LandsManager.getLandDetailById(new Integer(land_id), "owner_name");
 
@@ -1208,6 +1312,10 @@ public class ChunksProtection implements Listener {
         Chunk chunk = block.getLocation().getChunk();
 
         if (ChunksManager.isChunkClaimed(chunk)) {
+            if (isPlayerAnOperator(player)) {
+                return;
+            }
+
             String land_id = ChunksManager.getChunkDetail(chunk, "land_id");
             String land_owner_name = LandsManager.getLandDetailById(new Integer(land_id), "owner_name");
 
@@ -1287,5 +1395,9 @@ public class ChunksProtection implements Listener {
 
             player_is_in_claimed_chunk_cache.put(player.getName(), false);
         }
+    }
+
+    private static boolean isPlayerAnOperator(Player player) {
+        return player.hasPermission("realmprotection.lands.__operator__");
     }
 }
