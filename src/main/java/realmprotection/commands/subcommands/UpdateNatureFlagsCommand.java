@@ -54,7 +54,7 @@ public class UpdateNatureFlagsCommand implements CommandExecutor {
                         return true;
                     }
 
-                    Boolean value;
+                    boolean value;
 
                     if (args[3].equalsIgnoreCase("true") || args[3].equalsIgnoreCase("1")) {
                         value = true;

@@ -22,7 +22,7 @@ public class DeleteRoleCommand implements CommandExecutor {
 
             String land_id = LandsManager.getLandDetail(player.getName(), "id");
 
-            Integer roles_counted = RolesManager.countRolesFromLand(new Integer(land_id));
+            int roles_counted = RolesManager.countRolesFromLand(new Integer(land_id));
 
             if (roles_counted <= 2) {
                 player.sendMessage(LoadConfig.commandString("delete_role.min_roles_reached"));

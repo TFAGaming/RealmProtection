@@ -122,7 +122,7 @@ public class RolesManager {
         }
     }
 
-    public static void createNewRole(Integer land_id, String role_name) {
+    public static void createNewRole(int land_id, String role_name) {
         String sql = "INSERT INTO land_roles (" +
                 "land_id, " +
                 "role_name, " +
@@ -139,7 +139,7 @@ public class RolesManager {
                 "permissions_frostwalker, " +
                 "permissions_shearentities, " +
                 "permissions_itemframes, " +
-                "permissions_generalinteractions, " + 
+                "permissions_generalinteractions, " +
                 "permissions_fencegates, " +
                 "permissions_buttons, " +
                 "permissions_levers, " +
@@ -190,7 +190,7 @@ public class RolesManager {
         }
     }
 
-    public static void deleteRole(Integer land_id, String role_name) {
+    public static void deleteRole(int land_id, String role_name) {
         String sql = "DELETE FROM land_roles WHERE land_id = ? AND role_name = ?";
 
         try {
@@ -209,7 +209,7 @@ public class RolesManager {
         }
     }
 
-    public static void deleteAllRolesFromLand(Integer land_id) {
+    public static void deleteAllRolesFromLand(int land_id) {
         String sql = "DELETE FROM land_roles WHERE land_id = ?";
 
         try {
@@ -227,9 +227,8 @@ public class RolesManager {
         }
     }
 
-    public static Integer countRolesFromLand(Integer land_id) {
+    public static int countRolesFromLand(int land_id) {
         String sql = "SELECT COUNT (*) AS count FROM land_roles WHERE land_id = ?";
-        Integer counted = 0;
 
         try {
             Connection connection = RealmProtection.database.getConnection();
@@ -240,8 +239,8 @@ public class RolesManager {
             ResultSet rs = statement.executeQuery();
 
             if (rs.next()) {
-                Integer count = rs.getInt("count");
-                counted = count;
+                int count = rs.getInt("count");
+                return count;
             }
 
             statement.close();
@@ -249,10 +248,10 @@ public class RolesManager {
             e.printStackTrace();
         }
 
-        return counted;
+        return 0;
     }
 
-    public static String getRoleDetail(Integer land_id, String role_name, String variable) {
+    public static String getRoleDetail(int land_id, String role_name, String variable) {
         if (land_id_and_role_name_cache.containsKey(land_id + "," + role_name)) {
             List<Object> data = land_id_and_role_name_cache.get(land_id + "," + role_name);
 
@@ -295,7 +294,7 @@ public class RolesManager {
         return null;
     }
 
-    public static boolean hasRole(Integer land_id, String role_name) {
+    public static boolean hasRole(int land_id, String role_name) {
         String sql = "SELECT COUNT (*) AS count FROM land_roles WHERE land_id = ? AND role_name COLLATE NOCASE = ?";
         boolean bool = false;
 
@@ -343,7 +342,7 @@ public class RolesManager {
         }
     }
 
-    public static boolean getPermissionValue(Integer land_id, String role_name, String permission_name) {
+    public static boolean getPermissionValue(int land_id, String role_name, String permission_name) {
         if (land_id_and_role_name_flags_cache.containsKey(land_id + "," + role_name)) {
             List<Boolean> data = land_id_and_role_name_flags_cache.get(land_id + "," + role_name);
 
@@ -429,8 +428,7 @@ public class RolesManager {
             ResultSet result = statement.executeQuery();
 
             if (result.next()) {
-                Boolean value = result.getBoolean("permissions_" + permission_name);
-
+                boolean value = result.getBoolean("permissions_" + permission_name);
                 return value;
             }
 
@@ -444,8 +442,7 @@ public class RolesManager {
         return false;
     }
 
-    public static void updatePermissionValue(Integer land_id, String role_name, String permission_name,
-            Boolean value) {
+    public static void updatePermissionValue(int land_id, String role_name, String permission_name, boolean value) {
         String sql = "UPDATE land_roles SET permissions_" + permission_name + "=" + value
                 + " WHERE land_id = ? AND role_name COLLATE NOCASE = ?";
 
@@ -468,7 +465,7 @@ public class RolesManager {
         return;
     }
 
-    public static void updateRoleName(Integer land_id, Integer role_id, String new_role_name) {
+    public static void updateRoleName(int land_id, int role_id, String new_role_name) {
         String sql = "UPDATE land_roles SET role_name='" + new_role_name + "' WHERE land_id = ? AND id = ?";
 
         try {
@@ -490,7 +487,7 @@ public class RolesManager {
         return;
     }
 
-    public static List<String> listAllRolesNames(Integer land_id) {
+    public static List<String> listAllRolesNames(int land_id) {
         String sql = "SELECT * FROM land_roles WHERE land_id = ?";
 
         List<String> rolenames = new ArrayList<>();
@@ -517,7 +514,7 @@ public class RolesManager {
         return rolenames;
     }
 
-    public static List<List<Object>> listEnabledAndDisabledFlagsForRole(Integer land_id, String role_name) {
+    public static List<List<Object>> listEnabledAndDisabledFlagsForRole(int land_id, String role_name) {
         String sql = "SELECT * FROM land_roles WHERE land_id = ? AND role_name COLLATE NOCASE = ?";
 
         List<List<Object>> allflags = new ArrayList<>();
@@ -545,7 +542,8 @@ public class RolesManager {
                 allflags.add(Lists.newArrayList("frostwalker", result.getBoolean("permissions_frostwalker")));
                 allflags.add(Lists.newArrayList("shearentities", result.getBoolean("permissions_shearentities")));
                 allflags.add(Lists.newArrayList("itemframes", result.getBoolean("permissions_itemframes")));
-                allflags.add(Lists.newArrayList("generalinteractions", result.getBoolean("permissions_generalinteractions")));
+                allflags.add(Lists.newArrayList("generalinteractions",
+                        result.getBoolean("permissions_generalinteractions")));
                 allflags.add(Lists.newArrayList("fencegates", result.getBoolean("permissions_fencegates")));
                 allflags.add(Lists.newArrayList("buttons", result.getBoolean("permissions_buttons")));
                 allflags.add(Lists.newArrayList("levers", result.getBoolean("permissions_levers")));

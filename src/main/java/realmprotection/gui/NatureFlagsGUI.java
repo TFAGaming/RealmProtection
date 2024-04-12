@@ -40,7 +40,7 @@ public class NatureFlagsGUI {
                     .guiStringList("nature_flags.content.flag_style.lore");
 
             for (String lore : natureflagslore) {
-                if ((Boolean) flag.get(1) == true) {
+                if ((boolean) flag.get(1) == true) {
                     flagButtonLore.add(ColoredString
                             .translate(lore
                                     .replace("%description%",

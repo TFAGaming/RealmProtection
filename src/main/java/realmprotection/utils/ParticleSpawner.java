@@ -1,4 +1,4 @@
-package realmprotection.managers;
+package realmprotection.utils;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.World;

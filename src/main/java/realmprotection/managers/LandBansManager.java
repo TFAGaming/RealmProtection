@@ -44,7 +44,7 @@ public class LandBansManager {
         }
     }
 
-    public static void banPlayerFromLand(Integer land_id, String player_name, String reason) {
+    public static void banPlayerFromLand(int land_id, String player_name, String reason) {
         String sql = "INSERT INTO land_bans (land_id, player_name, reason) VALUES (?, ?, ?)";
 
         try {
@@ -64,7 +64,7 @@ public class LandBansManager {
         }
     }
 
-    public static void unbanPlayerFromLand(Integer land_id, String player_name) {
+    public static void unbanPlayerFromLand(int land_id, String player_name) {
         String sql = "DELETE FROM land_bans WHERE land_id = ? AND player_name COLLATE NOCASE = ?";
 
         try {
@@ -83,7 +83,7 @@ public class LandBansManager {
         }
     }
 
-    public static String getBanReason(Integer land_id, String player_name) {
+    public static String getBanReason(int land_id, String player_name) {
         if (land_id_and_player_name_cache.containsKey(land_id + "," + player_name)) {
             List<Object> data = land_id_and_player_name_cache.get(land_id + "," + player_name);
 
@@ -116,11 +116,11 @@ public class LandBansManager {
         return "No reason was provided";
     }
 
-    public static boolean isPlayerBannedFromLand(Integer land_id, String player_name) {
+    public static boolean isPlayerBannedFromLand(int land_id, String player_name) {
         return land_id_and_player_name_cache.containsKey(land_id + "," + player_name);
     }
 
-    public static List<List<String>> listAllBannedPlayersData(Integer land_id) {
+    public static List<List<String>> listAllBannedPlayersData(int land_id) {
         String sql = "SELECT * FROM land_bans WHERE land_id = ?";
 
         List<List<String>> data = new ArrayList<>();
@@ -148,7 +148,7 @@ public class LandBansManager {
         return data;
     }
 
-    public static void deleteAllBannedPlayersFromLand(Integer land_id) {
+    public static void deleteAllBannedPlayersFromLand(int land_id) {
         String sql = "DELETE FROM land_bans WHERE land_id = ?";
 
         try {

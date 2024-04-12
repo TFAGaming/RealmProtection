@@ -107,7 +107,7 @@ public class ChunksManager {
         }
     }
 
-    public static void deleteAllChunksFromLand(Integer land_id) {
+    public static void deleteAllChunksFromLand(int land_id) {
         String sql = "DELETE FROM claimed_chunks WHERE land_id = ?";
 
         try {
@@ -255,7 +255,7 @@ public class ChunksManager {
         return null;
     }
 
-    public static int getChunksCountOfLand(Integer land_id) {
+    public static int getChunksCountOfLand(int land_id) {
         String sql = "SELECT COUNT (*) AS count FROM claimed_chunks WHERE land_id = ?";
 
         try {
@@ -288,7 +288,7 @@ public class ChunksManager {
         }
     }
 
-    public static List<List<Object>> listChunksFromLandId(Integer land_id) {
+    public static List<List<Object>> listChunksFromLandId(int land_id) {
         String sql = "SELECT * FROM claimed_chunks WHERE land_id = ?";
         List<List<Object>> chunks = Lists.newArrayList();
 
@@ -301,8 +301,8 @@ public class ChunksManager {
             ResultSet result = statement.executeQuery();
 
             while (result.next()) {
-                Integer chunk_x = new Integer(result.getString("chunk_x"));
-                Integer chunk_z = new Integer(result.getString("chunk_z"));
+                int chunk_x = new Integer(result.getString("chunk_x"));
+                int chunk_z = new Integer(result.getString("chunk_z"));
                 String chunk_world = result.getString("chunk_world");
 
                 chunks.add(Lists.newArrayList(chunk_x, chunk_z, chunk_world));
@@ -318,11 +318,11 @@ public class ChunksManager {
         return chunks;
     }
 
-    public static void findUnclaimedChunkPositionAndTeleportPlayer(Player player, Integer land_id) {
+    public static void findUnclaimedChunkPositionAndTeleportPlayer(Player player, int land_id) {
         Chunk chunk = player.getLocation().getChunk();
         World world = player.getWorld();
-        Integer chunkX = chunk.getX();
-        Integer chunkZ = chunk.getZ();
+        int chunkX = chunk.getX();
+        int chunkZ = chunk.getZ();
         String chunkWorldName = chunk.getWorld().getName();
 
         if (!player.getLocation().getWorld().getName().equals(chunkWorldName))
@@ -363,8 +363,8 @@ public class ChunksManager {
     public static boolean isThereNeighborChunkClaimed(Player player) {
         Chunk chunk = player.getLocation().getChunk();
         World world = player.getWorld();
-        Integer chunkX = chunk.getX();
-        Integer chunkZ = chunk.getZ();
+        int chunkX = chunk.getX();
+        int chunkZ = chunk.getZ();
         String chunkWorldName = chunk.getWorld().getName();
 
         if (!player.getLocation().getWorld().getName().equals(chunkWorldName))
@@ -410,17 +410,17 @@ public class ChunksManager {
         return false;
     }
 
-    public static void spawnParticlesAroundChunk(Player player, Integer land_id, double y, boolean is_owner,
+    public static void spawnParticlesAroundChunk(Player player, int land_id, double y, boolean is_owner,
             boolean is_trusted) {
         List<List<Object>> chunks = listChunksFromLandId(land_id);
 
         for (List<Object> chunk : chunks) {
             World world = player.getWorld();
-            Integer chunkX = (Integer) chunk.get(0);
-            Integer chunkZ = (Integer) chunk.get(1);
+            int chunkX = (Integer) chunk.get(0);
+            int chunkZ = (Integer) chunk.get(1);
             String chunkWorldName = (String) chunk.get(2);
-            Integer minX = chunkX * 16;
-            Integer minZ = chunkZ * 16;
+            int minX = chunkX * 16;
+            int minZ = chunkZ * 16;
 
             if (!player.getLocation().getWorld().getName().equals(chunkWorldName))
                 continue;
@@ -510,7 +510,7 @@ public class ChunksManager {
         }
     }
 
-    public static void startParticleTask(Player player, Integer land_id, double y, boolean is_owner,
+    public static void startParticleTask(Player player, int land_id, double y, boolean is_owner,
             boolean is_trusted) {
         BukkitTask task = Bukkit.getScheduler().runTaskTimer(RealmProtection.getPlugin(RealmProtection.class), () -> {
             spawnParticlesAroundChunk(player, land_id, player.getLocation().getY() + y, is_owner, is_trusted);
@@ -520,7 +520,7 @@ public class ChunksManager {
                 () -> cancelParticleTask(task), 60 * 20L);
     }
 
-    public static void cancelParticleTask(BukkitTask task) {
+    private static void cancelParticleTask(BukkitTask task) {
         if (task != null) {
             task.cancel();
             task = null;

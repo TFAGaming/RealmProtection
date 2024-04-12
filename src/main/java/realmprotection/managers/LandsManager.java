@@ -136,7 +136,7 @@ public class LandsManager {
         }
     }
 
-    public static void deleteLand(Integer land_id) {
+    public static void deleteLand(int land_id) {
         String sql = "DELETE FROM lands WHERE id = ?";
 
         try {
@@ -360,7 +360,7 @@ public class LandsManager {
         return null;
     }
 
-    public static boolean getFlagValue(Integer land_id, String flag_name) {
+    public static boolean getFlagValue(int land_id, String flag_name) {
         if (land_id_nature_flags_cache.containsKey("" + land_id)) {
             List<Boolean> data = land_id_nature_flags_cache.get("" + land_id);
 
@@ -399,8 +399,7 @@ public class LandsManager {
             ResultSet result = statement.executeQuery();
 
             if (result.next()) {
-                Boolean value = result.getBoolean("nature_" + flag_name);
-
+                boolean value = result.getBoolean("nature_" + flag_name);
                 return value;
             }
 
@@ -414,7 +413,7 @@ public class LandsManager {
         return false;
     }
 
-    public static void updateLandName(Integer land_id, String new_land_name) {
+    public static void updateLandName(int land_id, String new_land_name) {
         String sql = "UPDATE lands SET land_name='" + new_land_name + "' WHERE id = ?";
 
         try {
@@ -435,7 +434,7 @@ public class LandsManager {
         return;
     }
 
-    public static void updateSpawnLocation(Integer land_id, double location_x, double location_y, double location_z,
+    public static void updateSpawnLocation(int land_id, double location_x, double location_y, double location_z,
             String location_world) {
         String sql = "UPDATE lands SET location_x=" + location_x + ", location_y=" + location_y + ", location_z="
                 + location_z + ", location_world = '" + location_world + "' WHERE id = ?";
@@ -458,7 +457,7 @@ public class LandsManager {
         return;
     }
 
-    public static void updateBalance(Integer land_id, double new_balance) {
+    public static void updateBalance(int land_id, double new_balance) {
         String sql = "UPDATE lands SET balance=" + new_balance + " WHERE id = ?";
 
         try {
@@ -479,7 +478,7 @@ public class LandsManager {
         return;
     }
 
-    public static void updateNatureFlagValue(Integer land_id, String flag, Boolean value) {
+    public static void updateNatureFlagValue(int land_id, String flag, boolean value) {
         String sql = "UPDATE lands SET nature_" + flag + "=" + value + " WHERE id = ?";
 
         try {
@@ -541,7 +540,7 @@ public class LandsManager {
         return landnames;
     }
 
-    public static List<List<Object>> listEnabledAndDisabledFlagsForLand(Integer land_id) {
+    public static List<List<Object>> listEnabledAndDisabledFlagsForLand(int land_id) {
         List<List<Object>> allflags = new ArrayList<>();
 
         if (land_id_nature_flags_cache.containsKey("" + land_id)) {

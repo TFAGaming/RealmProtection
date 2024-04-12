@@ -65,9 +65,9 @@ import realmprotection.managers.ChunksManager;
 import realmprotection.managers.LandBansManager;
 import realmprotection.managers.LandMembersManager;
 import realmprotection.managers.LandsManager;
-import realmprotection.managers.ParticleSpawner;
 import realmprotection.utils.ColoredString;
 import realmprotection.utils.LoadConfig;
+import realmprotection.utils.ParticleSpawner;
 
 public class ChunksProtection implements Listener {
     // Block place
@@ -654,7 +654,7 @@ public class ChunksProtection implements Listener {
                 String land_id = ChunksManager.getChunkDetail(chunk, "land_id");
                 String land_owner_name = LandsManager.getLandDetailById(new Integer(land_id), "owner_name");
 
-                Boolean spawn_particle = false;
+                boolean spawn_particle = false;
 
                 if (material.name().contains("CHEST") || material.equals(Material.FURNACE)
                         || material.equals(Material.SMOKER) || material.equals(Material.BLAST_FURNACE)

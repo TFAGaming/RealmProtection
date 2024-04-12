@@ -29,6 +29,9 @@ permissions:
   realmprotection.lands.deposit:
     description: "Allow a player to run the command: /lands deposit"
     default: true
+  realmprotection.lands.delete:
+    description: "Allow a player to run the command: /lands delete"
+    default: true
   realmprotection.lands.help:
     description: "Allow a player to run the command: /lands help"
     default: true

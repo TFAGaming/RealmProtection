@@ -61,7 +61,7 @@ public class ClaimCommand implements CommandExecutor {
 
             String land_id = LandsManager.getLandDetail(player.getName(), "id");
 
-            Boolean hasOneChunkClaimedForLand = ChunksManager.isLandHaveAtLeastOneChunk(new Integer(land_id));
+            boolean hasOneChunkClaimedForLand = ChunksManager.isLandHaveAtLeastOneChunk(new Integer(land_id));
 
             ChunksManager.claimNewChunk(chunk, new Integer(land_id));
 

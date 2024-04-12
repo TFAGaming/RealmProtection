@@ -88,7 +88,7 @@ public class UpdateRoleFlagsCommand implements CommandExecutor {
                         return true;
                     }
 
-                    Boolean value;
+                    boolean value;
 
                     if (args[4].equalsIgnoreCase("true") || args[4].equalsIgnoreCase("1")) {
                         value = true;

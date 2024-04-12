@@ -45,7 +45,7 @@ public class LandMembersManager {
         }
     }
 
-    public static void invitePlayerToLand(Integer land_id, String player_name, String role) {
+    public static void invitePlayerToLand(int land_id, String player_name, String role) {
         String sql = "INSERT INTO land_members (land_id, member_name, role) VALUES (?, ?, ?)";
 
         try {
@@ -65,7 +65,7 @@ public class LandMembersManager {
         }
     }
 
-    public static void removePlayerFromLand(Integer land_id, String player_name) {
+    public static void removePlayerFromLand(int land_id, String player_name) {
         String sql = "DELETE FROM land_members WHERE land_id = ? AND member_name COLLATE NOCASE = ?";
 
         try {
@@ -84,7 +84,7 @@ public class LandMembersManager {
         }
     }
 
-    public static String getRoleNameFromPlayername(Integer land_id, String player_name) {
+    public static String getRoleNameFromPlayername(int land_id, String player_name) {
         if (land_id_and_member_name_cache.containsKey(land_id + "," + player_name)) {
             List<Object> data = land_id_and_member_name_cache.get(land_id + "," + player_name);
 
@@ -117,7 +117,7 @@ public class LandMembersManager {
         return LoadConfig.landRolesDefaultString("__DEFAULT_VISITOR_ROLE__");
     }
 
-    public static boolean isPlayerInTheLand(Integer land_id, String player_name) {
+    public static boolean isPlayerInTheLand(int land_id, String player_name) {
         return land_id_and_member_name_cache.containsKey(land_id + "," + player_name);
 
         /*
@@ -149,7 +149,7 @@ public class LandMembersManager {
          */
     }
 
-    public static boolean hasPlayerThePermissionToDo(Integer land_id, String player_name, String permission_name) {
+    public static boolean hasPlayerThePermissionToDo(int land_id, String player_name, String permission_name) {
         boolean isTrusted = isPlayerInTheLand(land_id, player_name);
 
         if (isTrusted) {
@@ -168,7 +168,7 @@ public class LandMembersManager {
         }
     }
 
-    public static List<List<String>> listAllMembersData(Integer land_id) {
+    public static List<List<String>> listAllMembersData(int land_id) {
         String sql = "SELECT * FROM land_members WHERE land_id = ?";
 
         List<List<String>> data = new ArrayList<>();
@@ -196,7 +196,7 @@ public class LandMembersManager {
         return data;
     }
 
-    public static int getMembersCountOfLand(Integer land_id) {
+    public static int getMembersCountOfLand(int land_id) {
         String sql = "SELECT COUNT (*) AS count FROM land_members WHERE land_id = ?";
 
         try {
@@ -219,7 +219,7 @@ public class LandMembersManager {
         return 0;
     }
 
-    public static void deleteAllMembersFromLand(Integer land_id) {
+    public static void deleteAllMembersFromLand(int land_id) {
         String sql = "DELETE FROM land_members WHERE land_id = ?";
 
         try {
