@@ -2,10 +2,12 @@
     <a href="https://github.com/TFAGaming/RealmProtection/releases/latest">
         <img src="https://img.shields.io/github/downloads/TFAGaming/RealmProtection/total?label=Downloads">
         <img src="https://img.shields.io/github/v/tag/TFAGaming/RealmProtection?label=Version">
+        <img src="https://img.shields.io/github/license/TFAGaming/RealmProtection?label=License">
+        <img src="https://img.shields.io/github/repo-size/TFAGaming/RealmProtection?label=Size">
     </a>
 </p>
 
-<img width="150" height="150" align="left" style="float: left; margin: 0 10px 10px 0;" alt="RealmProtection" src="icons/realmprotection-icon.png">
+<img width="150" height="150" align="left" style="float: left; margin: 0 10px 10px 0;" alt="RealmProtection" src="images/realmprotection-icon.png">
 
 <h3><u>RealmProtection</u></h3>
 
@@ -18,7 +20,7 @@ RealmProtection is a Minecraft plugin that allows you to claim a 16x16 block seg
 
 ## Features
 - Free, easy to use, and open-source.
-- **30+** role flags and **9** land nature flags.
+- **30+** role flags and **10** land nature flags.
 - Protects any claimed chunk from:
     - Lavacasts (lava and water).
     - Wilderness pistons.
@@ -40,9 +42,9 @@ RealmProtection is a Minecraft plugin that allows you to claim a 16x16 block seg
     - Damaging hostile/passive mobs (by the player or by an explosion).
     - Interacting with redstone (repeaters, comparators...).
     - And many more!
-- Economy implemented for land banks, required plugins:
-    - **Vault**: Essentials Economy API
-    - **Essentials**: Economy
+- External plugins APIs used:
+    - [VaultAPI](https://github.com/MilkBowl/VaultAPI) (used for Economy)
+    - [LuckPerms](https://github.com/LuckPerms/LuckPerms) (used for permissions)
 
 ## How to install
 
@@ -53,7 +55,8 @@ Once the download is finished, copy the **.jar** file, open the plugins folder f
 ## How does it work?
 Once you try to claim a chunk, the plugin will ask you to enter a new land name with the command arguments. This will make the plugin create a new land with its specific name and ID, and protect the chunk that the player (you) is standing in. When new land is created, there will be two default roles to maintain the land; The first one is the **Visitor** role, which has nearly every flag disabled by default. The role is given by default to any non-trusted player in the land. The second role is the **Member**, which has nearly every flag enabled by default. These two roles are uneditable, which means they cannot be deleted or renamed because they're plugin-based roles. You can create other roles, but these two specific roles cannot be changed.
 
-If you try to invite a player to the land, you have to give the player a role to join. Note that if the **Visitor** role has a flag enabled and the role that the trusted player got has the same flag but is disabled, the player won't have permission to use that flag in the land.
+> [!NOTE]
+> If you try to invite a player to the land, you have to give the player a role to join. Note that if the **Visitor** role has a flag enabled and the role that the trusted player got has the same flag but is disabled, the player won't have permission to use that flag in the land.
 
 ## Commands
 The main command for the plugin is `/land`, aliases: `/lands`. It's not `/realmprotection` because the command name is long, while `/land` is short and easy to remember.
@@ -93,6 +96,29 @@ The main command for the plugin is `/land`, aliases: `/lands`. It's not `/realmp
 - `{arg}`: An argument that could be required or optional.
 - `(arg)`: An optional argument.
 - `[arg]`: A required argument.
+
+## Frequently Asked Questions (FAQs)
+
+### Can I use this plugin with a Minecraft server version below the supported versions?
+
+No, we do not recommend you to do this. It **may** work, but there is a higher chance of getting a lot of errors in the console.
+
+### How do I configure the plugin commands permissions for player groups (using LuckPerms)?
+
+Run the command on the server `/lp editor` and open the link generated. Once the editor is ready, open the dropdown **GROUPS** and select the group you want to edit. Follow the instructions from the image below:
+
+<img src="./images/img1.png">
+
+> [!WARNING]  
+> The permission `realmprotection.lands.__operator__` is a dangerous permission that allows any player to bypass disabled flags in any land. Please use this permission for player groups with more trust on the server like Administrator or Owner.
+
+Once you finish configuring permissions, click on the **Save** button. If there is a popup with a command to use, copy the command and use it.
+
+### What's the difference between role flag and nature flag?
+
+A role flag is a permission that is allowed/disallowed for a specific land role. A nature flag is an allowed/disallowed feature or protection for a land, that is undetectable when a player performs it (examples: Wilderness pistons) or by nature (examples: Mob spawners).
+
+
 
 ## Contributing
 Feel free to fork the repository and submit a new pull request if you wish to contribute to this project.
