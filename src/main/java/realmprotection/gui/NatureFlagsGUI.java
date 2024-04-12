@@ -19,7 +19,7 @@ public class NatureFlagsGUI {
         String land_id = LandsManager.getLandDetail(player.getName(), "id");
         String land_name = LandsManager.getLandDetailById(new Integer(land_id), "land_name");
 
-        Inventory inventory = Bukkit.createInventory(player, 9 * 3,
+        Inventory inventory = Bukkit.createInventory(player, 9 * 4,
                 ColoredString.translate(
                         ColoredString.translate(LoadConfig.guiString("nature_flags.title"))));
 
@@ -78,9 +78,9 @@ public class NatureFlagsGUI {
                 ColoredString.translate(LoadConfig.generalString("gui.close_button.displayname")));
         closeButton.setItemMeta(closeButtonMeta);
 
-        inventory.setItem(18, landNameButton);
+        inventory.setItem(27, landNameButton);
         if (LoadConfig.generalBoolean("gui.close_button.enabled") == true) {
-            inventory.setItem(26, closeButton);
+            inventory.setItem(35, closeButton);
         }
 
         player.openInventory(inventory);

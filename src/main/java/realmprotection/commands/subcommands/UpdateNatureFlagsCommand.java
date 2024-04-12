@@ -36,6 +36,7 @@ public class UpdateNatureFlagsCommand implements CommandExecutor {
                     listofflags.add("tntblockdamage");
                     listofflags.add("respawnanchorblockdamage");
                     listofflags.add("pistonsfromwilderness");
+                    listofflags.add("dispensersfromwilderness");
                     listofflags.add("plantgrowth");
 
                     if (!listofflags.contains(args[2])) {

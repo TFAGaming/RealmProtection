@@ -56,6 +56,7 @@ public class Database {
                 "nature_tntblockdamage BOOLEAN NOT NULL, " +
                 "nature_respawnanchorblockdamage BOOLEAN NOT NULL, " +
                 "nature_pistonsfromwilderness BOOLEAN NOT NULL, " +
+                "nature_dispensersfromwilderness BOOLEAN NOT NULL, " +
                 "nature_plantgrowth BOOLEAN NOT NULL)");
 
         statementExecute("CREATE TABLE IF NOT EXISTS claimed_chunks (" +

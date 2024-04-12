@@ -171,6 +171,7 @@ messages:
         tntblockdamage: "TNT"
         respawnanchorblockdamage: "RESPAWN_ANCHOR"
         pistonsfromwilderness: "PISTON"
+        dispensersfromwilderness: "DISPENSER"
         plantgrowth: "OAK_SAPLING"
 
     flags_displayname:
@@ -219,6 +220,7 @@ messages:
         tntblockdamage: "TNT damage"
         respawnanchorblockdamage: "Respawn anchors damage"
         pistonsfromwilderness: "Wilderness pistons"
+        dispensersfromwilderness: "Wilderness dispensers"
         plantgrowth: "Plant growth"
 
     flags_description:
@@ -267,6 +269,7 @@ messages:
         tntblockdamage: "Allow TNT damage blocks in your land?"
         respawnanchorblockdamage: "Allow respawn anchors and beds (Nether) damage blocks in your land?"
         pistonsfromwilderness: "Allow blocks to be pushed/pulled by pistons to/from your land?"
+        dispensersfromwilderness: "Allow wilderness dispensers to dispense items to your land?"
         plantgrowth: "Allow any plant to grow in your land?"
 
   # Command messages

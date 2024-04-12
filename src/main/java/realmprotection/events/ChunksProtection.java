@@ -11,6 +11,8 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.data.BlockData;
+import org.bukkit.block.data.Directional;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Animals;
 import org.bukkit.entity.ArmorStand;
@@ -30,6 +32,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockBurnEvent;
+import org.bukkit.event.block.BlockDispenseEvent;
 import org.bukkit.event.block.BlockExplodeEvent;
 import org.bukkit.event.block.BlockFromToEvent;
 import org.bukkit.event.block.BlockGrowEvent;
@@ -655,6 +658,33 @@ public class ChunksProtection implements Listener {
             }
 
             return true;
+        }
+    }
+
+    // Dispensers
+    @EventHandler
+    public void onDispense(BlockDispenseEvent event) {
+        Block block = event.getBlock();
+        BlockData blockdata = event.getBlock().getBlockData();
+        Chunk targetChunk = block.getRelative(((Directional) blockdata).getFacing()).getLocation().getChunk();
+
+        if (!block.getLocation().getChunk().equals(targetChunk)) {
+            if (ChunksManager.isChunkClaimed(targetChunk)) {
+                String blockChunkOwnerName = ChunksManager.getOwnerByChunk(block.getLocation().getChunk());
+                String chunkOwnerName = ChunksManager.getOwnerByChunk(targetChunk);
+
+                if (blockChunkOwnerName != null && chunkOwnerName != null
+                        && blockChunkOwnerName.equalsIgnoreCase(chunkOwnerName)) {
+                    return;
+                }
+
+                String land_id = ChunksManager.getChunkDetail(targetChunk, "land_id");
+
+                if (land_id != null && !LandsManager.getFlagValue(new Integer(land_id), "dispensersfromwilderness")) {
+                    event.setCancelled(true);
+                }
+            }
+
         }
     }
 

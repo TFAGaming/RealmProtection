@@ -291,6 +291,7 @@ public class LandsCommand implements TabExecutor {
             arraylist.add("tntblockdamage");
             arraylist.add("respawnanchorblockdamage");
             arraylist.add("pistonsfromwilderness");
+            arraylist.add("dispensersfromwilderness");
             arraylist.add("plantgrowth");
 
             currentindex = 3;
