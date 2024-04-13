@@ -1427,7 +1427,7 @@ public class ChunksProtection implements Listener {
         }
     }
 
-    private static boolean isPlayerAnOperator(Player player) {
+    public static boolean isPlayerAnOperator(Player player) {
         return player.hasPermission("realmprotection.lands.__operator__");
     }
 }

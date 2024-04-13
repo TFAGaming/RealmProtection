@@ -8,6 +8,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import realmprotection.events.ChunksProtection;
 import realmprotection.managers.ChunksManager;
 import realmprotection.managers.LandMembersManager;
 import realmprotection.managers.LandsManager;
@@ -29,7 +30,7 @@ public class ClaimCommand implements CommandExecutor {
                 return true;
             }
 
-            if (ChunksManager.isThereNeighborChunkClaimed(player)) {
+            if (ChunksManager.isThereNeighborChunkClaimed(player) && !ChunksProtection.isPlayerAnOperator(player)) {
                 player.sendMessage(LoadConfig.commandString("claim.neighbor_chunk_claimed"));
                 return true;
             }

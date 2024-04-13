@@ -449,7 +449,7 @@ public class ChunksManager {
                 for (int x = minX; x < minX + 16; x++) {
                     player.spawnParticle(Particle.REDSTONE, x, y, minZ, 5, dustoptions);
                 }
-            } else {
+            }/* else {
                 String temp_land_id = ChunksManager.getChunkDetail(north, "land_id");
                 String temp_land_owner = LandsManager.getLandDetailById(new Integer(temp_land_id), "owner_name");
 
@@ -458,14 +458,14 @@ public class ChunksManager {
                         player.spawnParticle(Particle.REDSTONE, x, y, minZ, 5, dustoptions);
                     }
                 }
-            }
+            }*/
 
             Chunk south = world.getChunkAt(chunkX, chunkZ + 1);
             if (!ChunksManager.isChunkClaimed(south)) {
                 for (int x = minX; x < minX + 16; x++) {
                     player.spawnParticle(Particle.REDSTONE, x, y, minZ + 16, 5, dustoptions);
                 }
-            } else {
+            }/* else {
                 String temp_land_id = ChunksManager.getChunkDetail(south, "land_id");
                 String temp_land_owner = LandsManager.getLandDetailById(new Integer(temp_land_id), "owner_name");
 
@@ -474,14 +474,14 @@ public class ChunksManager {
                         player.spawnParticle(Particle.REDSTONE, x, y, minZ + 16, 5, dustoptions);
                     }
                 }
-            }
+            }*/
 
             Chunk west = world.getChunkAt(chunkX - 1, chunkZ);
             if (!ChunksManager.isChunkClaimed(west)) {
                 for (int z = minZ; z < minZ + 16; z++) {
                     player.spawnParticle(Particle.REDSTONE, minX, y, z, 5, dustoptions);
                 }
-            } else {
+            }/* else {
                 String temp_land_id = ChunksManager.getChunkDetail(west, "land_id");
                 String temp_land_owner = LandsManager.getLandDetailById(new Integer(temp_land_id), "owner_name");
 
@@ -490,14 +490,14 @@ public class ChunksManager {
                         player.spawnParticle(Particle.REDSTONE, minX, y, z, 5, dustoptions);
                     }
                 }
-            }
+            }*/
 
             Chunk east = world.getChunkAt(chunkX + 1, chunkZ);
             if (!ChunksManager.isChunkClaimed(east)) {
                 for (int z = minZ; z < minZ + 16; z++) {
                     player.spawnParticle(Particle.REDSTONE, minX + 16, y, z, 5, dustoptions);
                 }
-            } else {
+            }/* else {
                 String temp_land_id = ChunksManager.getChunkDetail(east, "land_id");
                 String temp_land_owner = LandsManager.getLandDetailById(new Integer(temp_land_id), "owner_name");
 
@@ -506,7 +506,7 @@ public class ChunksManager {
                         player.spawnParticle(Particle.REDSTONE, minX + 16, y, z, 5, dustoptions);
                     }
                 }
-            }
+            }*/
         }
     }
 

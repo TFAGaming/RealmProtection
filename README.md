@@ -118,7 +118,9 @@ Once you finish configuring permissions, click on the **Save** button. If there 
 
 A role flag is a permission that is allowed/disallowed for a specific land role. A nature flag is an allowed/disallowed feature or protection for a land, that is undetectable when a player performs it (examples: Wilderness pistons) or by nature (examples: Mob spawners).
 
+### Why must every player claim one chunk away from any land?
 
+To avoid any neighbor claiming right next to you and some other reasons to tell. Note that if a player has the permission `realmprotection.lands.__operator__`, they can claim chunks next to other claimed chunks.
 
 ## Contributing
 Feel free to fork the repository and submit a new pull request if you wish to contribute to this project.
