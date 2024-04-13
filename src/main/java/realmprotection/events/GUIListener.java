@@ -1,5 +1,8 @@
 package realmprotection.events;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -7,6 +10,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.ItemStack;
 
+import realmprotection.managers.LandStorageManager;
 import realmprotection.utils.ColoredString;
 import realmprotection.utils.LoadConfig;
 
@@ -54,49 +58,6 @@ public class GUIListener implements Listener {
                     break;
                 default:
                     break;
-                    /*
-                    int slot = event.getSlot();
-
-                    List<String> flags = new ArrayList<>();
-
-                    flags.add("breakblocks");
-                    flags.add("placeblocks");
-                    flags.add("containers");
-                    flags.add("redstone");
-                    flags.add("doors");
-                    flags.add("trapdoors");
-                    flags.add("editsigns");
-                    flags.add("emptybuckets");
-                    flags.add("fillbuckets");
-                    flags.add("harvestcrops");
-                    flags.add("frostwalker");
-                    flags.add("shearentities");
-                    flags.add("itemframes");
-                    flags.add("fencegates");
-                    flags.add("buttons");
-                    flags.add("levers");
-                    flags.add("pressureplates");
-                    flags.add("bells");
-                    flags.add("tripwires");
-                    flags.add("armorstands");
-                    flags.add("teleporttospawn");
-                    flags.add("throwenderpearls");
-                    flags.add("throwpotions");
-                    flags.add("damagehostilemobs");
-                    flags.add("damagepassivemobs");
-                    flags.add("pvp");
-                    flags.add("usecauldron");
-                    flags.add("pickupitems");
-                    flags.add("useanvil");
-                    flags.add("createfire");
-                    flags.add("usevehicles");
-
-                    String flag = flags.get(slot);
-
-                    String land_id = LandsManager.getLandDetail(event.getWhoClicked().getName(), "id");
-
-                    RolesManager.updatePermissionValue(new Integer(land_id), args[2], args[3], value);
-                    */
             }
         } else if (event.getView().getTitle()
                 .startsWith(ColoredString.translate(LoadConfig.guiString("nature_flags.title")))) {
@@ -121,6 +82,23 @@ public class GUIListener implements Listener {
 
     @EventHandler
     public void onClose(InventoryCloseEvent event) {
+        Player player = (Player) event.getPlayer();
+
+        if (event.getView().getTitle().equalsIgnoreCase(ColoredString.translate(LoadConfig.guiString("land_storage.title")))) {
+
+            ArrayList<ItemStack> pruneditems = new ArrayList<>();
+
+            Arrays.stream(event.getInventory().getContents())
+                    .filter(itemstack -> {
+                        if (itemstack == null) {
+                            return false;
+                        }
+                        return true;
+                    })
+                    .forEach(itemstack -> pruneditems.add(itemstack));
+
+            LandStorageManager.storeItems(pruneditems, player);
+        }
 
     }
 }

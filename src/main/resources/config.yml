@@ -177,6 +177,10 @@ messages:
         dispensersfromwilderness: "DISPENSER"
         plantgrowth: "OAK_SAPLING"
 
+    land_storage:
+      title: "&9Land storage"
+
+    # This is not a GUI, but in GUIs:
     flags_displayname:
       # Role flags
       role_flags:
@@ -226,6 +230,7 @@ messages:
         dispensersfromwilderness: "Wilderness dispensers"
         plantgrowth: "Plant growth"
 
+    # This is not a GUI, but in GUIs:
     flags_description:
       # Role flags
       role_flags:
@@ -347,7 +352,7 @@ messages:
         - ""
         - "&6The main command: &7/lands [subcommand]"
         - ""
-        - "&6Available sub commands: &7balance, ban, banlist, claim, deposit, delete, fly, help, info, leave, nature, rename, roles, setspawn, spawn, trust, unban, unclaim, untrust, view, withdraw"
+        - "&6Available sub commands: &7balance, ban, banlist, claim, deposit, delete, fly, help, info, leave, nature, rename, roles, setspawn, spawn, storage, trust, unban, unclaim, untrust, view, withdraw"
         - ""
         - "&6Permissions: &7realmprotection.lands.[subcommand]"
         - ""

@@ -59,6 +59,9 @@ permissions:
   realmprotection.lands.spawn:
     description: "Allow a player to run the command: /lands spawn"
     default: true
+  realmprotection.lands.storage:
+    description: "Allow a player to run the command: /lands storage"
+    default: true
   realmprotection.lands.trust:
     description: "Allow a player to run the command: /lands trust"
     default: true

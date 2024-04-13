@@ -28,6 +28,7 @@ import realmprotection.commands.subcommands.RenameCommand;
 import realmprotection.commands.subcommands.RenameRoleCommand;
 import realmprotection.commands.subcommands.SetSpawnCommand;
 import realmprotection.commands.subcommands.SpawnCommand;
+import realmprotection.commands.subcommands.StorageCommand;
 import realmprotection.commands.subcommands.TrustCommand;
 import realmprotection.commands.subcommands.UnbanCommand;
 import realmprotection.commands.subcommands.UnclaimCommand;
@@ -111,6 +112,9 @@ public class LandsCommand implements TabExecutor {
                     case "fly":
                         new FlyCommand().onCommand(sender, command, label, args);
                         break;
+                    case "storage":
+                        new StorageCommand().onCommand(sender, command, label, args);
+                        break;
                     default:
                         break;
                 }
@@ -176,6 +180,7 @@ public class LandsCommand implements TabExecutor {
             arraylist.add("banlist");
             arraylist.add("delete");
             arraylist.add("fly");
+            arraylist.add("storage");
 
             currentindex = 1;
         } else if (args.length == 2) {
