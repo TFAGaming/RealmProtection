@@ -77,6 +77,9 @@ messages:
       unclaimed:
         title: "&2Wilderness"
         subtitle: "&aRoam the wild!"
+
+    fly:
+      auto_disabled: "&8[&9RealmProtection&8] &cThe fly mode has been disabled since you are not in a claimed chunk anymore!"
   
   # GUIs configuration
   gui:
@@ -329,6 +332,13 @@ messages:
       input_not_double_or_integer: "&cNot a valid integer or double."
       deposited_success: "&aYou deposited &6$%amount%&a, now your land got &6$%land_balance%&a!"
 
+    fly:
+      land_not_found: "&cYou don't have a land!"
+      chunk_not_claimed: "&cYou cannot fly in an unclaimed chunk."
+      chunk_not_owned_by_player: "&cYou are not the owner of this land!"
+      fly_enabled_success: "&6Fly mode: &aEnabled"
+      fly_disabled_success: "&6Fly mode: &cDisabled"
+
     help:
       stringlist:
         # Note: Empty string OR "\n" = New line
@@ -337,7 +347,7 @@ messages:
         - ""
         - "&6The main command: &7/lands [subcommand]"
         - ""
-        - "&6Available sub commands: &7balance, ban, banlist, claim, deposit, delete, help, info, leave, nature, rename, roles, setspawn, spawn, trust, unban, unclaim, untrust, view, withdraw"
+        - "&6Available sub commands: &7balance, ban, banlist, claim, deposit, delete, fly, help, info, leave, nature, rename, roles, setspawn, spawn, trust, unban, unclaim, untrust, view, withdraw"
         - ""
         - "&6Permissions: &7realmprotection.lands.[subcommand]"
         - ""

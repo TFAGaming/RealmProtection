@@ -35,6 +35,9 @@ permissions:
   realmprotection.lands.delete:
     description: "Allow a player to run the command: /lands delete"
     default: true
+  realmprotection.lands.fly:
+    description: "Allow a player to run the command: /lands fly"
+    default: true
   realmprotection.lands.help:
     description: "Allow a player to run the command: /lands help"
     default: true

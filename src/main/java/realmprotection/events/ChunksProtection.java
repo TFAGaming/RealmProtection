@@ -1424,6 +1424,12 @@ public class ChunksProtection implements Listener {
             player.sendTitle(ColoredString.translate(title), ColoredString.translate(subtitle), 4, 60, 4);
 
             player_is_in_claimed_chunk_cache.put(player.getName(), false);
+
+            if (player.getAllowFlight() && !isPlayerAnOperator(player)) {
+                player.setAllowFlight(false);
+
+                player.sendMessage(ColoredString.translate(LoadConfig.generalString("fly.auto_disabled")));
+            }
         }
     }
 

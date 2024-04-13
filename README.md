@@ -90,6 +90,7 @@ The main command for the plugin is `/land`, aliases: `/lands`. It's not `/realmp
 - `/land ban [player name] (reason)`: Ban a player to enter to your land.
 - `/land unban [player name]`: Unban a player from your land.
 - `/land banlist`: Returns a list of banned players from the land.
+- `/land fly`: Toggle fly mode for a player, only allowed to fly in their own claimed chunks.
 - `/land delete [confirm]`: Deletes the land; Deletes every role, removes every trusted member and unclaims every claimed chunk (for the land).
 
 ### Arguments:

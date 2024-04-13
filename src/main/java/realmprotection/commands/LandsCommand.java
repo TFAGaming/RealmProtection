@@ -19,6 +19,7 @@ import realmprotection.commands.subcommands.ClaimCommand;
 import realmprotection.commands.subcommands.DeleteCommand;
 import realmprotection.commands.subcommands.DeleteRoleCommand;
 import realmprotection.commands.subcommands.DepositCommand;
+import realmprotection.commands.subcommands.FlyCommand;
 import realmprotection.commands.subcommands.HelpCommand;
 import realmprotection.commands.subcommands.InfoCommand;
 import realmprotection.commands.subcommands.LeaveCommand;
@@ -107,6 +108,9 @@ public class LandsCommand implements TabExecutor {
                     case "delete":
                         new DeleteCommand().onCommand(sender, command, label, args);
                         break;
+                    case "fly":
+                        new FlyCommand().onCommand(sender, command, label, args);
+                        break;
                     default:
                         break;
                 }
@@ -171,6 +175,7 @@ public class LandsCommand implements TabExecutor {
             arraylist.add("unban");
             arraylist.add("banlist");
             arraylist.add("delete");
+            arraylist.add("fly");
 
             currentindex = 1;
         } else if (args.length == 2) {
