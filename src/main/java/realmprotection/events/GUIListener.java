@@ -1,7 +1,7 @@
 package realmprotection.events;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.List;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -84,20 +84,24 @@ public class GUIListener implements Listener {
     public void onClose(InventoryCloseEvent event) {
         Player player = (Player) event.getPlayer();
 
-        if (event.getView().getTitle().equalsIgnoreCase(ColoredString.translate(LoadConfig.guiString("land_storage.title")))) {
+        if (event.getView().getTitle()
+                .equalsIgnoreCase(ColoredString.translate(LoadConfig.guiString("land_storage.title")))) {
+            List<List<Object>> prunedItems = new ArrayList<>();
 
-            ArrayList<ItemStack> pruneditems = new ArrayList<>();
+            for (int slot = 0; slot < event.getInventory().getSize(); slot++) {
+                ItemStack itemStack = event.getInventory().getItem(slot);
 
-            Arrays.stream(event.getInventory().getContents())
-                    .filter(itemstack -> {
-                        if (itemstack == null) {
-                            return false;
-                        }
-                        return true;
-                    })
-                    .forEach(itemstack -> pruneditems.add(itemstack));
+                if (itemStack != null) {
+                    List<Object> itemEntry = new ArrayList<>();
 
-            LandStorageManager.storeItems(pruneditems, player);
+                    itemEntry.add(itemStack);
+                    itemEntry.add(slot);
+
+                    prunedItems.add(itemEntry);
+                }
+            }
+
+            LandStorageManager.storeItems(prunedItems, player);
         }
 
     }

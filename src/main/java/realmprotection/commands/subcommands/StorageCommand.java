@@ -1,6 +1,6 @@
 package realmprotection.commands.subcommands;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -26,11 +26,20 @@ public class StorageCommand implements CommandExecutor {
                 return true;
             }
 
-            ArrayList<ItemStack> storageitems = LandStorageManager.getItems(player);
+            List<List<Object>> storedItems = LandStorageManager.getItems(player);
 
-            Inventory inventory = Bukkit.createInventory(player, 9 * 6, ColoredString.translate(LoadConfig.guiString("land_storage.title")));
+            Inventory inventory = Bukkit.createInventory(player, 9 * 6,
+                    ColoredString.translate(LoadConfig.guiString("land_storage.title")));
 
-            storageitems.stream().forEach(itemstack -> inventory.addItem(itemstack));
+            for (List<Object> itemEntry : storedItems) {
+                ItemStack itemStack = (ItemStack) itemEntry.get(0);
+                int slotIndex = (int) itemEntry.get(1);
+                if (slotIndex >= 0 && slotIndex < inventory.getSize()) {
+                    inventory.setItem(slotIndex, itemStack);
+                }
+            }
+
+            player.openInventory(inventory);
 
             player.openInventory(inventory);
 

@@ -18,10 +18,10 @@ import java.util.Base64;
 import java.util.List;
 
 public class LandStorageManager {
-    public static void storeItems(List<ItemStack> items, Player player) {
+    public static void storeItems(List<List<Object>> items, Player player) {
         PersistentDataContainer data = player.getPersistentDataContainer();
 
-        if (items.size() == 0) {
+        if (items.isEmpty()) {
             data.set(new NamespacedKey(RealmProtection.getPlugin(RealmProtection.class), "playerlandstorage"),
                     PersistentDataType.STRING, "");
         } else {
@@ -29,12 +29,14 @@ public class LandStorageManager {
                 ByteArrayOutputStream io = new ByteArrayOutputStream();
                 BukkitObjectOutputStream os = new BukkitObjectOutputStream(io);
 
-                os.writeInt(items.size());
-
-                for (int i = 0; i < items.size(); i++) {
-                    os.writeObject(items.get(i));
+                for (List<Object> item : items) {
+                    ItemStack itemStack = (ItemStack) item.get(0);
+                    int slotIndex = (int) item.get(1);
+                    os.writeInt(slotIndex);
+                    os.writeObject(itemStack);
                 }
 
+                os.writeInt(-1);
                 os.flush();
 
                 byte[] rawData = io.toByteArray();
@@ -50,10 +52,10 @@ public class LandStorageManager {
         }
     }
 
-    public static ArrayList<ItemStack> getItems(Player p) {
-        PersistentDataContainer data = p.getPersistentDataContainer();
+    public static List<List<Object>> getItems(Player player) {
+        PersistentDataContainer data = player.getPersistentDataContainer();
 
-        ArrayList<ItemStack> items = new ArrayList<>();
+        List<List<Object>> items = new ArrayList<>();
 
         String encodedItems = data.get(
                 new NamespacedKey(RealmProtection.getPlugin(RealmProtection.class), "playerlandstorage"),
@@ -66,10 +68,15 @@ public class LandStorageManager {
                 ByteArrayInputStream io = new ByteArrayInputStream(rawData);
                 BukkitObjectInputStream in = new BukkitObjectInputStream(io);
 
-                int itemsCount = in.readInt();
-
-                for (int i = 0; i < itemsCount; i++) {
-                    items.add((ItemStack) in.readObject());
+                while (true) {
+                    int slot = in.readInt(); // Read slot number
+                    if (slot == -1)
+                        break; // Exit loop if -1 is reached
+                    ItemStack itemStack = (ItemStack) in.readObject(); // Read item
+                    List<Object> itemEntry = new ArrayList<>();
+                    itemEntry.add(itemStack);
+                    itemEntry.add(slot);
+                    items.add(itemEntry);
                 }
 
                 in.close();
