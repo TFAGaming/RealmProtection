@@ -71,12 +71,11 @@ messages:
     
     player_chunk_entry:
       claimed:
-        title: "&9%land%"
-        subtitle: "&aOwned by: &6%owner%"
-        player_banned: "&cYou are banned from the land &6%land%&c with the reason: &7%reason%"
+        title: "&aYou entered to the land: &6%land% &9(Owner: &c%land_owner%&9)"
+        __others__:
+          player_banned: "&cYou are banned from the land &6%land%&c with the reason: &7%reason%"
       unclaimed:
-        title: "&2Wilderness"
-        subtitle: "&aRoam the wild!"
+        title: "&aYou are in &2wilderness&a!"
 
     fly:
       auto_disabled: "&8[&9RealmProtection&8] &cThe fly mode has been disabled since you are not in a claimed chunk anymore!"

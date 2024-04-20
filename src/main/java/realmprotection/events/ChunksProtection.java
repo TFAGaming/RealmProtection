@@ -64,6 +64,8 @@ import org.bukkit.event.vehicle.VehicleEnterEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.projectiles.ProjectileSource;
 
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.TextComponent;
 import realmprotection.managers.ChunksManager;
 import realmprotection.managers.LandBansManager;
 import realmprotection.managers.LandMembersManager;
@@ -1398,8 +1400,10 @@ public class ChunksProtection implements Listener {
 
                 player.sendMessage(
                         ColoredString.translate(
-                                LoadConfig.generalString("player_chunk_entry.claimed.player_banned").replace("%land%",
-                                        land_name).replace("%reason%", ban_reason)));
+                                LoadConfig.generalString("player_chunk_entry.claimed.__others__.player_banned")
+                                        .replace("%land%",
+                                                land_name)
+                                        .replace("%reason%", ban_reason)));
 
                 return;
             }
@@ -1407,11 +1411,9 @@ public class ChunksProtection implements Listener {
             String owner_name = LandsManager.getLandDetailById(new Integer(land_id), "owner_name");
 
             String title = LoadConfig.generalString("player_chunk_entry.claimed.title").replace("%land%",
-                    land_name);
-            String subtitle = LoadConfig.generalString("player_chunk_entry.claimed.subtitle").replace("%owner%",
-                    owner_name);
+                    land_name).replace("%land_owner%", owner_name);
 
-            player.sendTitle(ColoredString.translate(title), ColoredString.translate(subtitle), 4, 60, 4);
+            player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ColoredString.translate(title)));
 
             player_is_in_claimed_chunk_cache.put(player.getName(), true);
         } else {
@@ -1419,9 +1421,8 @@ public class ChunksProtection implements Listener {
                 return;
 
             String title = LoadConfig.generalString("player_chunk_entry.unclaimed.title");
-            String subtitle = LoadConfig.generalString("player_chunk_entry.unclaimed.subtitle");
 
-            player.sendTitle(ColoredString.translate(title), ColoredString.translate(subtitle), 4, 60, 4);
+            player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ColoredString.translate(title)));
 
             player_is_in_claimed_chunk_cache.put(player.getName(), false);
 
