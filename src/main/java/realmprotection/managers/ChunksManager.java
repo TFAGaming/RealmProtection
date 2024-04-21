@@ -3,8 +3,10 @@ package realmprotection.managers;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
@@ -24,6 +26,7 @@ import realmprotection.utils.LuckPermsAPI;
 
 public class ChunksManager {
     private static final Map<String, List<Object>> claimed_chunks_cache = new HashMap<>();
+    private static final Set<String> particles_players_cache = new HashSet<>();
 
     public static void cacheUpdateAll() {
         String sql = "SELECT * FROM claimed_chunks";
@@ -510,18 +513,25 @@ public class ChunksManager {
         }
     }
 
-    public static void startParticleTask(Player player, int land_id, double y, boolean is_owner,
-            boolean is_trusted) {
+    public static void startParticleTask(Player player, int land_id, double y, boolean is_owner, boolean is_trusted) {
+        if (particles_players_cache.contains(player.getName())) {
+            return;
+        }
+
+        particles_players_cache.add(player.getName());
+
         BukkitTask task = Bukkit.getScheduler().runTaskTimer(RealmProtection.getPlugin(RealmProtection.class), () -> {
             spawnParticlesAroundChunk(player, land_id, player.getLocation().getY() + y, is_owner, is_trusted);
         }, 0L, 15L);
 
         Bukkit.getScheduler().runTaskLater(RealmProtection.getPlugin(RealmProtection.class),
-                () -> cancelParticleTask(task), 60 * 20L);
+                () -> cancelParticleTask(task, player.getName()), 60 * 20L);
     }
 
-    private static void cancelParticleTask(BukkitTask task) {
+    private static void cancelParticleTask(BukkitTask task, String player_name) {
         if (task != null) {
+            particles_players_cache.remove(player_name);
+
             task.cancel();
             task = null;
         }
