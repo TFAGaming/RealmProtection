@@ -19,6 +19,9 @@ permissions:
   realmprotection.lands.__operator__:
     description: "Allow a player to bypass every disabled flag in any land"
     default: op
+  realmprotection.lands.accept:
+    description: "Allow a player to run the command: /lands accept"
+    default: true
   realmprotection.lands.balance:
     description: "Allow a player to run the command: /lands balance"
     default: true
@@ -45,6 +48,9 @@ permissions:
     default: true
   realmprotection.lands.info:
     description: "Allow a player to run the command: /lands info"
+    default: true
+  realmprotection.lands.invites:
+    description: "Allow a player to run the command: /lands invites"
     default: true
   realmprotection.lands.leave:
     description: "Allow a player to run the command: /lands leave"

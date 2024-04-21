@@ -32,9 +32,9 @@ public class LandMembersManager {
                 int member_id = result.getInt("id");
                 String land_id = result.getString("land_id");
                 String member_name = result.getString("member_name");
-                String role_name = result.getString("role");
+                String role_id = result.getString("role_id");
 
-                List<Object> data_land_member_cache = Lists.newArrayList(member_id, land_id, member_name, role_name);
+                List<Object> data_land_member_cache = Lists.newArrayList(member_id, land_id, member_name, role_id);
 
                 land_id_and_member_name_cache.put(land_id + "," + member_name, data_land_member_cache);
             }
@@ -45,8 +45,8 @@ public class LandMembersManager {
         }
     }
 
-    public static void invitePlayerToLand(int land_id, String player_name, String role) {
-        String sql = "INSERT INTO land_members (land_id, member_name, role) VALUES (?, ?, ?)";
+    public static void invitePlayerToLand(int land_id, String player_name, int role_id) {
+        String sql = "INSERT INTO land_members (land_id, member_name, role_id) VALUES (?, ?, ?)";
 
         try {
             Connection connection = RealmProtection.database.getConnection();
@@ -54,7 +54,7 @@ public class LandMembersManager {
 
             statement.setInt(1, land_id);
             statement.setString(2, player_name);
-            statement.setString(3, role);
+            statement.setInt(3, role_id);
 
             statement.executeUpdate();
             statement.close();
@@ -88,7 +88,10 @@ public class LandMembersManager {
         if (land_id_and_member_name_cache.containsKey(land_id + "," + player_name)) {
             List<Object> data = land_id_and_member_name_cache.get(land_id + "," + player_name);
 
-            return (String) data.get(3);
+            String role_id = (String) data.get(3);
+            String role_name = RolesManager.getRoleDetailById(land_id, new Integer(role_id), "role_name");
+
+            return role_name;
         }
 
         String sql = "SELECT * FROM land_members WHERE land_id = ? AND member_name COLLATE NOCASE = ?";
@@ -103,7 +106,9 @@ public class LandMembersManager {
             ResultSet rs = statement.executeQuery();
 
             if (rs.next()) {
-                String role_name = rs.getString("role");
+                String role_id = rs.getString("role_id");
+                String role_name = RolesManager.getRoleDetailById(land_id, new Integer(role_id), "role_name");
+
                 return role_name;
             }
 
@@ -119,47 +124,19 @@ public class LandMembersManager {
 
     public static boolean isPlayerInTheLand(int land_id, String player_name) {
         return land_id_and_member_name_cache.containsKey(land_id + "," + player_name);
-
-        /*
-         * String sql =
-         * "SELECT COUNT (*) AS count FROM land_members WHERE land_id = ? AND member_name = ?"
-         * ;
-         * boolean exists = false;
-         * 
-         * try {
-         * Connection connection = RealmProtection.database.getConnection();
-         * PreparedStatement statement = connection.prepareStatement(sql);
-         * 
-         * statement.setInt(1, land_id);
-         * statement.setString(2, player_name);
-         * 
-         * ResultSet rs = statement.executeQuery();
-         * 
-         * if (rs.next()) {
-         * int count = rs.getInt("count");
-         * exists = count > 0;
-         * }
-         * 
-         * statement.close();
-         * } catch (SQLException e) {
-         * e.printStackTrace();
-         * }
-         * 
-         * return exists;
-         */
     }
 
     public static boolean hasPlayerThePermissionToDo(int land_id, String player_name, String permission_name) {
         boolean isTrusted = isPlayerInTheLand(land_id, player_name);
 
         if (isTrusted) {
-            String role_name = getRoleNameFromPlayername(land_id, player_name);
+            String role_id = getRoleNameFromPlayername(land_id, player_name);
 
-            if (role_name == LoadConfig.landRolesDefaultString("__DEFAULT_VISITOR_ROLE__")) {
+            if (role_id == LoadConfig.landRolesDefaultString("__DEFAULT_VISITOR_ROLE__")) {
                 boolean value = RolesManager.getPermissionValue(land_id, LoadConfig.landRolesDefaultString("__DEFAULT_VISITOR_ROLE__"), permission_name);
                 return value;
             } else {
-                boolean value = RolesManager.getPermissionValue(land_id, role_name, permission_name);
+                boolean value = RolesManager.getPermissionValue(land_id, role_id, permission_name);
                 return value;
             }
         } else {
@@ -183,7 +160,9 @@ public class LandMembersManager {
 
             while (result.next()) {
                 String member_name = result.getString("member_name");
-                String role_name = result.getString("role");
+                String role_id = result.getString("role_id");
+
+                String role_name = RolesManager.getRoleDetailById(land_id, new Integer(role_id), "role_name");
 
                 data.add(Lists.newArrayList(member_name, role_name));
             }

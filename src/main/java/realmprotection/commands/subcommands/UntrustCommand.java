@@ -5,6 +5,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import realmprotection.managers.LandInvitesManager;
 import realmprotection.managers.LandMembersManager;
 import realmprotection.managers.LandsManager;
 import realmprotection.utils.LoadConfig;
@@ -27,8 +28,15 @@ public class UntrustCommand implements CommandExecutor {
 
             String land_id = LandsManager.getLandDetail(player.getName(), "id");
 
+            if (LandInvitesManager.isPlayerInvited(new Integer(land_id), args[1])) {
+                LandInvitesManager.removeInviteFromPlayer(new Integer(land_id), args[1]);
+
+                player.sendMessage(LoadConfig.commandString("untrust.player_invite_removed_success").replace("%player%", args[1]));
+                return true;
+            }
+
             if (!LandMembersManager.isPlayerInTheLand(new Integer(land_id), args[1])) {
-                player.sendMessage(LoadConfig.commandString("untrust.playername_not_found"));
+                player.sendMessage(LoadConfig.commandString("untrust.playername_not_trusted"));
                 return true;
             }
 

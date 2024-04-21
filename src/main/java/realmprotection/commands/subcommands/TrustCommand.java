@@ -6,6 +6,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import realmprotection.managers.LandInvitesManager;
 import realmprotection.managers.LandMembersManager;
 import realmprotection.managers.LandsManager;
 import realmprotection.managers.RolesManager;
@@ -42,6 +43,11 @@ public class TrustCommand implements CommandExecutor {
                 return true;
             }
 
+            if (LandInvitesManager.isPlayerInvited(new Integer(land_id), args[1])) {
+                player.sendMessage(LoadConfig.commandString("trust.playername_already_invited"));
+                return true;
+            }
+
             if (args[1].equalsIgnoreCase(land_owner_name)) {
                 player.sendMessage(LoadConfig.commandString("trust.playername_owner_of_land"));
                 return true;
@@ -57,14 +63,15 @@ public class TrustCommand implements CommandExecutor {
                 return true;
             }
 
-            if (args[2].equalsIgnoreCase("Visitor")) {
+            if (args[2].equalsIgnoreCase(LoadConfig.landRolesDefaultString("__DEFAULT_VISITOR_ROLE__"))) {
                 player.sendMessage(LoadConfig.commandString("trust.player_cannot_have_default_role"));
                 return true;
             }
 
-            LandMembersManager.invitePlayerToLand(new Integer(land_id), args[1], args[2]);
+            //LandMembersManager.invitePlayerToLand(new Integer(land_id), args[1], args[2]);
+            LandInvitesManager.invitePlayerToLand(new Integer(land_id), player.getName(), args[1], new Integer(RolesManager.getRoleDetail(new Integer(land_id), args[2], "id")));
 
-            player.sendMessage(LoadConfig.commandString("trust.player_trusted_success").replace("%player%", args[1]));
+            player.sendMessage(LoadConfig.commandString("trust.player_invited_success").replace("%player%", args[1]));
 
             return true;
         } else {

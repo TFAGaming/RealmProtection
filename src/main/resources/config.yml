@@ -281,6 +281,12 @@ messages:
 
   # Command messages
   commands:
+    accept:
+      missing_land_name: "&cYou must provide the land name!"
+      land_name_not_found: "&cThis land name doesn't exist."
+      player_not_invited: "&cYou are not invited to join this land."
+      player_trusted_success: "&aYou are now a member to the land!"
+
     balance:
       vault_plugin_not_ready: "&cUnable to run the command, Vault economy API is disabled in config.yml."
       land_not_found: "&cYou don't have a land!"
@@ -364,6 +370,16 @@ messages:
       chunk_wilderness: "&cThis is wilderness, you must use this command inside a claimed chunk!"
       land_name_not_found: "&cThis land name doesn't exist."
 
+    invites:
+      no_invites: "&aNobody invited you to join a land."
+      stringlist:
+        # Note: Empty string OR "\n" = New line
+        - "&9Land Invites | Player: &6%player%"
+        - ""
+        - ""
+        - "%repeatstylelist%"
+      repeatstyle: "&7- &6%land_name% (%land_id%)&a, invited by: &c%inviter%\n"
+
     leave:
       missing_land_name: "&cYou must provide the land name!"
       land_name_not_alphanumeric: "&cThe land name must be alphanumeric; Do not use colors or any other symbols."
@@ -413,12 +429,13 @@ messages:
       land_not_found: "&cYou don't have a land!"
       no_playername_provided: "&cYou must name the player to trust."
       playername_not_found: "&cThis playername doens't exist."
+      playername_already_invited: "&cThis playername is already invited!"
       playername_already_trusted: "&cThis playername is already in the land!"
       playername_owner_of_land: "&cYou are the owner of the land."
       no_role_provided: "&cYou must provide a role name for the player."
       role_not_found: "&cThis role was not found in your land."
       player_cannot_have_default_role: "&cThe player cannot have a default (Visitor) role!"
-      player_trusted_success: "&aYou trusted &6%player% &ato join the land!"
+      player_invited_success: "&aYou invited &6%player% &ato join the land! Wait until they accept the invite."
 
     unban:
       land_not_found: "&cYou don't have a land!"
@@ -437,9 +454,9 @@ messages:
     untrust:
       land_not_found: "&cYou don't have a land!"
       no_playername_provided: "&cYou must name the player to trust."
-      playername_not_found: "&cThis playername doens't exist."
+      player_invite_removed_success: "&cThe invite for &6%player% &chas been removed."
       playername_not_trusted: "&cThis playername is not in the land!"
-      player_untrusted_success: "&aYou untrusted &f%player% &ato leave the land."
+      player_untrusted_success: "&aYou untrusted &6%player% &ato leave the land."
 
     update_role_flags:
       land_not_found: "&cYou don't have a land!"
@@ -448,7 +465,7 @@ messages:
       not_valid_flag: "&cThis is not a valid flag."
       missing_boolean_value: "&cYou must provide a boolean value to update the role's flag (true/1 or false/0)."
       not_boolean_value: "&cYou must choose true/1 or false/0, not any kind of other values"
-      role_flag_updated_success: "&aThe flag &7%flag% &afor &f%role_name% &ahas been updated to &6%new_value%&a."
+      role_flag_updated_success: "&aThe flag &7%flag% &afor &9%role_name% &ahas been updated to &6%new_value%&a."
 
     update_nature_flags:
       land_not_found: "&cYou don't have a land!"

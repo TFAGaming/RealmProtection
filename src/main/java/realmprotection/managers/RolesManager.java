@@ -20,6 +20,7 @@ import realmprotection.utils.LuckPermsAPI;
 public class RolesManager {
     private static final Map<String, List<Object>> role_id_cache = new HashMap<>();
     private static final Map<String, List<Object>> land_id_and_role_name_cache = new HashMap<>();
+    private static final Map<String, List<Object>> land_id_and_role_id_cache = new HashMap<>();
     private static final Map<String, List<Boolean>> role_id_flags_cache = new HashMap<>();
     private static final Map<String, List<Boolean>> land_id_and_role_name_flags_cache = new HashMap<>();
 
@@ -29,6 +30,7 @@ public class RolesManager {
         try {
             role_id_cache.clear();
             land_id_and_role_name_cache.clear();
+            land_id_and_role_id_cache.clear();
             role_id_flags_cache.clear();
             land_id_and_role_name_flags_cache.clear();
 
@@ -112,6 +114,7 @@ public class RolesManager {
 
                 role_id_cache.put("" + role_id, data_role_cache);
                 land_id_and_role_name_cache.put(land_id + "," + role_name, data_role_cache);
+                land_id_and_role_id_cache.put(land_id + "," + role_id, data_role_cache);
                 role_id_flags_cache.put("" + role_id, data_role_id_flags_cache);
                 land_id_and_role_name_flags_cache.put(land_id + "," + role_name, data_role_id_flags_cache);
             }
@@ -275,6 +278,49 @@ public class RolesManager {
 
             statement.setInt(1, land_id);
             statement.setString(2, role_name);
+
+            ResultSet result = statement.executeQuery();
+
+            if (result.next()) {
+                String string = result.getString(variable);
+
+                return string;
+            }
+
+            statement.close();
+
+            cacheUpdateAll();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public static String getRoleDetailById(int land_id, int role_id, String variable) {
+        if (land_id_and_role_id_cache.containsKey(land_id + "," + role_id)) {
+            List<Object> data = land_id_and_role_id_cache.get(land_id + "," + role_id);
+
+            switch (variable) {
+                case "id":
+                    return "" + data.get(0);
+                case "land_id":
+                    return "" + data.get(1);
+                case "role_name":
+                    return "" + data.get(2);
+                default:
+                    return null;
+            }
+        }
+
+        String sql = "SELECT * FROM land_roles WHERE land_id = ? AND role_id = ?";
+
+        try {
+            Connection connection = RealmProtection.database.getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql);
+
+            statement.setInt(1, land_id);
+            statement.setInt(2, role_id);
 
             ResultSet result = statement.executeQuery();
 

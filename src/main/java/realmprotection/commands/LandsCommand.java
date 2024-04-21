@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
 import realmprotection.commands.subcommands.ViewCommand;
 import realmprotection.commands.subcommands.WithdrawCommand;
 import realmprotection.RealmProtection;
+import realmprotection.commands.subcommands.AcceptCommand;
 import realmprotection.commands.subcommands.BalanceCommand;
 import realmprotection.commands.subcommands.BanCommand;
 import realmprotection.commands.subcommands.BanlistCommand;
@@ -22,6 +23,7 @@ import realmprotection.commands.subcommands.DepositCommand;
 import realmprotection.commands.subcommands.FlyCommand;
 import realmprotection.commands.subcommands.HelpCommand;
 import realmprotection.commands.subcommands.InfoCommand;
+import realmprotection.commands.subcommands.InvitesCommand;
 import realmprotection.commands.subcommands.LeaveCommand;
 import realmprotection.commands.subcommands.NewRoleCommand;
 import realmprotection.commands.subcommands.RenameCommand;
@@ -115,6 +117,12 @@ public class LandsCommand implements TabExecutor {
                     case "storage":
                         new StorageCommand().onCommand(sender, command, label, args);
                         break;
+                    case "accept":
+                        new AcceptCommand().onCommand(sender, command, label, args);
+                        break;
+                    case "invites":
+                        new InvitesCommand().onCommand(sender, command, label, args);
+                        break;
                     default:
                         break;
                 }
@@ -181,6 +189,8 @@ public class LandsCommand implements TabExecutor {
             arraylist.add("delete");
             arraylist.add("fly");
             arraylist.add("storage");
+            arraylist.add("accept");
+            arraylist.add("invites");
 
             currentindex = 1;
         } else if (args.length == 2) {
@@ -249,6 +259,15 @@ public class LandsCommand implements TabExecutor {
                     break;
                 case "delete":
                     arraylist.add("confirm");
+                    break;
+                case "fly":
+                    break;
+                case "storage":
+                    break;
+                case "accept":
+                    arraylist = LandsManager.listAllLandNames();
+                    break;
+                case "invites":
                     break;
                 default:
                     break;

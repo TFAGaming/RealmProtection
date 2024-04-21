@@ -5,6 +5,7 @@ import java.sql.*;
 import realmprotection.RealmProtection;
 import realmprotection.managers.ChunksManager;
 import realmprotection.managers.LandBansManager;
+import realmprotection.managers.LandInvitesManager;
 import realmprotection.managers.LandMembersManager;
 import realmprotection.managers.LandsManager;
 import realmprotection.managers.RolesManager;
@@ -108,7 +109,7 @@ public class Database {
                 "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "land_id INTEGER NOT NULL," +
                 "member_name TEXT NOT NULL," +
-                "role TEXT NOT NULL)");
+                "role_id INTEGER NOT NULL)");
 
         statementExecute("CREATE TABLE IF NOT EXISTS land_bans (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +
@@ -116,9 +117,17 @@ public class Database {
                 "player_name INTEGER NOT NULL," +
                 "reason TEXT NOT NULL)");
 
+        statementExecute("CREATE TABLE IF NOT EXISTS land_invites (" +
+                "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "land_id INTEGER NOT NULL," +
+                "inviter_name TEXT NOT NULL," +
+                "player_name TEXT NOT NULL," +
+                "role_id INTEGER NOT NULL)");
+
         ChunksManager.cacheUpdateAll();
         LandBansManager.cacheUpdateAll();
         LandMembersManager.cacheUpdateAll();
+        LandInvitesManager.cacheUpdateAll();
         LandsManager.cacheUpdateAll();
         RolesManager.cacheUpdateAll();
     }
