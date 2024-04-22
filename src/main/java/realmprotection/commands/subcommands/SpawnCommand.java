@@ -54,11 +54,14 @@ public class SpawnCommand implements CommandExecutor {
             String land_x = LandsManager.getLandDetailByLandName(args[1], "location_x");
             String land_y = LandsManager.getLandDetailByLandName(args[1], "location_y");
             String land_z = LandsManager.getLandDetailByLandName(args[1], "location_z");
+            String land_yaw = LandsManager.getLandDetailByLandName(args[1], "location_yaw");
 
             World world = Bukkit.getWorld(land_world);
 
             Location location = new Location(world, Double.parseDouble(land_x), Double.parseDouble(land_y),
                     Double.parseDouble(land_z));
+
+            location.setYaw(Float.parseFloat(land_yaw));
 
             Block newblock = location.getBlock();
             Block underplayer = newblock.getRelative(0, -1, 0);

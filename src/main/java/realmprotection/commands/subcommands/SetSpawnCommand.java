@@ -39,8 +39,9 @@ public class SetSpawnCommand implements CommandExecutor {
             double player_x = player.getLocation().getX();
             double player_y = player.getLocation().getY();
             double player_z = player.getLocation().getZ();
+            float player_yaw = player.getLocation().getYaw();
 
-            LandsManager.updateSpawnLocation(new Integer(land_id), player_x, player_y, player_z, player_world);
+            LandsManager.updateSpawnLocation(new Integer(land_id), player_x, player_y, player_z, player_world, player_yaw);
 
             player.sendMessage(LoadConfig.commandString("set_spawn.spawn_set_success").replace("%x%", String.format("%.2f", player_x)).replace("%y%", String.format("%.2f", player_y)).replace("%z%", String.format("%.2f", player_z)));
 

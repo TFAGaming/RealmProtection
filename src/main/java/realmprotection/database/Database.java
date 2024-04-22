@@ -47,6 +47,7 @@ public class Database {
                 "location_y REAL NOT NULL, " +
                 "location_z REAL NOT NULL, " +
                 "location_world TEXT NOT NULL, " +
+                "location_yaw REAL NOT NULL, " +
                 "created_at BIGINT NOT NULL, " +
                 "balance REAL NOT NULL, " +
                 "nature_hostilemobsspawn BOOLEAN NOT NULL, " +

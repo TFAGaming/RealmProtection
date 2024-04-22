@@ -357,7 +357,7 @@ messages:
         - ""
         - "&6The main command: &7/lands [subcommand]"
         - ""
-        - "&6Available sub commands: &7balance, ban, banlist, claim, deposit, delete, fly, help, info, leave, nature, rename, roles, setspawn, spawn, storage, trust, unban, unclaim, untrust, view, withdraw"
+        - "&6Available sub commands: &7accept, balance, ban, banlist, claim, deposit, delete, fly, help, info, invites, leave, nature, rename, roles, setspawn, spawn, storage, trust, unban, unclaim, untrust, view, withdraw"
         - ""
         - "&6Permissions: &7realmprotection.lands.[subcommand]"
         - ""

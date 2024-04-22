@@ -43,6 +43,7 @@ public class LandsManager {
                 double location_y = result.getDouble("location_y");
                 double location_z = result.getDouble("location_z");
                 String location_world = result.getString("location_world");
+                float location_yaw = result.getFloat("location_yaw");
                 long created_at = result.getLong("created_at");
                 double balance = result.getDouble("balance");
 
@@ -58,7 +59,7 @@ public class LandsManager {
                 boolean nature_plantgrowth = result.getBoolean("nature_plantgrowth");
 
                 List<Object> data_land_cache = Lists.newArrayList(land_id, land_name, owner_name,
-                        location_x, location_y, location_z, location_world, created_at, balance);
+                        location_x, location_y, location_z, location_world, created_at, balance, location_yaw);
                 List<Boolean> data_land_id_nature_flags_cache = Lists.newArrayList(
                         nature_hostilemobsspawn,
                         nature_passivemobsspawn,
@@ -93,6 +94,7 @@ public class LandsManager {
                 "location_x, " +
                 "location_y, " +
                 "location_z, " +
+                "location_yaw, " +
                 "balance, " +
                 "nature_hostilemobsspawn, " +
                 "nature_passivemobsspawn, " +
@@ -104,7 +106,7 @@ public class LandsManager {
                 "nature_pistonsfromwilderness, " +
                 "nature_dispensersfromwilderness, " +
                 "nature_plantgrowth " +
-                ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
         try {
             Connection connection = RealmProtection.database.getConnection();
@@ -120,16 +122,17 @@ public class LandsManager {
             statement.setDouble(6, location_y);
             statement.setDouble(7, location_z);
             statement.setDouble(8, 0);
-            statement.setBoolean(9, true); // Hostile mob spawn
-            statement.setBoolean(10, true); // Passive mob spawn
-            statement.setBoolean(11, true); // Leaves decay
-            statement.setBoolean(12, false); // Fire spread
-            statement.setBoolean(13, false); // Liquid flow
-            statement.setBoolean(14, false); // TnT block damage
-            statement.setBoolean(15, false); // Anchor block damage
-            statement.setBoolean(16, false); // Pistons damage
-            statement.setBoolean(17, false); // Dispensers damage
-            statement.setBoolean(18, true); // Plant growth
+            statement.setDouble(9, 0);
+            statement.setBoolean(10, true); // Hostile mob spawn
+            statement.setBoolean(11, true); // Passive mob spawn
+            statement.setBoolean(12, true); // Leaves decay
+            statement.setBoolean(13, false); // Fire spread
+            statement.setBoolean(14, false); // Liquid flow
+            statement.setBoolean(15, false); // TnT block damage
+            statement.setBoolean(16, false); // Anchor block damage
+            statement.setBoolean(17, false); // Pistons damage
+            statement.setBoolean(18, false); // Dispensers damage
+            statement.setBoolean(19, true); // Plant growth
 
             statement.execute();
             statement.close();
@@ -231,6 +234,8 @@ public class LandsManager {
                     return "" + data.get(7);
                 case "balance":
                     return "" + data.get(8);
+                case "location_yaw":
+                    return "" + data.get(9);
                 default:
                     return null;
             }
@@ -283,6 +288,8 @@ public class LandsManager {
                     return "" + data.get(7);
                 case "balance":
                     return "" + data.get(8);
+                case "location_yaw":
+                    return "" + data.get(9);
                 default:
                     return null;
             }
@@ -335,6 +342,8 @@ public class LandsManager {
                     return "" + data.get(7);
                 case "balance":
                     return "" + data.get(8);
+                case "location_yaw":
+                    return "" + data.get(9);
                 default:
                     return null;
             }
@@ -441,9 +450,9 @@ public class LandsManager {
     }
 
     public static void updateSpawnLocation(int land_id, double location_x, double location_y, double location_z,
-            String location_world) {
+            String location_world, float player_yaw) {
         String sql = "UPDATE lands SET location_x=" + location_x + ", location_y=" + location_y + ", location_z="
-                + location_z + ", location_world = '" + location_world + "' WHERE id = ?";
+                + location_z + ", location_world = '" + location_world + "', location_yaw=" + player_yaw + " WHERE id = ?";
 
         try {
             Connection connection = RealmProtection.database.getConnection();
@@ -589,7 +598,8 @@ public class LandsManager {
                         result.getBoolean("nature_respawnanchorblockdamage")));
                 allflags.add(
                         Lists.newArrayList("pistonsfromwilderness", result.getBoolean("nature_pistonsfromwilderness")));
-                allflags.add(Lists.newArrayList("dispensersfromwilderness", result.getBoolean("nature_dispensersfromwilderness")));
+                allflags.add(Lists.newArrayList("dispensersfromwilderness",
+                        result.getBoolean("nature_dispensersfromwilderness")));
                 allflags.add(Lists.newArrayList("plantgrowth", result.getBoolean("nature_plantgrowth")));
             }
 
