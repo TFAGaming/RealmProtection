@@ -325,38 +325,8 @@ public class LandsCommand implements TabExecutor {
 
             currentindex = 3;
         } else if (args.length == 4 && args[0].equalsIgnoreCase("roles") && args[1].equalsIgnoreCase("flags")) {
-            arraylist.add("breakblocks");
-            arraylist.add("placeblocks");
-            arraylist.add("containers");
-            arraylist.add("redstone");
-            arraylist.add("doors");
-            arraylist.add("trapdoors");
-            arraylist.add("editsigns");
-            arraylist.add("emptybuckets");
-            arraylist.add("fillbuckets");
-            arraylist.add("harvestcrops");
-            arraylist.add("frostwalker");
-            arraylist.add("shearentities");
-            arraylist.add("itemframes");
-            arraylist.add("generalinteractions");
-            arraylist.add("fencegates");
-            arraylist.add("buttons");
-            arraylist.add("levers");
-            arraylist.add("pressureplates");
-            arraylist.add("bells");
-            arraylist.add("tripwires");
-            arraylist.add("armorstands");
-            arraylist.add("teleporttospawn");
-            arraylist.add("throwenderpearls");
-            arraylist.add("throwpotions");
-            arraylist.add("damagehostilemobs");
-            arraylist.add("damagepassivemobs");
-            arraylist.add("pvp");
-            arraylist.add("usecauldron");
-            arraylist.add("pickupitems");
-            arraylist.add("useanvil");
-            arraylist.add("createfire");
-            arraylist.add("usevehicles");
+            
+            arraylist = RolesManager.listAllPermissions();
 
             currentindex = 4;
         } else if (args.length == 4 && args[0].equalsIgnoreCase("nature") && args[1].equalsIgnoreCase("flags")) {

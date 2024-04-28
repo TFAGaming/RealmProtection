@@ -16,6 +16,7 @@ import org.bukkit.block.data.Directional;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Animals;
 import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Cat;
 import org.bukkit.entity.Creeper;
 import org.bukkit.entity.EnderCrystal;
 import org.bukkit.entity.Entity;
@@ -25,8 +26,11 @@ import org.bukkit.entity.IronGolem;
 import org.bukkit.entity.Mob;
 import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Sheep;
 import org.bukkit.entity.TNTPrimed;
 import org.bukkit.entity.Vehicle;
+import org.bukkit.entity.Villager;
+import org.bukkit.entity.Wolf;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
@@ -59,8 +63,11 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerShearEntityEvent;
 import org.bukkit.event.player.PlayerTakeLecternBookEvent;
+import org.bukkit.event.player.PlayerUnleashEntityEvent;
 import org.bukkit.event.vehicle.VehicleDamageEvent;
 import org.bukkit.event.vehicle.VehicleEnterEvent;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.projectiles.ProjectileSource;
 
@@ -137,8 +144,33 @@ public class ChunksProtection implements Listener {
     // Containers
     @EventHandler
     public void onInventoryOpen(InventoryOpenEvent event) {
+        Inventory inventory = event.getInventory();
+        InventoryHolder holder = inventory.getHolder();
 
-        if (event.getInventory().getHolder() instanceof org.bukkit.entity.ChestBoat
+        if (holder instanceof Villager) {
+            Player player = (Player) event.getPlayer();
+            Villager villager = (Villager) holder;
+            Chunk chunk = villager.getLocation().getChunk();
+
+            if (ChunksManager.isChunkClaimed(chunk)) {
+                if (isPlayerAnOperator(player)) {
+                    return;
+                }
+
+                String land_id = ChunksManager.getChunkDetail(chunk, "land_id");
+                String land_owner_name = LandsManager.getLandDetailById(new Integer(land_id),
+                        "owner_name");
+
+                if (!player.getName().equalsIgnoreCase(land_owner_name)
+                        && !LandMembersManager.hasPlayerThePermissionToDo(new Integer(land_id),
+                                player.getName(),
+                                "tradewithvillagers")) {
+                    event.setCancelled(true);
+                    realmprotection.RealmProtection._sendMessageWithTimeout(player, "tradewithvillagers",
+                            chunk);
+                }
+            }
+        } else if (event.getInventory().getHolder() instanceof org.bukkit.entity.ChestBoat
                 || event.getInventory().getHolder() instanceof org.bukkit.entity.ChestedHorse
                 || event.getInventory().getHolder() instanceof org.bukkit.entity.minecart.StorageMinecart
                 || event.getInventory().getHolder() instanceof org.bukkit.entity.minecart.HopperMinecart) {
@@ -1288,7 +1320,8 @@ public class ChunksProtection implements Listener {
     @EventHandler
     public void onPlayerLeashEntity(PlayerLeashEntityEvent event) {
         Player player = (Player) event.getPlayer();
-        Chunk chunk = player.getLocation().getChunk();
+        Entity entity = event.getEntity();
+        Chunk chunk = entity.getLocation().getChunk();
 
         if (ChunksManager.isChunkClaimed(chunk)) {
             if (isPlayerAnOperator(player)) {
@@ -1300,9 +1333,9 @@ public class ChunksProtection implements Listener {
 
             if (!player.getName().equalsIgnoreCase(land_owner_name)
                     && !LandMembersManager.hasPlayerThePermissionToDo(new Integer(land_id), player.getName(),
-                            "generalinteractions")) {
+                            "leashmobs")) {
                 event.setCancelled(true);
-                realmprotection.RealmProtection._sendMessageWithTimeout(player, "generalinteractions", chunk);
+                realmprotection.RealmProtection._sendMessageWithTimeout(player, "leashmobs", chunk);
 
                 return;
             }
@@ -1326,12 +1359,37 @@ public class ChunksProtection implements Listener {
 
                 if (!player.getName().equalsIgnoreCase(land_owner_name)
                         && !LandMembersManager.hasPlayerThePermissionToDo(new Integer(land_id), player.getName(),
-                                "generalinteractions")) {
+                                "leashmobs")) {
                     event.setCancelled(true);
-                    realmprotection.RealmProtection._sendMessageWithTimeout(player, "generalinteractions", chunk);
+                    realmprotection.RealmProtection._sendMessageWithTimeout(player, "leashmobs", chunk);
 
                     return;
                 }
+            }
+        }
+    }
+
+    @EventHandler
+    public void onPlayerUnleashEntity(PlayerUnleashEntityEvent event) {
+        Player player = (Player) event.getPlayer();
+        Entity entity = event.getEntity();
+        Chunk chunk = entity.getLocation().getChunk();
+
+        if (ChunksManager.isChunkClaimed(chunk)) {
+            if (isPlayerAnOperator(player)) {
+                return;
+            }
+
+            String land_id = ChunksManager.getChunkDetail(chunk, "land_id");
+            String land_owner_name = LandsManager.getLandDetailById(new Integer(land_id), "owner_name");
+
+            if (!player.getName().equalsIgnoreCase(land_owner_name)
+                    && !LandMembersManager.hasPlayerThePermissionToDo(new Integer(land_id), player.getName(),
+                            "leashmobs")) {
+                event.setCancelled(true);
+                realmprotection.RealmProtection._sendMessageWithTimeout(player, "leashmobs", chunk);
+
+                return;
             }
         }
     }
@@ -1358,6 +1416,70 @@ public class ChunksProtection implements Listener {
                 realmprotection.RealmProtection._sendMessageWithTimeout(player, "containers", chunk);
 
                 return;
+            }
+        }
+    }
+
+    // Dye mob event
+    @EventHandler
+    public void onClick(PlayerInteractEntityEvent event) {
+        Player player = event.getPlayer();
+        Entity entity = event.getRightClicked();
+        Chunk chunk = entity.getLocation().getChunk();
+
+        ItemStack item = player.getInventory().getItemInMainHand();
+
+        if (entity instanceof Wolf || entity instanceof Sheep || entity instanceof Cat) {
+            if (item.getType().name().contains("DYE")) {
+                if (ChunksManager.isChunkClaimed(chunk)) {
+                    if (isPlayerAnOperator(player)) {
+                        return;
+                    }
+
+                    String land_id = ChunksManager.getChunkDetail(chunk, "land_id");
+                    String land_owner_name = LandsManager.getLandDetailById(new Integer(land_id), "owner_name");
+
+                    if (!player.getName().equalsIgnoreCase(land_owner_name)
+                            && !LandMembersManager.hasPlayerThePermissionToDo(new Integer(land_id), player.getName(),
+                                    "dyemobs")) {
+                        event.setCancelled(true);
+                        realmprotection.RealmProtection._sendMessageWithTimeout(player, "dyemobs", chunk);
+
+                        return;
+                    }
+                }
+            }
+        }
+    }
+
+    // Rename mob event
+    @EventHandler
+    public void onClick2(PlayerInteractEntityEvent event) {
+        Player player = event.getPlayer();
+        Entity entity = event.getRightClicked();
+        Chunk chunk = entity.getLocation().getChunk();
+
+        ItemStack item = player.getInventory().getItemInMainHand();
+
+        if (entity instanceof Entity) {
+            if (item.getType().equals(Material.NAME_TAG)) {
+                if (ChunksManager.isChunkClaimed(chunk)) {
+                    if (isPlayerAnOperator(player)) {
+                        return;
+                    }
+
+                    String land_id = ChunksManager.getChunkDetail(chunk, "land_id");
+                    String land_owner_name = LandsManager.getLandDetailById(new Integer(land_id), "owner_name");
+
+                    if (!player.getName().equalsIgnoreCase(land_owner_name)
+                            && !LandMembersManager.hasPlayerThePermissionToDo(new Integer(land_id), player.getName(),
+                                    "renamemobs")) {
+                        event.setCancelled(true);
+                        realmprotection.RealmProtection._sendMessageWithTimeout(player, "renamemobs", chunk);
+
+                        return;
+                    }
+                }
             }
         }
     }

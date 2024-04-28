@@ -94,6 +94,10 @@ public class Database {
                 "permissions_bells BOOLEAN NOT NULL," +
                 "permissions_tripwires BOOLEAN NOT NULL," +
                 "permissions_armorstands BOOLEAN NOT NULL," +
+                "permissions_dyemobs BOOLEAN NOT NULL," +
+                "permissions_renamemobs BOOLEAN NOT NULL," +
+                "permissions_leashmobs BOOLEAN NOT NULL," +
+                "permissions_tradewithvillagers BOOLEAN NOT NULL," +
                 "permissions_teleporttospawn BOOLEAN NOT NULL," +
                 "permissions_throwenderpearls BOOLEAN NOT NULL," +
                 "permissions_throwpotions BOOLEAN NOT NULL," +

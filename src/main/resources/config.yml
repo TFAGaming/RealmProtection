@@ -138,6 +138,10 @@ messages:
         bells: "BELL"
         tripwires: "TRIPWIRE_HOOK"
         armorstands: "ARMOR_STAND"
+        dyemobs: "RED_DYE"
+        renamemobs: "NAME_TAG"
+        leashmobs: "LEAD"
+        tradewithvillagers: "EMERALD"
         teleporttospawn: "ENDER_EYE"
         throwenderpearls: "ENDER_PEARL"
         throwpotions: "SPLASH_POTION"
@@ -204,6 +208,10 @@ messages:
         bells: "Bells"
         tripwires: "Tripwires"
         armorstands: "Armor stands"
+        dyemobs: "Dye mobs"
+        renamemobs: "Rename mobs"
+        leashmobs: "Leash mobs"
+        tradewithvillagers: "Trade with villagers"
         teleporttospawn: "Teleport to spawn"
         throwenderpearls: "Throw Ender Pearl"
         throwpotions: "Splash/lingering potions"
@@ -254,6 +262,10 @@ messages:
         bells: "Allow players to use bells?"
         tripwires: "Allow players to step on tripwires and triggers them?"
         armorstands: "Allow players to interact with armor stands?"
+        dyemobs: "Allow players to change sheeps color and cats/dogs collar color?"
+        renamemobs: "Allow players to rename entities with a name tag?"
+        leashmobs: "Allow players to leash entities and remove leash?"
+        tradewithvillagers: "Allow players to trade with villagers?"
         teleporttospawn: "Allow players to visit your land?"
         throwenderpearls: "Allow players to teleport using ender pearls?"
         throwpotions: "Allow players to throw splash potions?"
@@ -524,6 +536,10 @@ messages:
       bells: "&cYou do not have permission to use bells here"
       tripwires: "&cYou do not have permission to use tripwires here"
       armorstands: "&cYou do not have permission to take off or put on armors on armor stands here"
+      dyemobs: "&cYou do not have permission to dye entities here"
+      renamemobs: "&cYou do not have permission to rename entities here"
+      leashmobs: "&cYou do not have permission to use or remove leash here"
+      tradewithvillagers: "&cYou do not have permission to trade with villagers here"
       teleporttospawn: "&cYou do not have permission to teleport to spawn"
       throwenderpearls: "&cYou do not have permission to throw ender pearls here"
       throwpotions: "&cYou do not have permission to throw potions here"
@@ -569,6 +585,10 @@ land_roles:
         - false # bells
         - false # tripwires
         - false # armorstands
+        - false # dyemobs
+        - false # renamemobs
+        - false # leashmobs
+        - false # tradewithvillagers
         - false # teleporttospawn
         - false # throwenderpearls
         - false # throwpotions
@@ -604,6 +624,10 @@ land_roles:
         - true # bells
         - true # tripwires
         - true # armorstands
+        - true # dyemobs
+        - true # renamemobs
+        - true # leashmobs
+        - true # tradewithvillagers
         - true # teleporttospawn
         - true # throwenderpearls
         - true # throwpotions
@@ -639,6 +663,10 @@ land_roles:
         - false # bells
         - false # tripwires
         - false # armorstands
+        - false # dyemobs
+        - false # renamemobs
+        - false # leashmobs
+        - false # tradewithvillagers
         - false # teleporttospawn
         - false # throwenderpearls
         - false # throwpotions

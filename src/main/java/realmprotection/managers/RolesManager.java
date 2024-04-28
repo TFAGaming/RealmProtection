@@ -65,6 +65,10 @@ public class RolesManager {
                 boolean permissions_bells = result.getBoolean("permissions_bells");
                 boolean permissions_tripwires = result.getBoolean("permissions_tripwires");
                 boolean permissions_armorstands = result.getBoolean("permissions_armorstands");
+                boolean permissions_dyemobs = result.getBoolean("permissions_dyemobs");
+                boolean permissions_renamemobs = result.getBoolean("permissions_renamemobs");
+                boolean permissions_leashmobs = result.getBoolean("permissions_leashmobs");
+                boolean permissions_tradewithvillagers = result.getBoolean("permissions_tradewithvillagers");
                 boolean permissions_teleporttospawn = result.getBoolean("permissions_teleporttospawn");
                 boolean permissions_throwenderpearls = result.getBoolean("permissions_throwenderpearls");
                 boolean permissions_throwpotions = result.getBoolean("permissions_throwpotions");
@@ -100,6 +104,10 @@ public class RolesManager {
                         permissions_bells,
                         permissions_tripwires,
                         permissions_armorstands,
+                        permissions_dyemobs,
+                        permissions_renamemobs,
+                        permissions_leashmobs,
+                        permissions_tradewithvillagers,
                         permissions_teleporttospawn,
                         permissions_throwenderpearls,
                         permissions_throwpotions,
@@ -150,6 +158,10 @@ public class RolesManager {
                 "permissions_bells, " +
                 "permissions_tripwires, " +
                 "permissions_armorstands, " +
+                "permissions_dyemobs, " +
+                "permissions_renamemobs, " +
+                "permissions_leashmobs, " +
+                "permissions_tradewithvillagers, " +
                 "permissions_teleporttospawn, " +
                 "permissions_throwenderpearls, " +
                 "permissions_throwpotions, " +
@@ -161,7 +173,7 @@ public class RolesManager {
                 "permissions_useanvil, " +
                 "permissions_createfire, " +
                 "permissions_usevehicles) " +
-                "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
         try {
             Connection connection = RealmProtection.database.getConnection();
@@ -173,13 +185,13 @@ public class RolesManager {
             statement.setString(2, role_name);
 
             if (datapermissions.size() > 0) {
-                for (int i = 3; i < 35; i++) {
+                for (int i = 3; i < 39; i++) {
                     statement.setBoolean(i, datapermissions.get(i - 3));
                 }
             } else {
                 datapermissions = LoadConfig.landRolesDefaultBooleanList("permissions.__DEFAULT__");
 
-                for (int i = 3; i < 35; i++) {
+                for (int i = 3; i < 39; i++) {
                     statement.setBoolean(i, datapermissions.get(i - 3));
                 }
             }
@@ -435,28 +447,36 @@ public class RolesManager {
                     return data.get(19);
                 case "permissions_armorstands":
                     return data.get(20);
-                case "permissions_teleporttospawn":
+                case "permissions_dyemobs":
                     return data.get(21);
-                case "permissions_throwenderpearls":
+                case "permissions_renamemobs":
                     return data.get(22);
-                case "permissions_throwpotions":
+                case "permissions_leashmobs":
                     return data.get(23);
-                case "permissions_damagehostilemobs":
+                case "permissions_tradewithvillagers":
                     return data.get(24);
-                case "permissions_damagepassivemobs":
+                case "permissions_teleporttospawn":
                     return data.get(25);
-                case "permissions_pvp":
+                case "permissions_throwenderpearls":
                     return data.get(26);
-                case "permissions_usecauldron":
+                case "permissions_throwpotions":
                     return data.get(27);
-                case "permissions_pickupitems":
+                case "permissions_damagehostilemobs":
                     return data.get(28);
-                case "permissions_useanvil":
+                case "permissions_damagepassivemobs":
                     return data.get(29);
-                case "permissions_createfire":
+                case "permissions_pvp":
                     return data.get(30);
-                case "permissions_usevehicles":
+                case "permissions_usecauldron":
                     return data.get(31);
+                case "permissions_pickupitems":
+                    return data.get(32);
+                case "permissions_useanvil":
+                    return data.get(33);
+                case "permissions_createfire":
+                    return data.get(34);
+                case "permissions_usevehicles":
+                    return data.get(35);
                 default:
                     return false;
             }
@@ -597,6 +617,11 @@ public class RolesManager {
                 allflags.add(Lists.newArrayList("bells", result.getBoolean("permissions_bells")));
                 allflags.add(Lists.newArrayList("tripwires", result.getBoolean("permissions_tripwires")));
                 allflags.add(Lists.newArrayList("armorstands", result.getBoolean("permissions_armorstands")));
+                allflags.add(Lists.newArrayList("dyemobs", result.getBoolean("permissions_dyemobs")));
+                allflags.add(Lists.newArrayList("renamemobs", result.getBoolean("permissions_renamemobs")));
+                allflags.add(Lists.newArrayList("leashmobs", result.getBoolean("permissions_leashmobs")));
+                allflags.add(
+                        Lists.newArrayList("tradewithvillagers", result.getBoolean("permissions_tradewithvillagers")));
                 allflags.add(Lists.newArrayList("teleporttospawn", result.getBoolean("permissions_teleporttospawn")));
                 allflags.add(Lists.newArrayList("throwenderpearls", result.getBoolean("permissions_throwenderpearls")));
                 allflags.add(Lists.newArrayList("throwpotions", result.getBoolean("permissions_throwpotions")));
@@ -618,5 +643,48 @@ public class RolesManager {
         }
 
         return allflags;
+    }
+
+    public static List<String> listAllPermissions() {
+        List<String> arraylist = new ArrayList<>();
+
+        arraylist.add("breakblocks");
+        arraylist.add("placeblocks");
+        arraylist.add("containers");
+        arraylist.add("redstone");
+        arraylist.add("doors");
+        arraylist.add("trapdoors");
+        arraylist.add("editsigns");
+        arraylist.add("emptybuckets");
+        arraylist.add("fillbuckets");
+        arraylist.add("harvestcrops");
+        arraylist.add("frostwalker");
+        arraylist.add("shearentities");
+        arraylist.add("itemframes");
+        arraylist.add("generalinteractions");
+        arraylist.add("fencegates");
+        arraylist.add("buttons");
+        arraylist.add("levers");
+        arraylist.add("pressureplates");
+        arraylist.add("bells");
+        arraylist.add("tripwires");
+        arraylist.add("armorstands");
+        arraylist.add("dyemobs");
+        arraylist.add("renamemobs");
+        arraylist.add("leashmobs");
+        arraylist.add("tradewithvillagers");
+        arraylist.add("teleporttospawn");
+        arraylist.add("throwenderpearls");
+        arraylist.add("throwpotions");
+        arraylist.add("damagehostilemobs");
+        arraylist.add("damagepassivemobs");
+        arraylist.add("pvp");
+        arraylist.add("usecauldron");
+        arraylist.add("pickupitems");
+        arraylist.add("useanvil");
+        arraylist.add("createfire");
+        arraylist.add("usevehicles");
+
+        return arraylist;
     }
 }

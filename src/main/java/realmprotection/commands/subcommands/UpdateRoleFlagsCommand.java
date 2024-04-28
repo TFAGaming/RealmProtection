@@ -37,40 +37,7 @@ public class UpdateRoleFlagsCommand implements CommandExecutor {
                 if (args.length == 3) {
                     RoleFlagsGUI.create(player, args[2]);
                 } else {
-                    List<String> listofflags = new ArrayList<>();
-
-                    listofflags.add("breakblocks");
-                    listofflags.add("placeblocks");
-                    listofflags.add("containers");
-                    listofflags.add("redstone");
-                    listofflags.add("doors");
-                    listofflags.add("trapdoors");
-                    listofflags.add("editsigns");
-                    listofflags.add("emptybuckets");
-                    listofflags.add("fillbuckets");
-                    listofflags.add("harvestcrops");
-                    listofflags.add("frostwalker");
-                    listofflags.add("shearentities");
-                    listofflags.add("itemframes");
-                    listofflags.add("generalinteractions");
-                    listofflags.add("fencegates");
-                    listofflags.add("buttons");
-                    listofflags.add("levers");
-                    listofflags.add("pressureplates");
-                    listofflags.add("bells");
-                    listofflags.add("tripwires");
-                    listofflags.add("armorstands");
-                    listofflags.add("teleporttospawn");
-                    listofflags.add("throwenderpearls");
-                    listofflags.add("throwpotions");
-                    listofflags.add("damagehostilemobs");
-                    listofflags.add("damagepassivemobs");
-                    listofflags.add("pvp");
-                    listofflags.add("usecauldron");
-                    listofflags.add("pickupitems");
-                    listofflags.add("useanvil");
-                    listofflags.add("createfire");
-                    listofflags.add("usevehicles");
+                    List<String> listofflags = RolesManager.listAllPermissions();
 
                     if (!listofflags.contains(args[3])) {
                         player.sendMessage(LoadConfig.commandString("update_role_flags.not_valid_flag"));
