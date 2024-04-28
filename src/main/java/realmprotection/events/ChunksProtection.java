@@ -772,7 +772,8 @@ public class ChunksProtection implements Listener {
                         || material.equals(Material.SMOKER) || material.equals(Material.BLAST_FURNACE)
                         || material.equals(Material.BREWING_STAND) || material.equals(Material.BARREL)
                         || material.equals(Material.SHULKER_BOX) || material.equals(Material.BEACON)
-                        || material.equals(Material.DROPPER) || material.equals(Material.DISPENSER)) {
+                        || material.equals(Material.DROPPER) || material.equals(Material.DISPENSER)
+                        || material.equals(Material.CHISELED_BOOKSHELF)) {
                     if (!player.getName().equalsIgnoreCase(land_owner_name)
                             && !LandMembersManager.hasPlayerThePermissionToDo(new Integer(land_id), player.getName(),
                                     "containers")) {
@@ -838,8 +839,7 @@ public class ChunksProtection implements Listener {
                 } else if (material.name().contains("POT")
                         || material.name().contains("CANDLE")
                         || material.equals(Material.CAKE)
-                        || material.equals(Material.DAYLIGHT_DETECTOR)
-                        || material.equals(Material.CHISELED_BOOKSHELF)) {
+                        || material.equals(Material.DAYLIGHT_DETECTOR)) {
                     if (!player.getName().equalsIgnoreCase(land_owner_name)
                             && !LandMembersManager.hasPlayerThePermissionToDo(new Integer(land_id), player.getName(),
                                     "generalinteractions")) {
