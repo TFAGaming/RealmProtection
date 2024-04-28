@@ -14,13 +14,13 @@ import com.google.common.collect.Lists;
 import realmprotection.RealmProtection;
 
 public class LandBansManager {
-    private static final Map<String, List<Object>> land_id_and_player_name_cache = new HashMap<>();
+    private static final Map<String, List<Object>> cache = new HashMap<>();
 
     public static void cacheUpdateAll() {
         String sql = "SELECT * FROM land_bans";
 
         try {
-            land_id_and_player_name_cache.clear();
+            cache.clear();
 
             Connection connection = RealmProtection.database.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql);
@@ -35,7 +35,7 @@ public class LandBansManager {
 
                 List<Object> data_land_member_cache = Lists.newArrayList(ban_id, land_id, player_name, reason);
 
-                land_id_and_player_name_cache.put(land_id + "," + player_name, data_land_member_cache);
+                cache.put(createCacheKey(land_id, player_name), data_land_member_cache);
             }
 
             statement.close();
@@ -84,8 +84,8 @@ public class LandBansManager {
     }
 
     public static String getBanReason(int land_id, String player_name) {
-        if (land_id_and_player_name_cache.containsKey(land_id + "," + player_name)) {
-            List<Object> data = land_id_and_player_name_cache.get(land_id + "," + player_name);
+        if (cache.containsKey(createCacheKey(land_id, player_name))) {
+            List<Object> data = cache.get(createCacheKey(land_id, player_name));
 
             return (String) data.get(3);
         }
@@ -117,7 +117,7 @@ public class LandBansManager {
     }
 
     public static boolean isPlayerBannedFromLand(int land_id, String player_name) {
-        return land_id_and_player_name_cache.containsKey(land_id + "," + player_name);
+        return cache.containsKey(createCacheKey(land_id, player_name));
     }
 
     public static List<List<String>> listAllBannedPlayersData(int land_id) {
@@ -164,5 +164,9 @@ public class LandBansManager {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    private static String createCacheKey(Object land_id, String player_name) {
+        return land_id + "," + player_name;
     }
 }

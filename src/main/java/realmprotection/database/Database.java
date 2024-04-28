@@ -12,12 +12,11 @@ import realmprotection.managers.RolesManager;
 
 public class Database {
     private final String DATABASE_PATH;
+    private Connection connection;
 
     public Database(String database_path) {
         this.DATABASE_PATH = database_path;
     }
-
-    private Connection connection;
 
     public Connection getConnection() throws SQLException {
         if (connection != null) {

@@ -14,13 +14,13 @@ import com.google.common.collect.Lists;
 import realmprotection.RealmProtection;
 
 public class LandInvitesManager {
-    private static final Map<String, List<Object>> land_id_and_inviter_name_cache = new HashMap<>();
+    private static final Map<String, List<Object>> cache = new HashMap<>();
 
     public static void cacheUpdateAll() {
         String sql = "SELECT * FROM land_invites";
 
         try {
-            land_id_and_inviter_name_cache.clear();
+            cache.clear();
 
             Connection connection = RealmProtection.database.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql);
@@ -36,7 +36,7 @@ public class LandInvitesManager {
 
                 List<Object> data_land_member_cache = Lists.newArrayList(invite_id, land_id, inviter_name, player_name, role_id);
 
-                land_id_and_inviter_name_cache.put(land_id + "," + player_name, data_land_member_cache);
+                cache.put(createCacheKey(land_id, player_name), data_land_member_cache);
             }
 
             statement.close();
@@ -86,8 +86,8 @@ public class LandInvitesManager {
     }
 
     public static String getInviteDetail(int land_id, String player_name, String variable) {
-        if (land_id_and_inviter_name_cache.containsKey(land_id + "," + player_name)) {
-            List<Object> data = land_id_and_inviter_name_cache.get(land_id + "," + player_name);
+        if (cache.containsKey(createCacheKey(land_id, player_name))) {
+            List<Object> data = cache.get(createCacheKey(land_id, player_name));
 
             switch (variable) {
                 case "id":
@@ -130,7 +130,7 @@ public class LandInvitesManager {
     }
 
     public static boolean isPlayerInvited(int land_id, String player_name) {
-        return land_id_and_inviter_name_cache.containsKey(land_id + "," + player_name);
+        return cache.containsKey(createCacheKey(land_id, player_name));
     }
 
     public static List<List<String>> listAllInvitesFromLandId(int land_id) {
@@ -189,5 +189,9 @@ public class LandInvitesManager {
         }
 
         return data;
+    }
+
+    private static String createCacheKey(Object land_id, String player_name) {
+        return land_id + "," + player_name;
     }
 }

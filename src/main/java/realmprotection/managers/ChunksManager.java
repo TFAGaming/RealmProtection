@@ -25,14 +25,16 @@ import realmprotection.utils.LoadConfig;
 import realmprotection.utils.LuckPermsAPI;
 
 public class ChunksManager {
-    private static final Map<String, List<Object>> claimed_chunks_cache = new HashMap<>();
+    private static final Map<String, List<Object>> cache = new HashMap<>();
+    private static final Set<String> land_ids_cache = new HashSet<>();
     private static final Set<String> particles_players_cache = new HashSet<>();
 
     public static void cacheUpdateAll() {
         String sql = "SELECT * FROM claimed_chunks";
 
         try {
-            claimed_chunks_cache.clear();
+            cache.clear();
+            land_ids_cache.clear();
 
             Connection connection = RealmProtection.database.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql);
@@ -56,7 +58,8 @@ public class ChunksManager {
                 data.add(land_id);
                 data.add(created_at);
 
-                claimed_chunks_cache.put(createCacheKey(chunk_x, chunk_z, chunk_world), data);
+                cache.put(createCacheKey(chunk_x, chunk_z, chunk_world), data);
+                land_ids_cache.add("" + land_id);
             }
 
             statement.close();
@@ -151,7 +154,7 @@ public class ChunksManager {
     }
 
     public static boolean isChunkClaimed(Chunk chunk) {
-        if (claimed_chunks_cache.containsKey(createCacheKey(chunk.getX(), chunk.getZ(), chunk.getWorld().getName()))) {
+        if (cache.containsKey(createCacheKey(chunk.getX(), chunk.getZ(), chunk.getWorld().getName()))) {
             return true;
         }
 
@@ -184,6 +187,8 @@ public class ChunksManager {
     }
 
     public static boolean isLandHaveAtLeastOneChunk(int land_id) {
+        return land_ids_cache.contains("" + land_id);
+        /*
         String sql = "SELECT COUNT (*) AS count FROM claimed_chunks WHERE land_id = ?";
         boolean claimed = false;
 
@@ -206,13 +211,14 @@ public class ChunksManager {
         }
 
         return claimed;
+        */
     }
 
     public static String getChunkDetail(Chunk chunk, String variable) {
         String cacheKey = createCacheKey(chunk.getX(), chunk.getZ(), chunk.getWorld().getName());
 
-        if (claimed_chunks_cache.containsKey(cacheKey)) {
-            List<Object> data = claimed_chunks_cache.get(cacheKey);
+        if (cache.containsKey(cacheKey)) {
+            List<Object> data = cache.get(cacheKey);
 
             switch (variable) {
                 case "id":

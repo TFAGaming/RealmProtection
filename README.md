@@ -20,7 +20,7 @@ RealmProtection is a Minecraft plugin that allows you to claim a 16x16 block seg
 
 ## Features
 - Free, easy to use, and open-source.
-- **30+** role flags and **10** land nature flags.
+- **36+** role flags and **10+** land nature flags.
 - Protects any claimed chunk from:
     - Lavacasts (lava and water).
     - Wilderness pistons.
@@ -45,6 +45,18 @@ RealmProtection is a Minecraft plugin that allows you to claim a 16x16 block seg
 - External plugins APIs used:
     - [VaultAPI](https://github.com/MilkBowl/VaultAPI) (used for Economy)
     - [LuckPerms](https://github.com/LuckPerms/LuckPerms) (used for permissions)
+
+<details>
+    <summary>Screenshots</summary>
+    <h3>Role flags GUI:</h3>
+    <img src="./images/img3.png"><br><br>
+    <h3>Nature flags GUI:</h3>
+    <img src="./images/img2.png">
+    <h3>Land information GUI:</h3>
+    <img src="./images/img4.png">
+    <h3>Land border (green particles):</h3>
+    <img src="./images/img5.png">
+</details>
 
 ## How to install
 
@@ -112,7 +124,11 @@ Run the command on the server `/lp editor` and open the link generated. Once the
 <img src="./images/img1.png">
 
 > [!WARNING]  
-> The permission `realmprotection.lands.__operator__` is a dangerous permission that allows any player to bypass disabled flags in any land. Please use this permission for player groups with more trust on the server like Administrator or Owner.
+> The permission `realmprotection.lands.__operator__` is a dangerous permission that allows any player to:
+> - Bypass disabled flags in any land.
+> - Claim next to any land.
+>
+> Please use this permission for player groups with more trust on the server like Administrator or Owner.
 
 Once you finish configuring permissions, click on the **Save** button. If there is a popup with a command to use, copy the command and use it.
 
@@ -122,7 +138,7 @@ A role flag is a permission that is allowed/disallowed for a specific land role.
 
 ### Why must every player claim one chunk away from any land?
 
-To avoid any neighbor claiming right next to you and some other reasons to tell. Note that if a player has the permission `realmprotection.lands.__operator__`, they can claim chunks next to other claimed chunks.
+To avoid any neighbor claiming right next to you and some other reasons to tell. Note that if a player has the operator permission, they can claim chunks next to other claimed chunks.
 
 ## Contributing
 Feel free to fork the repository and submit a new pull request if you wish to contribute to this project.

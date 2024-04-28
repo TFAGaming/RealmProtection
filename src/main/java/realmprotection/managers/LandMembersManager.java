@@ -15,13 +15,13 @@ import realmprotection.RealmProtection;
 import realmprotection.utils.LoadConfig;
 
 public class LandMembersManager {
-    private static final Map<String, List<Object>> land_id_and_member_name_cache = new HashMap<>();
+    private static final Map<String, List<Object>> cache = new HashMap<>();
 
     public static void cacheUpdateAll() {
         String sql = "SELECT * FROM land_members";
 
         try {
-            land_id_and_member_name_cache.clear();
+            cache.clear();
 
             Connection connection = RealmProtection.database.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql);
@@ -36,7 +36,7 @@ public class LandMembersManager {
 
                 List<Object> data_land_member_cache = Lists.newArrayList(member_id, land_id, member_name, role_id);
 
-                land_id_and_member_name_cache.put(land_id + "," + member_name, data_land_member_cache);
+                cache.put(createCacheKey(land_id, member_name), data_land_member_cache);
             }
 
             statement.close();
@@ -85,8 +85,8 @@ public class LandMembersManager {
     }
 
     public static String getRoleNameFromPlayername(int land_id, String player_name) {
-        if (land_id_and_member_name_cache.containsKey(land_id + "," + player_name)) {
-            List<Object> data = land_id_and_member_name_cache.get(land_id + "," + player_name);
+        if (cache.containsKey(createCacheKey(land_id, player_name))) {
+            List<Object> data = cache.get(createCacheKey(land_id, player_name));
 
             String role_id = (String) data.get(3);
             String role_name = RolesManager.getRoleDetailById(land_id, new Integer(role_id), "role_name");
@@ -123,7 +123,7 @@ public class LandMembersManager {
     }
 
     public static boolean isPlayerInTheLand(int land_id, String player_name) {
-        return land_id_and_member_name_cache.containsKey(land_id + "," + player_name);
+        return cache.containsKey(createCacheKey(land_id, player_name));
     }
 
     public static boolean hasPlayerThePermissionToDo(int land_id, String player_name, String permission_name) {
@@ -214,5 +214,9 @@ public class LandMembersManager {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    private static String createCacheKey(Object land_id, String member_name) {
+        return land_id + "," + member_name;
     }
 }
