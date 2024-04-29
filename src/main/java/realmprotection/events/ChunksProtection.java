@@ -77,8 +77,8 @@ import realmprotection.managers.ChunksManager;
 import realmprotection.managers.LandBansManager;
 import realmprotection.managers.LandMembersManager;
 import realmprotection.managers.LandsManager;
-import realmprotection.utils.ColoredString;
-import realmprotection.utils.LoadConfig;
+import realmprotection.utils.ChatColorTranslator;
+import realmprotection.utils.Language;
 import realmprotection.utils.ParticleSpawner;
 
 public class ChunksProtection implements Listener {
@@ -1521,8 +1521,8 @@ public class ChunksProtection implements Listener {
                 String ban_reason = LandBansManager.getBanReason(new Integer(land_id), player.getName());
 
                 player.sendMessage(
-                        ColoredString.translate(
-                                LoadConfig.generalString("player_chunk_entry.claimed.__others__.player_banned")
+                        ChatColorTranslator.translate(
+                                ((String) Language.get("general.player_chunk_entry.claimed.__PLAYER_BANNED__"))
                                         .replace("%land%",
                                                 land_name)
                                         .replace("%reason%", ban_reason)));
@@ -1532,26 +1532,26 @@ public class ChunksProtection implements Listener {
 
             String owner_name = LandsManager.getLandDetailById(new Integer(land_id), "owner_name");
 
-            String title = LoadConfig.generalString("player_chunk_entry.claimed.title").replace("%land%",
+            String action_bar = ((String) Language.get("general.player_chunk_entry.claimed.action_bar")).replace("%land%",
                     land_name).replace("%land_owner%", owner_name);
 
-            player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ColoredString.translate(title)));
+            player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColorTranslator.translate(action_bar)));
 
             player_is_in_claimed_chunk_cache.put(player.getName(), true);
         } else {
             if (!player_is_in_claimed_chunk_cache.get(player.getName()))
                 return;
 
-            String title = LoadConfig.generalString("player_chunk_entry.unclaimed.title");
+            String action_bar = ((String) Language.get("general.player_chunk_entry.unclaimed.action_bar"));
 
-            player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ColoredString.translate(title)));
+            player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColorTranslator.translate(action_bar)));
 
             player_is_in_claimed_chunk_cache.put(player.getName(), false);
 
             if (player.getAllowFlight() && !isPlayerAnOperator(player)) {
                 player.setAllowFlight(false);
 
-                player.sendMessage(ColoredString.translate(LoadConfig.generalString("fly.auto_disabled")));
+                player.sendMessage(ChatColorTranslator.translate(((String) Language.get("general.fly_mode_disabled"))));
             }
         }
     }

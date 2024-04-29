@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 
 import realmprotection.managers.ChunksManager;
 import realmprotection.managers.LandsManager;
-import realmprotection.utils.LoadConfig;
+import realmprotection.utils.Language;
 
 public class FlyCommand implements CommandExecutor {
     @Override
@@ -18,30 +18,30 @@ public class FlyCommand implements CommandExecutor {
             Chunk chunk = player.getLocation().getChunk();
 
             if (!LandsManager.hasLand(player.getName())) {
-                player.sendMessage(LoadConfig.commandString("fly.land_not_found"));
+                player.sendMessage(Language.getCommand("fly.land_not_found"));
                 return true;
             }
 
             if (!ChunksManager.isChunkClaimed(chunk)) {
-                player.sendMessage(LoadConfig.commandString("fly.chunk_not_claimed"));
+                player.sendMessage(Language.getCommand("fly.chunk_not_claimed"));
                 return true;
             }
 
             String chunk_owner_name = ChunksManager.getOwnerByChunk(chunk);
 
             if (!chunk_owner_name.equalsIgnoreCase(player.getName())) {
-                player.sendMessage(LoadConfig.commandString("fly.chunk_not_owned_by_player"));
+                player.sendMessage(Language.getCommand("fly.chunk_not_owned_by_player"));
                 return true;
             }
 
             if (player.getAllowFlight()) {
                 player.setAllowFlight(false);
 
-                player.sendMessage(LoadConfig.commandString("fly.fly_disabled_success"));
+                player.sendMessage(Language.getCommand("fly.fly_disabled_success"));
             } else {
                 player.setAllowFlight(true);
 
-                player.sendMessage(LoadConfig.commandString("fly.fly_enabled_success"));
+                player.sendMessage(Language.getCommand("fly.fly_enabled_success"));
             }
 
             return true;

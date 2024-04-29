@@ -12,8 +12,8 @@ import org.bukkit.inventory.ItemStack;
 
 import realmprotection.managers.LandStorageManager;
 import realmprotection.managers.LandsManager;
-import realmprotection.utils.ColoredString;
-import realmprotection.utils.LoadConfig;
+import realmprotection.utils.ChatColorTranslator;
+import realmprotection.utils.Language;
 
 public class StorageCommand implements CommandExecutor {
     @Override
@@ -22,14 +22,14 @@ public class StorageCommand implements CommandExecutor {
             Player player = (Player) sender;
 
             if (!LandsManager.hasLand(player.getName())) {
-                player.sendMessage(LoadConfig.commandString("storage.land_not_found"));
+                player.sendMessage(Language.getCommand("storage.land_not_found"));
                 return true;
             }
 
             List<List<Object>> storedItems = LandStorageManager.getItems(player);
 
             Inventory inventory = Bukkit.createInventory(player, 9 * 6,
-                    ColoredString.translate(LoadConfig.guiString("land_storage.title")));
+                    ChatColorTranslator.translate((String) Language.get("gui.commands.land_storage.title")));
 
             for (List<Object> itemEntry : storedItems) {
                 ItemStack itemStack = (ItemStack) itemEntry.get(0);
@@ -38,8 +38,6 @@ public class StorageCommand implements CommandExecutor {
                     inventory.setItem(slotIndex, itemStack);
                 }
             }
-
-            player.openInventory(inventory);
 
             player.openInventory(inventory);
 

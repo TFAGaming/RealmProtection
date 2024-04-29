@@ -14,7 +14,6 @@ import org.bukkit.entity.Player;
 import com.google.common.collect.Lists;
 
 import realmprotection.RealmProtection;
-import realmprotection.utils.LoadConfig;
 import realmprotection.utils.LuckPermsAPI;
 
 public class RolesManager {
@@ -179,7 +178,9 @@ public class RolesManager {
             Connection connection = RealmProtection.database.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql);
 
-            List<Boolean> datapermissions = LoadConfig.landRolesDefaultBooleanList("permissions." + role_name);
+            RealmProtection plugin = RealmProtection.getPlugin(RealmProtection.class);
+
+            List<Boolean> datapermissions = plugin.getConfig().getBooleanList("roles.permissions." + role_name);
 
             statement.setInt(1, land_id);
             statement.setString(2, role_name);
@@ -189,7 +190,7 @@ public class RolesManager {
                     statement.setBoolean(i, datapermissions.get(i - 3));
                 }
             } else {
-                datapermissions = LoadConfig.landRolesDefaultBooleanList("permissions.__DEFAULT__");
+                datapermissions = plugin.getConfig().getBooleanList("roles.permissions.__DEFAULT__");
 
                 for (int i = 3; i < 39; i++) {
                     statement.setBoolean(i, datapermissions.get(i - 3));
@@ -383,11 +384,13 @@ public class RolesManager {
             return true;
         }
 
+        RealmProtection plugin = RealmProtection.getPlugin(RealmProtection.class);
+
         String playergroup = LuckPermsAPI.getPlayerGroup(player);
-        int grouproleslimit = LoadConfig.landsInteger("ratelimits.roles." + playergroup);
+        int grouproleslimit = plugin.getConfig().getInt("ratelimits.roles." + playergroup);
 
         if (grouproleslimit <= 0) {
-            grouproleslimit = LoadConfig.landsInteger("ratelimits.roles.__DEFAULT__");
+            grouproleslimit = plugin.getConfig().getInt("ratelimits.roles.__DEFAULT__");
         }
 
         String land_id = LandsManager.getLandDetail(player.getName(), "id");

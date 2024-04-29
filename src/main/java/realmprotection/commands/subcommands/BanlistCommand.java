@@ -9,8 +9,8 @@ import org.bukkit.entity.Player;
 
 import realmprotection.managers.LandBansManager;
 import realmprotection.managers.LandsManager;
-import realmprotection.utils.ColoredString;
-import realmprotection.utils.LoadConfig;
+import realmprotection.utils.ChatColorTranslator;
+import realmprotection.utils.Language;
 
 public class BanlistCommand implements CommandExecutor {
     @Override
@@ -19,7 +19,7 @@ public class BanlistCommand implements CommandExecutor {
             Player player = (Player) sender;
 
             if (!LandsManager.hasLand(player.getName())) {
-                player.sendMessage(LoadConfig.commandString("banlist.land_not_found"));
+                player.sendMessage(Language.getCommand("banlist.land_not_found"));
                 return true;
             }
 
@@ -29,30 +29,31 @@ public class BanlistCommand implements CommandExecutor {
             List<List<String>> alldata = LandBansManager.listAllBannedPlayersData(new Integer(land_id));
 
             if (alldata.size() == 0) {
-                player.sendMessage(LoadConfig.commandString("banlist.no_bans_found"));
+                player.sendMessage(Language.getCommand("banlist.no_bans_found"));
                 return true;
             }
 
-            String repeatstyle = LoadConfig.commandStringWithoutPrefix("banlist.repeatstyle");
+            String repeatstyle = (String) Language.get("commands.banlist.__REPEAT_STYLE__");
             String repeatstylefinalstring = "";
 
             for (List<String> data : alldata) {
                 repeatstylefinalstring += repeatstyle.replace("%player%", data.get(0)).replace("%reason%", data.get(1));
             }
 
-            List<String> stringlist = LoadConfig.commandStringList("banlist.stringlist");
+            @SuppressWarnings("unchecked")
+            List<String> stringlist = (List<String>) Language.get("commands.banlist.__STRING_LIST__");
             String finalstring = "";
 
             for (String string : stringlist) {
                 if (string.length() == 0) {
                     finalstring += '\n';
                 } else {
-                    finalstring += string.replace("%land%", land_name).replace("%repeatstylelist%",
+                    finalstring += string.replace("%land%", land_name).replace("%repeatstyle%",
                             repeatstylefinalstring);
                 }
             }
 
-            player.sendMessage(ColoredString.translate(finalstring));
+            player.sendMessage(ChatColorTranslator.translate(finalstring));
 
             return true;
         } else {

@@ -1,680 +1,161 @@
-# --------------------------------------------------------------------------
-# 
-#               * RealmProtection, by TFAGaming (GitHub) *
-#
-#     Please read the license before you do any changes to this plugin!
-#   
-# --------------------------------------------------------------------------
-
-# Links for important info:
-# - Material/item names: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html
-
-# The database for the claims, based on SQLite
+# The main database configuration for the plugin
 database:
+  provider: "sqlite" # Support databases: sqlite
   path: "/database.db"
 
-# Main config
-lands:
-  plugins:
-    vaultapi_economy: true # If enabled, this will make any player to use /land deposit, /land withdraw and /land balance in their land
-    luckpermsapi: true # If enabled, this will allow players to have ratelimits for chunks, l
-  ratelimits:
-    # Player's chunks limit for land
-    chunks:
-      __DEFAULT__: 10 # If the player's group not found
-      default: 10
-      vip: 20
-      admin: 50
-      owner: 100
-    # Player's chunks limit for land
-    roles:
-      __DEFAULT__: 10 # If the player's group not found
-      default: 5
-      vip: 10
-      admin: 20
-      owner: 50
-  border-colors:
-    visitor: # Default: Red (255, 0, 0)
-      - 255 # R
-      - 0 # G
-      - 0 # B
-    trusted: # Default: Yellow (255, 255, 0)
-      - 255 # R
-      - 255 # G
-      - 0 # B
-    owner: # Default: Green (0, 255, 0)
-      - 0 # R
-      - 255 # G
-      - 0 # B
+# The language file to load
+languages:
+  locale: "en_US.yml"
 
-# The messages configuration
-messages:
-  # Prefix configuration
-  prefix:
-    toggle: true
-    string: "&8[&9RealmProtection&8] &r"
+ratelimits:
+  chunks:
+    __DEFAULT__: 10 # If the player's group not found
+    default: 10
+    vip: 20
+    admin: 50
+    owner: 100
+  roles:
+    __DEFAULT__: 10 # If the player's group not found
+    default: 5
+    vip: 10
+    admin: 20
+    owner: 50
 
-  # General configuration
-  general:
-    flags:
-      enabled: "&a✔ Enabled &r"
-      disabled: "&c✘ Disabled &r"
+border_colors: # Note: RBG colors based
+  visitor:
+      - 255
+      - 0
+      - 0
+  trusted:
+    - 255
+    - 255
+    - 0
+  owner:
+    - 0
+    - 255
+    - 0
 
-    gui:
-      close_button:
-        enabled: true # You can disable it, because players can use ESC key to close the inventory
-        displayname: "&cClose"
-        type: "BARRIER"
+roles:
+  names:
+    - "Visitor"
+    - "Member"
 
-    date:
-      format: "dd MMM yyy HH:mm:ss" # Example output: 01 Jan 1970 00:00:03
-    
-    player_chunk_entry:
-      claimed:
-        title: "&aYou entered to the land: &6%land% &9(Owner: &c%land_owner%&9)"
-        __others__:
-          player_banned: "&cYou are banned from the land &6%land%&c with the reason: &7%reason%"
-      unclaimed:
-        title: "&aYou are in &2wilderness&a!"
+  __DEFAULT_VISITOR_ROLE__: "Visitor" # Important, and unchangeable role name
 
-    fly:
-      auto_disabled: "&8[&9RealmProtection&8] &cThe fly mode has been disabled since you are not in a claimed chunk anymore!"
-  
-  # GUIs configuration
-  gui:
-    # GUI for the command: /land info (land name)
-    land_info:
-      title: "&9Land Information"
-      content:
-        land_information:
-          displayname: "&9Land: &r%land_name%"
-          lore:
-            - "&aID: &f%land_id%"
-            - "&aChunks: &f%chunks%"
-            - "&aBalance: &f$%balance%"
-            - "&aCreated at: &f%created_at%"
-          type: "OAK_SIGN"
-        land_owner:
-          displayname: "&9Owner: &c%land_owner%"
-          type: "PLAYER_HEAD"
-        land_members:
-          displayname: "&9Members (%members_count%):"
-          lore_style: "&a%role_name%&f: &6%member_name%"
-          type: "EMERALD"
-
-    # GUI for the command: /land roles flags [role name]
-    role_flags:
-      title: "&9Role Flags"
-      content:
-        flag_style:
-          displayname: "&9%displayname% &9(&8%flag%&9)"
-          lore:
-            - "&f%description%" # The flag description (from "messages.gui.flags_description.role_flags")
-            - "%value%" # The value is "Enabled" or "Disabled" (from "messages.general.flags.[enabled/disabled]")
-          type: "%flag_item%" # The flag's item type (from "messages.gui.role_flags.items")
-        role_name:
-          displayname: "&9Role: &6%role%"
-          type: "PAPER"
-      items:
-        # Item type for each role flag
-        breakblocks: "IRON_PICKAXE"
-        placeblocks: "OAK_LOG"
-        containers: "CHEST"
-        redstone: "REDSTONE"
-        doors: "OAK_DOOR"
-        trapdoors: "OAK_TRAPDOOR"
-        editsigns: "OAK_SIGN"
-        emptybuckets: "BUCKET"
-        fillbuckets: "WATER_BUCKET"
-        harvestcrops: "WHEAT_SEEDS"
-        frostwalker: "DIAMOND_BOOTS"
-        shearentities: "SHEARS"
-        itemframes: "ITEM_FRAME"
-        generalinteractions: "STRING"
-        fencegates: "OAK_FENCE_GATE"
-        buttons: "STONE_BUTTON"
-        levers: "LEVER"
-        pressureplates: "STONE_PRESSURE_PLATE"
-        bells: "BELL"
-        tripwires: "TRIPWIRE_HOOK"
-        armorstands: "ARMOR_STAND"
-        dyemobs: "RED_DYE"
-        renamemobs: "NAME_TAG"
-        leashmobs: "LEAD"
-        tradewithvillagers: "EMERALD"
-        teleporttospawn: "ENDER_EYE"
-        throwenderpearls: "ENDER_PEARL"
-        throwpotions: "SPLASH_POTION"
-        damagehostilemobs: "ZOMBIE_HEAD"
-        damagepassivemobs: "IRON_SWORD"
-        pvp: "DIAMOND_SWORD"
-        usecauldron: "CAULDRON"
-        pickupitems: "SUNFLOWER"
-        useanvil: "ANVIL"
-        createfire: "FLINT_AND_STEEL"
-        usevehicles: "MINECART"
-
-    # GUI for the command: /land nature flags
-    nature_flags:
-      title: "&9Nature Flags"
-      content:
-        flag_style:
-          displayname: "&9%displayname% &9(&8%flag%&9)"
-          lore:
-            - "&f%description%" # The flag description (from "messages.gui.flags_description.nature_flags")
-            - "%value%" # The value is "Enabled" or "Disabled" (from "messages.general.flags.[enabled/disabled]")
-          type: "%flag_item%" # The flag's item type (from "messages.gui.nature_flags.items")
-        land_name:
-          displayname: "&9Land: &6%land_name%"
-          type: "PAPER"
-      items:
-        # Item type for each nature flag
-        hostilemobsspawn: "ZOMBIE_HEAD"
-        passivemobsspawn: "SPAWNER"
-        leavesdecay: "VINE"
-        firespread: "FLINT_AND_STEEL"
-        liquidflow: "WATER_BUCKET"
-        tntblockdamage: "TNT"
-        respawnanchorblockdamage: "RESPAWN_ANCHOR"
-        pistonsfromwilderness: "PISTON"
-        dispensersfromwilderness: "DISPENSER"
-        plantgrowth: "OAK_SAPLING"
-
-    land_storage:
-      title: "&9Land storage"
-
-    # This is not a GUI, but in GUIs:
-    flags_displayname:
-      # Role flags
-      role_flags:
-        breakblocks: "Break blocks"
-        placeblocks: "Place blocks"
-        containers: "Open containers"
-        redstone: "Redstone"
-        doors: "Doors"
-        trapdoors: "Trapdoors"
-        editsigns: "Edit signs"
-        emptybuckets: "Empty buckets"
-        fillbuckets: "Fill buckets"
-        harvestcrops: "Harvest crops"
-        frostwalker: "Frost Walker"
-        shearentities: "Shear entities"
-        itemframes: "Item frames"
-        generalinteractions: "General interactions"
-        fencegates: "Fence gates"
-        buttons: "Buttons"
-        levers: "Levers"
-        pressureplates: "Pressure plates"
-        bells: "Bells"
-        tripwires: "Tripwires"
-        armorstands: "Armor stands"
-        dyemobs: "Dye mobs"
-        renamemobs: "Rename mobs"
-        leashmobs: "Leash mobs"
-        tradewithvillagers: "Trade with villagers"
-        teleporttospawn: "Teleport to spawn"
-        throwenderpearls: "Throw Ender Pearl"
-        throwpotions: "Splash/lingering potions"
-        damagehostilemobs: "Damage hostile mobs"
-        damagepassivemobs: "Damage passive mobs"
-        pvp: "PvP"
-        usecauldron: "Cauldrons"
-        pickupitems: "Pick up items"
-        useanvil: "Anvils"
-        createfire: "Ignite"
-        usevehicles: "Vehicles"
-
-      # Nature flags
-      nature_flags:
-        hostilemobsspawn: "Hostile mobs spawn"
-        passivemobsspawn: "Passive mobs spawn"
-        leavesdecay: "Leaves decay"
-        firespread: "Fire spread"
-        liquidflow: "Liquid flow"
-        tntblockdamage: "TNT damage"
-        respawnanchorblockdamage: "Respawn anchors damage"
-        pistonsfromwilderness: "Wilderness pistons"
-        dispensersfromwilderness: "Wilderness dispensers"
-        plantgrowth: "Plant growth"
-
-    # This is not a GUI, but in GUIs:
-    flags_description:
-      # Role flags
-      role_flags:
-        breakblocks: "Allow players to break blocks?"
-        placeblocks: "Allow players to place blocks?"
-        containers: "Allow players to open containers?"
-        redstone: "Allow players to configure redstone components?"
-        doors: "Allow players to use doors?"
-        trapdoors: "Allow players to trapdoors?"
-        editsigns: "Allow players to edit signs and hanging signs?"
-        emptybuckets: "Allow players to empty any bucket?"
-        fillbuckets: "Allow players to fill any bucket?"
-        harvestcrops: "Allow players to harvest crops?"
-        frostwalker: "Allow players to use Frost Walker boots?"
-        shearentities: "Allow players to shear entities?"
-        itemframes: "Allow players to take items from item frames?"
-        generalinteractions: "Allow players to interact with anything?"
-        fencegates: "Allow players to use fence gates?"
-        buttons: "Allow players to use buttons?"
-        levers: "Allow players to use levers?"
-        pressureplates: "Allow players to step on pressure plates?"
-        bells: "Allow players to use bells?"
-        tripwires: "Allow players to step on tripwires and triggers them?"
-        armorstands: "Allow players to interact with armor stands?"
-        dyemobs: "Allow players to change sheeps color and cats/dogs collar color?"
-        renamemobs: "Allow players to rename entities with a name tag?"
-        leashmobs: "Allow players to leash entities and remove leash?"
-        tradewithvillagers: "Allow players to trade with villagers?"
-        teleporttospawn: "Allow players to visit your land?"
-        throwenderpearls: "Allow players to teleport using ender pearls?"
-        throwpotions: "Allow players to throw splash potions?"
-        damagehostilemobs: "Allow players to hit and kill hostile mobs?"
-        damagepassivemobs: "Allow players to hit and kill passive mobs?"
-        pvp: "Allow players to PvP each other?"
-        usecauldron: "Allow players to interact with cauldrons?"
-        pickupitems: "Allow players to drop and pick up items?"
-        useanvil: "Allow players to use anvils?"
-        createfire: "Allow players to start fire?"
-        usevehicles: "Allow players to ride minecarts and boats?"
-
-      # Nature flags
-      nature_flags:
-        hostilemobsspawn: "Allow any hostile mob to spawn?"
-        passivemobsspawn: "Allow any passive mob to spawn?"
-        leavesdecay: "Allow leaves to decay?"
-        firespread: "Allow fire to spread in your land?"
-        liquidflow: "Allow any external liquid to enter to your land?"
-        tntblockdamage: "Allow TNT damage blocks in your land?"
-        respawnanchorblockdamage: "Allow respawn anchors and beds (Nether) damage blocks in your land?"
-        pistonsfromwilderness: "Allow blocks to be pushed/pulled by pistons to/from your land?"
-        dispensersfromwilderness: "Allow wilderness dispensers to dispense items to your land?"
-        plantgrowth: "Allow any plant to grow in your land?"
-
-  # Command messages
-  commands:
-    accept:
-      missing_land_name: "&cYou must provide the land name!"
-      land_name_not_found: "&cThis land name doesn't exist."
-      player_not_invited: "&cYou are not invited to join this land."
-      player_trusted_success: "&aYou are now a member to the land!"
-
-    balance:
-      vault_plugin_not_ready: "&cUnable to run the command, Vault economy API is disabled in config.yml."
-      land_not_found: "&cYou don't have a land!"
-      balance_string: "&aYour land balance: &6$%land_balance%"
-
-    ban:
-      __DEFAULT_REASON__: "No reason was provided"
-      land_not_found: "&cYou don't have a land!"
-      no_playername_provided: "&cYou must provide a player name to ban!"
-      player_already_banned: "&cThis player is already been banned."
-      player_owner_of_land: "&cYou are the owner of the land."
-      player_banned_success: "&aSuccessfully banned &6%player% &afor: &7%reason%"
-
-    banlist:
-      land_not_found: "&cYou don't have a land!"
-      no_bans_found: "&aThere are currently no banned players!"
-      stringlist:
-        # Note: Empty string OR "\n" = New line
-        - "&cBanlist | Land: &6%land%"
-        - ""
-        - ""
-        - "%repeatstylelist%"
-      repeatstyle: "&7- &6%player%&7: %reason%\n"
-
-    claim:
-      chunk_already_claimed: "&cThis chunk has already been claimed."
-      neighbor_chunk_claimed: "&cThere is a chunk next to this one is claimed! Always keep a 1 chunk distance between claimed chunks."
-      missing_land_name: "&cYou must provide your new land name because you will create one with this chunk!"
-      land_name_not_alphanumeric: "&cYour land name must be alphanumeric; Do not use colors or any other symbols."
-      land_name_already_taken: "&cThis land name is already been taken, please choose another one."
-      max_chunks_claimed: "&cYou have claimed the maximum of chunks you have!"
-      chunk_claimed_success: "&aYou have successfully claimed the chunk! &9%chunk_x%, %chunk_z%"
-
-    delete:
-      land_not_found: "&cYou don't have a land!"
-      confirm_missing: "&7You must confirm to continue..."
-      land_deleted_success: "&cYour land has been deleted, it is now &4vulnerable&c."
-
-    delete_role:
-      land_not_found: "&cYou don't have a land!"
-      min_roles_reached: "&cYou cannot delete any role, it should be there at least 2 roles to maintain the land!"
-      no_role_provided: "&cYou must provide a role name to delete."
-      role_not_found: "&cThis role was not found in your land."
-      role_name_is_visitor: "&cThe role is default Visitor role, cannot be deleted."
-      role_delete_success: "&aSuccessfully deleted the role %role%!"
-
-    deposit:
-      vault_plugin_not_ready: "&cUnable to run the command, Vault economy API is disabled in config.yml."
-      land_not_found: "&cYou don't have a land!"
-      no_amount_provided: "&cYou must provide the amount to deposit!"
-      input_negative_or_zero: "&cThe amount must be higher than 0."
-      input_larger_than_player_balance: "&cYou don't have that amount of money."
-      input_not_double_or_integer: "&cNot a valid integer or double."
-      deposited_success: "&aYou deposited &6$%amount%&a, now your land got &6$%land_balance%&a!"
-
-    fly:
-      land_not_found: "&cYou don't have a land!"
-      chunk_not_claimed: "&cYou cannot fly in an unclaimed chunk."
-      chunk_not_owned_by_player: "&cYou are not the owner of this land!"
-      fly_enabled_success: "&6Fly mode: &aEnabled"
-      fly_disabled_success: "&6Fly mode: &cDisabled"
-
-    help:
-      stringlist:
-        # Note: Empty string OR "\n" = New line
-        - "&9Help | RealmProtection plugin"
-        - ""
-        - ""
-        - "&6The main command: &7/lands [subcommand]"
-        - ""
-        - "&6Available sub commands: &7accept, balance, ban, banlist, claim, deposit, delete, fly, help, info, invites, leave, nature, rename, roles, setspawn, spawn, storage, trust, unban, unclaim, untrust, view, withdraw"
-        - ""
-        - "&6Permissions: &7realmprotection.lands.[subcommand]"
-        - ""
-        - ""
-        - "&aCreated by TFAGaming" # You can remove my name, but it's good to keep the name of the original creator! :)
-        - ""
-        - "&aSource: &fhttps://github.com/TFAGaming/RealmProtection/"
-
-    info:
-      chunk_wilderness: "&cThis is wilderness, you must use this command inside a claimed chunk!"
-      land_name_not_found: "&cThis land name doesn't exist."
-
-    invites:
-      no_invites: "&aNobody invited you to join a land."
-      stringlist:
-        # Note: Empty string OR "\n" = New line
-        - "&9Land Invites | Player: &6%player%"
-        - ""
-        - ""
-        - "%repeatstylelist%"
-      repeatstyle: "&7- &6%land_name% (%land_id%)&a, invited by: &c%inviter%\n"
-
-    leave:
-      missing_land_name: "&cYou must provide the land name!"
-      land_name_not_alphanumeric: "&cThe land name must be alphanumeric; Do not use colors or any other symbols."
-      land_name_not_found: "&cThis land name doesn't exist."
-      playername_not_found: "&cYou are not trusted in the land!"
-      player_left_success: "&aYou left the land &6%land_name%&a."
-
-    new_role:
-      land_not_found: "&cYou don't have a land!"
-      no_role_provided: "&cYou must provide a new role name to create."
-      role_found: "&cThis role does already exist in the land!"
-      role_name_not_alphanumeric: "&cThe role name must be alphanumeric; Do not use colors or any other symbols."
-      max_roles_created: "&cYou have created the maximum of roles in your land!"
-      role_create_success: "&aSuccessfully created a new role!"
-
-    rename:
-      land_not_found: "&cYou don't have a land!"
-      missing_new_land_name: "&cYou must provide a new land name!"
-      land_name_already_taken: "&cThis land name is already been taken, please choose another one."
-      land_name_not_alphanumeric: "&cYour land name must be alphanumeric; Do not use colors or any other symbols."
-      land_name_update_success: "&aSuccessfully renamed your land to &9%new%&a!"
-
-    rename_role:
-      land_not_found: "&cYou don't have a land!"
-      no_role_provided: "&cYou must provide an existing role name to rename."
-      role_not_found: "&cThis role does not exist in the land!"
-      role_name_is_visitor: "&cThe role is default Visitor role, cannot be renamed."
-      role_name_not_alphanumeric: "&cThe role name must be alphanumeric; Do not use colors or any other symbols."
-      missing_new_role_name: "&cYou must provide a new role name!"
-      role_update_success: "&aSuccessfully renamed &9%old% &ato &9%new%&a!"
-
-    set_spawn:
-      land_not_found: "&cYou don't have a land!"
-      chunk_not_claimed: "&cThis chunk is not claimed."
-      not_owner_of_chunk: "&cYou don't own this chunk."
-      spawn_set_success: "&aSuccessfully updated spawn coordinates: &9%x%, %y%, %z%"
-
-    spawn:
-      missing_land_name: "&cYou must provide the land name!"
-      land_name_not_found: "&cThis land name doesn't exist."
-      missing_permissions_to_teleport: "&cYou do not have permission to teleport to %land_name%."
-      player_banned: "&cYou are banned from the land &6%land%&c with the reason: &7%reason%"
-      location_not_safe: "&cThe location is not safe, it could be a trap."
-      spawn_teleport_success: "&aTeleported to &6%land_name%&a: &9%x%, %y%, %z% &a(%world%)"
-
-    trust:
-      land_not_found: "&cYou don't have a land!"
-      no_playername_provided: "&cYou must name the player to trust."
-      playername_not_found: "&cThis playername doens't exist."
-      playername_already_invited: "&cThis playername is already invited!"
-      playername_already_trusted: "&cThis playername is already in the land!"
-      playername_owner_of_land: "&cYou are the owner of the land."
-      no_role_provided: "&cYou must provide a role name for the player."
-      role_not_found: "&cThis role was not found in your land."
-      player_cannot_have_default_role: "&cThe player cannot have a default (Visitor) role!"
-      player_invited_success: "&aYou invited &6%player% &ato join the land! Wait until they accept the invite."
-
-    unban:
-      land_not_found: "&cYou don't have a land!"
-      no_playername_provided: "&cYou must provide a player name to ban!"
-      player_not_banned: "&cThis player is not banned."
-      player_unbanned_success: "&aSuccessfully unbanned &6%player%&a."
-
-    unclaim:
-      land_not_found: "&cYou don't have a land!"
-      chunk_not_claimed: "&cThis chunk is not claimed."
-      chunk_not_owned_by_sender: "&cThis chunk is owned by a land that you don't own!"
-      confirm_missing: "&7You must confirm to continue..."
-      chunk_unclaimed_success: "&aYou have successfully unclaimed this chunk!"
-      show_note_land_deleted: "&6Note: Your land has been deleted because you have no chunks to maintain it!"
-
-    untrust:
-      land_not_found: "&cYou don't have a land!"
-      no_playername_provided: "&cYou must name the player to trust."
-      player_invite_removed_success: "&cThe invite for &6%player% &chas been removed."
-      playername_not_trusted: "&cThis playername is not in the land!"
-      player_untrusted_success: "&aYou untrusted &6%player% &ato leave the land."
-
-    update_role_flags:
-      land_not_found: "&cYou don't have a land!"
-      no_role_provided: "&cYou must provide a role name to update/read it's flags."
-      role_not_found: "&cThis role was not found in your land."
-      not_valid_flag: "&cThis is not a valid flag."
-      missing_boolean_value: "&cYou must provide a boolean value to update the role's flag (true/1 or false/0)."
-      not_boolean_value: "&cYou must choose true/1 or false/0, not any kind of other values"
-      role_flag_updated_success: "&aThe flag &7%flag% &afor &9%role_name% &ahas been updated to &6%new_value%&a."
-
-    update_nature_flags:
-      land_not_found: "&cYou don't have a land!"
-      not_valid_flag: "&cThis is not a valid flag."
-      missing_boolean_value: "&cYou must provide a boolean value to update the role's flag (true/1 or false/0)."
-      not_boolean_value: "&cYou must choose true/1 or false/0, not any kind of other values"
-      nature_flag_updated_success: "&aThe flag &7%flag% &ahas been updated to &6%new_value%&a."
-
-    view:
-      chunk_wilderness: "&cThis is wilderness, you must use this command inside a claimed chunk!"
-      particles_spawned_success: "&aDone! You can check the particles around the land to see the chunks limits."
-
-    withdraw:
-      vault_plugin_not_ready: "&cUnable to run the command, Vault economy API is disabled in config.yml."
-      land_not_found: "&cYou don't have a land!"
-      no_amount_provided: "&cYou must provide the amount to withdraw!"
-      input_negative_or_zero: "&cThe amount must be higher than 0."
-      input_larger_than_land_balance: "&cYour land doesn't have that amount of money."
-      input_not_double_or_integer: "&cNot a valid integer or double."
-      withdrew_success: "&aYou withdrew &6$%amount%&a, now your land got &6$%land_balance%&a!"
-
-  # Error messages when a player doesn't have the permission to do in a land
   permissions:
-    default: "&cYou do not have permission to run this command!"
-
-    # The prefix of the messages
-    prefix:
-      toggle: true
-      string: "&c&lHEY! &r"
-
-    # The suffix of the messages
-    suffix:
-      toggle: true
-      string: " &c(Land: &9%land_name%&c, Flag: &7%flag%&c)"
-    
-    # Missing permission messages
-    messages:
-      breakblocks: "&cYou do not have permission to break blocks here"
-      placeblocks: "&cYou do not have permission to place blocks here"
-      containers: "&cYou do not have permission to open containers here"
-      redstone: "&cYou do not have permission to use redstone here"
-      doors: "&cYou do not have permission to use doors here"
-      trapdoors: "&cYou do not have permission to use trapdoors here"
-      editsigns: "&cYou do not have permission to edit signs"
-      emptybuckets: "&cYou do not have permission to empty buckets here"
-      fillbuckets: "&cYou do not have permission to fill buckets here"
-      harvestcrops: "&cYou do not have permission to harvest crops here"
-      frostwalker: "&cYou do not have permission to use frost walker boots here"
-      shearentities: "&cYou do not have permission to shear sheeps here"
-      itemframes: "&cYou do not have permission to interact with item frames here"
-      generalinteractions: "&cYou do not have permission to do any interaction here"
-      fencegates: "&cYou do not have permission to use fence gates here"
-      buttons: "&cYou do not have permission to use buttons here"
-      levers: "&cYou do not have permission to use levers here"
-      pressureplates: "&cYou do not have permission to use pressure plates here"
-      bells: "&cYou do not have permission to use bells here"
-      tripwires: "&cYou do not have permission to use tripwires here"
-      armorstands: "&cYou do not have permission to take off or put on armors on armor stands here"
-      dyemobs: "&cYou do not have permission to dye entities here"
-      renamemobs: "&cYou do not have permission to rename entities here"
-      leashmobs: "&cYou do not have permission to use or remove leash here"
-      tradewithvillagers: "&cYou do not have permission to trade with villagers here"
-      teleporttospawn: "&cYou do not have permission to teleport to spawn"
-      throwenderpearls: "&cYou do not have permission to throw ender pearls here"
-      throwpotions: "&cYou do not have permission to throw potions here"
-      damagehostilemobs: "&cYou do not have permission to hit hostile mobs here"
-      damagepassivemobs: "&cYou do not have permission to hit passive mobs here"
-      pvp: "&cYou do not have permission to PvP here"
-      usecauldron: "&cYou do not have permission to empty or fill cauldrons here"
-      pickupitems: "&cYou do not have permission to pickup items here"
-      useanvil: "&cYou do not have permission to use anvils here"
-      createfire: "&cYou do not have permission to ignite a fire here"
-      usevehicles: "&cYou do not have permission to ride vehicles here"
-
-land_roles:
-  default:
-    # Default roles that must be created when a player creates a new land
-    names:
-      - "Visitor"
-      - "Member"
-
-    __DEFAULT_VISITOR_ROLE__: "Visitor" # Important, and unchangeable role name
-
-    permissions:
       # Permissions for the role: Visitor
-      Visitor:
-        - false # breakblocks
-        - false # placeblocks
-        - false # containers
-        - false # redstone
-        - false # doors
-        - false # trapdoors
-        - false # editsigns
-        - false # emptybuckets
-        - false # fillbuckets
-        - false # harvestcrops
-        - false # frostwalker
-        - false # shearentities
-        - false # itemframes
-        - false # generalinteractions
-        - false # fencegates
-        - false # buttons
-        - false # levers
-        - false # pressureplates
-        - false # bells
-        - false # tripwires
-        - false # armorstands
-        - false # dyemobs
-        - false # renamemobs
-        - false # leashmobs
-        - false # tradewithvillagers
-        - false # teleporttospawn
-        - false # throwenderpearls
-        - false # throwpotions
-        - false # damagehostilemobs
-        - false # damagepassivemobs
-        - false # pvp
-        - false # usecauldron
-        - true # pickupitems
-        - false # useanvil
-        - false # createfire
-        - false # usevehicles
+    Visitor:
+      - false # breakblocks
+      - false # placeblocks
+      - false # containers
+      - false # redstone
+      - false # doors
+      - false # trapdoors
+      - false # editsigns
+      - false # emptybuckets
+      - false # fillbuckets
+      - false # harvestcrops
+      - false # frostwalker
+      - false # shearentities
+      - false # itemframes
+      - false # generalinteractions
+      - false # fencegates
+      - false # buttons
+      - false # levers
+      - false # pressureplates
+      - false # bells
+      - false # tripwires
+      - false # armorstands
+      - false # dyemobs
+      - false # renamemobs
+      - false # leashmobs
+      - false # tradewithvillagers
+      - false # teleporttospawn
+      - false # throwenderpearls
+      - false # throwpotions
+      - false # damagehostilemobs
+      - false # damagepassivemobs
+      - false # pvp
+      - false # usecauldron
+      - true # pickupitems
+      - false # useanvil
+      - false # createfire
+      - false # usevehicles
 
-      # Permissions for the role: Member
-      Member:
-        - true # breakblocks
-        - true # placeblocks
-        - true # containers
-        - true # redstone
-        - true # doors
-        - true # trapdoors
-        - true # editsigns
-        - true # emptybuckets
-        - true # fillbuckets
-        - true # harvestcrops
-        - false # frostwalker
-        - true # shearentities
-        - true # itemframes
-        - true # generalinteractions
-        - true # fencegates
-        - true # buttons
-        - true # levers
-        - true # pressureplates
-        - true # bells
-        - true # tripwires
-        - true # armorstands
-        - true # dyemobs
-        - true # renamemobs
-        - true # leashmobs
-        - true # tradewithvillagers
-        - true # teleporttospawn
-        - true # throwenderpearls
-        - true # throwpotions
-        - true # damagehostilemobs
-        - false # damagepassivemobs
-        - true # pvp
-        - true # usecauldron
-        - true # pickupitems
-        - true # useanvil
-        - false # createfire
-        - true # usevehicles
+    # Permissions for the role: Member
+    Member:
+      - true # breakblocks
+      - true # placeblocks
+      - true # containers
+      - true # redstone
+      - true # doors
+      - true # trapdoors
+      - true # editsigns
+      - true # emptybuckets
+      - true # fillbuckets
+      - true # harvestcrops
+      - false # frostwalker
+      - true # shearentities
+      - true # itemframes
+      - true # generalinteractions
+      - true # fencegates
+      - true # buttons
+      - true # levers
+      - true # pressureplates
+      - true # bells
+      - true # tripwires
+      - true # armorstands
+      - true # dyemobs
+      - true # renamemobs
+      - true # leashmobs
+      - true # tradewithvillagers
+      - true # teleporttospawn
+      - true # throwenderpearls
+      - true # throwpotions
+      - true # damagehostilemobs
+      - false # damagepassivemobs
+      - true # pvp
+      - true # usecauldron
+      - true # pickupitems
+      - true # useanvil
+      - false # createfire
+      - true # usevehicles
 
       # Default permissions if there is a new role created:
-      __DEFAULT__:
-        - false # breakblocks
-        - false # placeblocks
-        - false # containers
-        - false # redstone
-        - false # doors
-        - false # trapdoors
-        - false # editsigns
-        - false # emptybuckets
-        - false # fillbuckets
-        - false # harvestcrops
-        - false # frostwalker
-        - false # shearentities
-        - false # itemframes
-        - false # generalinteractions
-        - false # fencegates
-        - false # buttons
-        - false # levers
-        - false # pressureplates
-        - false # bells
-        - false # tripwires
-        - false # armorstands
-        - false # dyemobs
-        - false # renamemobs
-        - false # leashmobs
-        - false # tradewithvillagers
-        - false # teleporttospawn
-        - false # throwenderpearls
-        - false # throwpotions
-        - false # damagehostilemobs
-        - false # damagepassivemobs
-        - false # pvp
-        - false # usecauldron
-        - true # pickupitems
-        - false # useanvil
-        - false # createfire
-        - false # usevehicles
+    __DEFAULT__:
+      - false # breakblocks
+      - false # placeblocks
+      - false # containers
+      - false # redstone
+      - false # doors
+      - false # trapdoors
+      - false # editsigns
+      - false # emptybuckets
+      - false # fillbuckets
+      - false # harvestcrops
+      - false # frostwalker
+      - false # shearentities
+      - false # itemframes
+      - false # generalinteractions
+      - false # fencegates
+      - false # buttons
+      - false # levers
+      - false # pressureplates
+      - false # bells
+      - false # tripwires
+      - false # armorstands
+      - false # dyemobs
+      - false # renamemobs
+      - false # leashmobs
+      - false # tradewithvillagers
+      - false # teleporttospawn
+      - false # throwenderpearls
+      - false # throwpotions
+      - false # damagehostilemobs
+      - false # damagepassivemobs
+      - false # pvp
+      - false # usecauldron
+      - true # pickupitems
+      - false # useanvil
+      - false # createfire
+      - false # usevehicles

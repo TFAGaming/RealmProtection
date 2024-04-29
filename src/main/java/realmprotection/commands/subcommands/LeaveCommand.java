@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 
 import realmprotection.managers.LandMembersManager;
 import realmprotection.managers.LandsManager;
-import realmprotection.utils.LoadConfig;
+import realmprotection.utils.Language;
 import realmprotection.utils.StringValidator;
 
 public class LeaveCommand implements CommandExecutor {
@@ -17,31 +17,31 @@ public class LeaveCommand implements CommandExecutor {
             Player player = (Player) sender;
 
             if (args.length == 1) {
-                player.sendMessage(LoadConfig.commandString("leave.missing_land_name"));
+                player.sendMessage(Language.getCommand("leave.missing_land_name"));
                 return true;
             }
 
             if (!StringValidator.isCleanString(args[1])) {
-                player.sendMessage(LoadConfig.commandString("leave.land_name_not_alphanumeric"));
+                player.sendMessage(Language.getCommand("leave.land_name_not_alphanumeric"));
                 return true;
             }
 
             if (!LandsManager.landNameExist(args[1])) {
-                player.sendMessage(LoadConfig.commandString("leave.land_name_not_found"));
+                player.sendMessage(Language.getCommand("leave.land_name_not_found"));
                 return true;
             }
 
             String land_id = LandsManager.getLandDetailByLandName(args[1], "id");
 
             if (!LandMembersManager.isPlayerInTheLand(new Integer(land_id), player.getName())) {
-                player.sendMessage(LoadConfig.commandString("leave.playername_not_found"));
+                player.sendMessage(Language.getCommand("leave.playername_not_found"));
                 return true;
             }
 
             LandMembersManager.removePlayerFromLand(new Integer(land_id), player.getName());
 
             player.sendMessage(
-                    LoadConfig.commandString("leave.player_left_success").replace("%land_name%",
+                    Language.getCommand("leave.player_left_success").replace("%land_name%",
                             LandsManager.getLandDetailById(new Integer(land_id), "land_name")));
 
             return true;

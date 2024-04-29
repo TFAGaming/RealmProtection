@@ -5,9 +5,10 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import realmprotection.RealmProtection;
 import realmprotection.managers.LandsManager;
 import realmprotection.managers.RolesManager;
-import realmprotection.utils.LoadConfig;
+import realmprotection.utils.Language;
 
 public class DeleteRoleCommand implements CommandExecutor {
     @Override
@@ -16,7 +17,7 @@ public class DeleteRoleCommand implements CommandExecutor {
             Player player = (Player) sender;
 
             if (!LandsManager.hasLand(player.getName())) {
-                player.sendMessage(LoadConfig.commandString("delete_role.land_not_found"));
+                player.sendMessage(Language.getCommand("delete_role.land_not_found"));
                 return true;
             }
 
@@ -25,28 +26,30 @@ public class DeleteRoleCommand implements CommandExecutor {
             int roles_counted = RolesManager.countRolesFromLand(new Integer(land_id));
 
             if (roles_counted <= 2) {
-                player.sendMessage(LoadConfig.commandString("delete_role.min_roles_reached"));
+                player.sendMessage(Language.getCommand("delete_role.min_roles_reached"));
                 return true;
             }
 
             if (args.length == 2) {
-                player.sendMessage(LoadConfig.commandString("delete_role.no_role_provided"));
+                player.sendMessage(Language.getCommand("delete_role.no_role_provided"));
                 return true;
             }
 
             if (!RolesManager.hasRole(new Integer(land_id), args[2])) {
-                player.sendMessage(LoadConfig.commandString("delete_role.role_not_found"));
+                player.sendMessage(Language.getCommand("delete_role.role_not_found"));
                 return true;
             }
 
-            if (args[2].equalsIgnoreCase(LoadConfig.landRolesDefaultString("__DEFAULT_VISITOR_ROLE__"))) {
-                player.sendMessage(LoadConfig.commandString("delete_role.role_name_is_visitor"));
+            RealmProtection plugin = RealmProtection.getPlugin(RealmProtection.class);
+
+            if (args[2].equalsIgnoreCase(plugin.getConfig().getString("roles.__DEFAULT_VISITOR_ROLE__"))) {
+                player.sendMessage(Language.getCommand("delete_role.role_name_is_visitor"));
                 return true;
             }
 
             RolesManager.deleteRole(new Integer(land_id), args[2]);
 
-            player.sendMessage(LoadConfig.commandString("delete_role.role_delete_success").replace("%role%", args[2]));
+            player.sendMessage(Language.getCommand("delete_role.role_delete_success").replace("%role%", args[2]));
 
             return true;
         } else {

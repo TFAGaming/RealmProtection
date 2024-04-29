@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 import realmprotection.managers.LandInvitesManager;
 import realmprotection.managers.LandMembersManager;
 import realmprotection.managers.LandsManager;
-import realmprotection.utils.LoadConfig;
+import realmprotection.utils.Language;
 
 public class AcceptCommand implements CommandExecutor {
     @Override
@@ -17,19 +17,19 @@ public class AcceptCommand implements CommandExecutor {
             Player player = (Player) sender;
 
             if (args.length == 1) {
-                player.sendMessage(LoadConfig.commandString("accept.missing_land_name"));
+                player.sendMessage(Language.getCommand("accept.missing_land_name"));
                 return true;
             }
 
             if (!LandsManager.landNameExist(args[1])) {
-                player.sendMessage(LoadConfig.commandString("accept.land_name_not_found"));
+                player.sendMessage(Language.getCommand("accept.land_name_not_found"));
                 return true;
             }
 
             String land_id = LandsManager.getLandDetailByLandName(args[1], "id");
 
             if (!LandInvitesManager.isPlayerInvited(new Integer(land_id), player.getName())) {
-                player.sendMessage(LoadConfig.commandString("accept.player_not_invited"));
+                player.sendMessage(Language.getCommand("accept.player_not_invited"));
                 return true;
             }
 
@@ -38,7 +38,7 @@ public class AcceptCommand implements CommandExecutor {
             LandMembersManager.invitePlayerToLand(new Integer(land_id), player.getName(), new Integer(role_id));
             LandInvitesManager.removeInviteFromPlayer(new Integer(land_id), player.getName());
 
-            player.sendMessage(LoadConfig.commandString("accept.player_trusted_success"));
+            player.sendMessage(Language.getCommand("accept.player_trusted_success"));
 
             return true;
         } else {

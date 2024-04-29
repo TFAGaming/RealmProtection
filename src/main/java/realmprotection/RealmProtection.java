@@ -1,5 +1,6 @@
 package realmprotection;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.Set;
@@ -17,7 +18,9 @@ import realmprotection.events.ChunksProtection;
 import realmprotection.events.GUIListener;
 import realmprotection.managers.ChunksManager;
 import realmprotection.managers.LandsManager;
-import realmprotection.utils.ColoredString;
+import realmprotection.managers.LanguageLoader;
+import realmprotection.utils.ChatColorTranslator;
+import realmprotection.utils.Language;
 import realmprotection.utils.LuckPermsAPI;
 import realmprotection.utils.VaultAPIEconomy;
 
@@ -27,12 +30,23 @@ public class RealmProtection extends JavaPlugin implements Listener {
     private static Set<UUID> cooldownPlayers = new HashSet<>();
 
     public static Database database;
+    public static LanguageLoader language;
 
     @Override
     public void onEnable() {
         logger.info("[RealmProtection] The plugin has been enabled.");
 
         saveDefaultConfig();
+
+        try {
+            LanguageLoader languageLoader = new LanguageLoader(this);
+            
+            RealmProtection.language = languageLoader;
+        } catch (IOException error) {
+            logger.severe("[RealmProtection] Failed to load language file.");
+
+            error.printStackTrace();
+        }
 
         try {
             if (!getDataFolder().exists()) {
@@ -44,24 +58,25 @@ public class RealmProtection extends JavaPlugin implements Listener {
 
             RealmProtection.database.initialize();
         } catch (SQLException error) {
-            error.printStackTrace();
             logger.severe("[RealmProtection] Failed to connect to the database.");
+
+            error.printStackTrace();
         }
 
-        if (getConfig().getBoolean("lands.plugins.vaultapi_economy") == true) {
-            if (!VaultAPIEconomy.setupVault()) {
-                logger.severe("[RealmProtection] Unable to load Vault API.");
-            } else {
-                logger.info("[RealmProtection] Vault API is loaded.");
-            }
+        if (!VaultAPIEconomy.setupVault()) {
+            logger.severe("[RealmProtection] Unable to load Vault API, plugin now is disabled.");
+
+            getServer().getPluginManager().disablePlugin(this);
+        } else {
+            logger.info("[RealmProtection] Vault API is loaded.");
         }
 
-        if (getConfig().getBoolean("lands.plugins.luckpermsapi") == true) {
-            if (!LuckPermsAPI.setupLuckperms()) {
-                logger.severe("[RealmProtection] Unable to load LuckPerms API.");
-            } else {
-                logger.info("[RealmProtection] LuckPerms API is loaded.");
-            }
+        if (!LuckPermsAPI.setupLuckperms()) {
+            logger.severe("[RealmProtection] Unable to load LuckPerms API, plugin is now disabled.");
+
+            getServer().getPluginManager().disablePlugin(this);
+        } else {
+            logger.info("[RealmProtection] LuckPerms API is loaded.");
         }
 
         getServer().getPluginManager().registerEvents(new ChunksProtection(), this);
@@ -80,8 +95,9 @@ public class RealmProtection extends JavaPlugin implements Listener {
 
             logger.info("[RealmProtection] Successfully closed the database.");
         } catch (SQLException error) {
-            error.printStackTrace();
             logger.severe("[RealmProtection] Failed to close the database.");
+
+            error.printStackTrace();
         }
     }
 
@@ -90,7 +106,7 @@ public class RealmProtection extends JavaPlugin implements Listener {
         if (!cooldownPlayers.contains(playerId)) {
             String message = _getConfigurationStringMessage(permission, player, claimed_chunk);
 
-            player.sendMessage(ColoredString.translate(message));
+            player.sendMessage(ChatColorTranslator.translate(message));
 
             cooldownPlayers.add(playerId);
 
@@ -100,23 +116,21 @@ public class RealmProtection extends JavaPlugin implements Listener {
     }
 
     private static String _getConfigurationStringMessage(String permission, Player player, Chunk claimed_chunk) {
-        RealmProtection plugin = RealmProtection.getPlugin(RealmProtection.class);
-
         String final_string = "";
 
         String land_id = ChunksManager.getChunkDetail(claimed_chunk, "land_id");
         String land_name = LandsManager.getLandDetailById(new Integer(land_id), "land_name");
 
-        String message = plugin.getConfig().getString("messages.permissions.messages." + permission);
+        String message = (String) Language.get("permissions.lands." + permission);
 
-        if (plugin.getConfig().getBoolean("messages.permissions.prefix.toggle")) {
-            final_string += plugin.getConfig().getString("messages.permissions.prefix.string");
+        if ((Boolean) Language.get("permissions.config.prefix.enabled")) {
+            final_string += (String) Language.get("permissions.config.prefix.value");
         }
 
         final_string += message;
 
-        if (plugin.getConfig().getBoolean("messages.permissions.suffix.toggle")) {
-            final_string += plugin.getConfig().getString("messages.permissions.suffix.string");
+        if ((Boolean) Language.get("permissions.config.suffix.enabled")) {
+            final_string += (String) Language.get("permissions.config.suffix.value");
         }
 
         return final_string.replace("%land_name%", land_name).replace("%flag%", permission);

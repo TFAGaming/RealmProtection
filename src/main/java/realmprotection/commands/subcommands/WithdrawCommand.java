@@ -6,7 +6,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import realmprotection.managers.LandsManager;
-import realmprotection.utils.LoadConfig;
+import realmprotection.utils.Language;
 import realmprotection.utils.VaultAPIEconomy;
 
 public class WithdrawCommand implements CommandExecutor {
@@ -16,12 +16,12 @@ public class WithdrawCommand implements CommandExecutor {
             Player player = (Player) sender;
 
             if (!VaultAPIEconomy.isReady()) {
-                player.sendMessage(LoadConfig.commandString("withdraw.vault_plugin_not_ready"));
+                player.sendMessage(Language.getCommand("withdraw.vault_plugin_not_ready"));
                 return true;
             }
 
             if (!LandsManager.hasLand(player.getName())) {
-                player.sendMessage(LoadConfig.commandString("withdraw.land_not_found"));
+                player.sendMessage(Language.getCommand("withdraw.land_not_found"));
                 return true;
             }
 
@@ -29,7 +29,7 @@ public class WithdrawCommand implements CommandExecutor {
             double land_balance = Double.parseDouble(LandsManager.getLandDetailById(new Integer(land_id), "balance"));
 
             if (args.length == 1) {
-                player.sendMessage(LoadConfig.commandString("withdraw.no_amount_provided"));
+                player.sendMessage(Language.getCommand("withdraw.no_amount_provided"));
                 return true;
             }
 
@@ -37,22 +37,22 @@ public class WithdrawCommand implements CommandExecutor {
                 double balance_input = Double.parseDouble(args[1]);
 
                 if (balance_input <= 0) {
-                    player.sendMessage(LoadConfig.commandString("withdraw.input_negative_or_zero"));
+                    player.sendMessage(Language.getCommand("withdraw.input_negative_or_zero"));
                     return true;
                 }
 
                 if (balance_input > land_balance) {
-                    player.sendMessage(LoadConfig.commandString("withdraw.input_larger_than_land_balance"));
+                    player.sendMessage(Language.getCommand("withdraw.input_larger_than_land_balance"));
                     return true;
                 }
 
                 LandsManager.updateBalance(new Integer(land_id), land_balance - balance_input);
                 VaultAPIEconomy.getEconomy().depositPlayer(player, balance_input);
 
-                player.sendMessage(LoadConfig.commandString("withdraw.withdrew_success").replace("%amount%", args[1]).replace("%land_balance%", String.format("%.2f", (land_balance - balance_input))));
+                player.sendMessage(Language.getCommand("withdraw.withdrew_success").replace("%amount%", args[1]).replace("%land_balance%", String.format("%.2f", (land_balance - balance_input))));
 
             } catch (NumberFormatException err) {
-                player.sendMessage(LoadConfig.commandString("withdraw.input_not_double_or_integer"));
+                player.sendMessage(Language.getCommand("withdraw.input_not_double_or_integer"));
             }
 
             return true;

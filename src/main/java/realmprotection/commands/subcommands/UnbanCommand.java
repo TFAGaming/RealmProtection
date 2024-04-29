@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 
 import realmprotection.managers.LandBansManager;
 import realmprotection.managers.LandsManager;
-import realmprotection.utils.LoadConfig;
+import realmprotection.utils.Language;
 
 public class UnbanCommand implements CommandExecutor {
     @Override
@@ -16,25 +16,25 @@ public class UnbanCommand implements CommandExecutor {
             Player player = (Player) sender;
 
             if (!LandsManager.hasLand(player.getName())) {
-                player.sendMessage(LoadConfig.commandString("unban.land_not_found"));
+                player.sendMessage(Language.getCommand("unban.land_not_found"));
                 return true;
             }
 
             String land_id = LandsManager.getLandDetail(player.getName(), "id");
 
             if (args.length == 1) {
-                player.sendMessage(LoadConfig.commandString("unban.no_playername_provided"));
+                player.sendMessage(Language.getCommand("unban.no_playername_provided"));
                 return true;
             }
             
             if (!LandBansManager.isPlayerBannedFromLand(new Integer(land_id), args[1])) {
-                player.sendMessage(LoadConfig.commandString("unban.player_not_banned"));
+                player.sendMessage(Language.getCommand("unban.player_not_banned"));
                 return true;
             }
 
             LandBansManager.unbanPlayerFromLand(new Integer(land_id), args[1]);
 
-            player.sendMessage(LoadConfig.commandString("unban.player_unbanned_success").replace("%player%", args[1]));
+            player.sendMessage(Language.getCommand("unban.player_unbanned_success").replace("%player%", args[1]));
 
             return true;
         } else {

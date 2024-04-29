@@ -21,7 +21,6 @@ import org.bukkit.scheduler.BukkitTask;
 import com.google.common.collect.Lists;
 
 import realmprotection.RealmProtection;
-import realmprotection.utils.LoadConfig;
 import realmprotection.utils.LuckPermsAPI;
 
 public class ChunksManager {
@@ -132,15 +131,17 @@ public class ChunksManager {
     }
 
     public static boolean hasEnoughChunksToClaim(Player player) {
+        RealmProtection plugin = RealmProtection.getPlugin(RealmProtection.class);
+
         if (!LuckPermsAPI.isReady()) {
             return true;
         }
 
         String playergroup = LuckPermsAPI.getPlayerGroup(player);
-        int groupchunkslimit = LoadConfig.landsInteger("ratelimits.chunks." + playergroup);
+        int groupchunkslimit = plugin.getConfig().getInt("ratelimits.chunks." + playergroup);
 
         if (groupchunkslimit <= 0) {
-            groupchunkslimit = LoadConfig.landsInteger("ratelimits.chunks.__DEFAULT__");
+            groupchunkslimit = plugin.getConfig().getInt("ratelimits.chunks.__DEFAULT__");
         }
 
         String land_id = LandsManager.getLandDetail(player.getName(), "id");
@@ -434,20 +435,22 @@ public class ChunksManager {
             if (!player.getLocation().getWorld().getName().equals(chunkWorldName))
                 continue;
 
+            RealmProtection plugin = RealmProtection.getPlugin(RealmProtection.class);
+
             DustOptions dustoptions;
 
             if (is_owner) {
-                List<String> bordercolor = LoadConfig.landsStringList("border-colors.owner");
+                List<String> bordercolor = plugin.getConfig().getStringList("border_colors.owner");
 
                 dustoptions = new DustOptions(Color.fromRGB(new Integer(bordercolor.get(0)),
                         new Integer(bordercolor.get(1)), new Integer(bordercolor.get(2))), 1.0F);
             } else if (is_trusted) {
-                List<String> bordercolor = LoadConfig.landsStringList("border-colors.trusted");
+                List<String> bordercolor = plugin.getConfig().getStringList("border_colors.trusted");
 
                 dustoptions = new DustOptions(Color.fromRGB(new Integer(bordercolor.get(0)),
                         new Integer(bordercolor.get(1)), new Integer(bordercolor.get(2))), 1.0F);
             } else {
-                List<String> bordercolor = LoadConfig.landsStringList("border-colors.visitor");
+                List<String> bordercolor = plugin.getConfig().getStringList("border_colors.visitor");
 
                 dustoptions = new DustOptions(Color.fromRGB(new Integer(bordercolor.get(0)),
                         new Integer(bordercolor.get(1)), new Integer(bordercolor.get(2))), 1.0F);

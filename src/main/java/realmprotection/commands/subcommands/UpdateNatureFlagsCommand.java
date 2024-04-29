@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 
 import realmprotection.gui.NatureFlagsGUI;
 import realmprotection.managers.LandsManager;
-import realmprotection.utils.LoadConfig;
+import realmprotection.utils.Language;
 
 public class UpdateNatureFlagsCommand implements CommandExecutor {
     @Override
@@ -19,7 +19,7 @@ public class UpdateNatureFlagsCommand implements CommandExecutor {
             Player player = (Player) sender;
 
             if (!LandsManager.hasLand(player.getName())) {
-                player.sendMessage(LoadConfig.commandString("update_nature_flags.land_not_found"));
+                player.sendMessage(Language.getCommand("update_nature_flags.land_not_found"));
             } else {
                 String land_id = LandsManager.getLandDetail(player.getName(), "id");
 
@@ -40,18 +40,18 @@ public class UpdateNatureFlagsCommand implements CommandExecutor {
                     listofflags.add("plantgrowth");
 
                     if (!listofflags.contains(args[2])) {
-                        player.sendMessage(LoadConfig.commandString("update_nature_flags.not_valid_flag"));
+                        player.sendMessage(Language.getCommand("update_nature_flags.not_valid_flag"));
                         return true;
                     }
 
                     if (args.length == 3) {
-                        player.sendMessage(LoadConfig.commandString("update_nature_flags.missing_boolean_value"));
+                        player.sendMessage(Language.getCommand("update_nature_flags.missing_boolean_value"));
                         return true;
                     }
 
                     if (!(args[3].equalsIgnoreCase("true") || args[3].equalsIgnoreCase("false")
                             || args[3].equalsIgnoreCase("1") || args[3].equalsIgnoreCase("0"))) {
-                        player.sendMessage(LoadConfig.commandString("update_nature_flags.not_boolean_value"));
+                        player.sendMessage(Language.getCommand("update_nature_flags.not_boolean_value"));
                         return true;
                     }
 
@@ -65,7 +65,7 @@ public class UpdateNatureFlagsCommand implements CommandExecutor {
 
                     LandsManager.updateNatureFlagValue(new Integer(land_id), args[2], value);
 
-                    player.sendMessage(LoadConfig.commandString("update_nature_flags.nature_flag_updated_success")
+                    player.sendMessage(Language.getCommand("update_nature_flags.nature_flag_updated_success")
                             .replace("%flag%", args[2]).replace("%new_value%", "" + value));
 
                 }

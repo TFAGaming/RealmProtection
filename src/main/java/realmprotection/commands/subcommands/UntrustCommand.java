@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 import realmprotection.managers.LandInvitesManager;
 import realmprotection.managers.LandMembersManager;
 import realmprotection.managers.LandsManager;
-import realmprotection.utils.LoadConfig;
+import realmprotection.utils.Language;
 
 public class UntrustCommand implements CommandExecutor {
     @Override
@@ -17,12 +17,12 @@ public class UntrustCommand implements CommandExecutor {
             Player player = (Player) sender;
 
             if (!LandsManager.hasLand(player.getName())) {
-                player.sendMessage(LoadConfig.commandString("untrust.land_not_found"));
+                player.sendMessage(Language.getCommand("untrust.land_not_found"));
                 return true;
             }
 
             if (args.length == 1) {
-                player.sendMessage(LoadConfig.commandString("untrust.no_playername_provided"));
+                player.sendMessage(Language.getCommand("untrust.no_playername_provided"));
                 return true;
             }
 
@@ -31,18 +31,18 @@ public class UntrustCommand implements CommandExecutor {
             if (LandInvitesManager.isPlayerInvited(new Integer(land_id), args[1])) {
                 LandInvitesManager.removeInviteFromPlayer(new Integer(land_id), args[1]);
 
-                player.sendMessage(LoadConfig.commandString("untrust.player_invite_removed_success").replace("%player%", args[1]));
+                player.sendMessage(Language.getCommand("untrust.player_invite_removed_success").replace("%player%", args[1]));
                 return true;
             }
 
             if (!LandMembersManager.isPlayerInTheLand(new Integer(land_id), args[1])) {
-                player.sendMessage(LoadConfig.commandString("untrust.playername_not_trusted"));
+                player.sendMessage(Language.getCommand("untrust.playername_not_trusted"));
                 return true;
             }
 
             LandMembersManager.removePlayerFromLand(new Integer(land_id), args[1]);
 
-            player.sendMessage(LoadConfig.commandString("untrust.player_untrusted_success").replace("%player%", args[1]));
+            player.sendMessage(Language.getCommand("untrust.player_untrusted_success").replace("%player%", args[1]));
 
             return true;
         } else {

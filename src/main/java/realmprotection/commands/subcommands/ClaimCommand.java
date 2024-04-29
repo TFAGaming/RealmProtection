@@ -8,12 +8,13 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import realmprotection.RealmProtection;
 import realmprotection.events.ChunksProtection;
 import realmprotection.managers.ChunksManager;
 import realmprotection.managers.LandMembersManager;
 import realmprotection.managers.LandsManager;
 import realmprotection.managers.RolesManager;
-import realmprotection.utils.LoadConfig;
+import realmprotection.utils.Language;
 import realmprotection.utils.StringValidator;
 
 public class ClaimCommand implements CommandExecutor {
@@ -26,28 +27,28 @@ public class ClaimCommand implements CommandExecutor {
             boolean isClaimed = ChunksManager.isChunkClaimed(chunk);
 
             if (isClaimed) {
-                player.sendMessage(LoadConfig.commandString("claim.chunk_already_claimed"));
+                player.sendMessage(Language.getCommand("claim.chunk_already_claimed"));
                 return true;
             }
 
             if (ChunksManager.isThereNeighborChunkClaimed(player) && !ChunksProtection.isPlayerAnOperator(player)) {
-                player.sendMessage(LoadConfig.commandString("claim.neighbor_chunk_claimed"));
+                player.sendMessage(Language.getCommand("claim.neighbor_chunk_claimed"));
                 return true;
             }
 
             if (!LandsManager.hasLand(player.getName())) {
                 if (args.length == 1) {
-                    player.sendMessage(LoadConfig.commandString("claim.missing_land_name"));
+                    player.sendMessage(Language.getCommand("claim.missing_land_name"));
                     return true;
                 }
 
                 if (!StringValidator.isCleanString(args[1])) {
-                    player.sendMessage(LoadConfig.commandString("claim.land_name_not_alphanumeric"));
+                    player.sendMessage(Language.getCommand("claim.land_name_not_alphanumeric"));
                     return true;
                 }
 
                 if (LandsManager.landNameExist(args[1])) {
-                    player.sendMessage(LoadConfig.commandString("claim.land_name_already_taken"));
+                    player.sendMessage(Language.getCommand("claim.land_name_already_taken"));
                     return true;
                 }
 
@@ -56,7 +57,7 @@ public class ClaimCommand implements CommandExecutor {
             }
 
             if (!ChunksManager.hasEnoughChunksToClaim(player)) {
-                player.sendMessage(LoadConfig.commandString("claim.max_chunks_claimed"));
+                player.sendMessage(Language.getCommand("claim.max_chunks_claimed"));
                 return true;
             }
 
@@ -66,11 +67,13 @@ public class ClaimCommand implements CommandExecutor {
 
             ChunksManager.claimNewChunk(chunk, new Integer(land_id));
 
-            player.sendMessage(LoadConfig.commandString("claim.chunk_claimed_success")
+            player.sendMessage(Language.getCommand("claim.chunk_claimed_success")
                     .replace("%chunk_x%", "" + chunk.getX()).replace("%chunk_z%", "" + chunk.getZ()));
 
             if (!hasOneChunkClaimedForLand) {
-                List<String> rolenames = LoadConfig.landRolesDefaultStringList("names");
+                RealmProtection plugin = RealmProtection.getPlugin(RealmProtection.class);
+
+                List<String> rolenames = plugin.getConfig().getStringList("roles.names");
 
                 for (String rolename : rolenames) {
                     RolesManager.createNewRole(new Integer(land_id), rolename);

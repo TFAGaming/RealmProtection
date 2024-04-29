@@ -9,7 +9,7 @@ import org.bukkit.entity.Player;
 import realmprotection.gui.LandInfoGUI;
 import realmprotection.managers.ChunksManager;
 import realmprotection.managers.LandsManager;
-import realmprotection.utils.LoadConfig;
+import realmprotection.utils.Language;
 
 public class InfoCommand implements CommandExecutor {
         @Override
@@ -24,14 +24,14 @@ public class InfoCommand implements CommandExecutor {
 
                         if (args.length == 1) {
                                 if (!isclaimed) {
-                                        player.sendMessage(LoadConfig.commandString("info.chunk_wilderness"));
+                                        player.sendMessage(Language.getCommand("info.chunk_wilderness"));
                                         return true;
                                 }
 
                                 land_id = ChunksManager.getChunkDetail(chunk, "land_id");
                         } else {
                                 if (!LandsManager.landNameExist(args[1])) {
-                                        player.sendMessage(LoadConfig.commandString("info.land_name_not_found"));
+                                        player.sendMessage(Language.getCommand("info.land_name_not_found"));
                                         return true;
                                 }
 

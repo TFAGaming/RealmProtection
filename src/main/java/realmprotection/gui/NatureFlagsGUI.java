@@ -11,95 +11,98 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import realmprotection.managers.LandsManager;
-import realmprotection.utils.ColoredString;
-import realmprotection.utils.LoadConfig;
+import realmprotection.utils.ChatColorTranslator;
+import realmprotection.utils.Language;
 
 public class NatureFlagsGUI {
-    public static void create(Player player) {
-        String land_id = LandsManager.getLandDetail(player.getName(), "id");
-        String land_name = LandsManager.getLandDetailById(new Integer(land_id), "land_name");
+	public static void create(Player player) {
+		String land_id = LandsManager.getLandDetail(player.getName(), "id");
+		String land_name = LandsManager.getLandDetailById(new Integer(land_id), "land_name");
 
-        Inventory inventory = Bukkit.createInventory(player, 9 * 4,
-                ColoredString.translate(
-                        ColoredString.translate(LoadConfig.guiString("nature_flags.title"))));
+		Inventory inventory = Bukkit.createInventory(player, 9 * 4,
+				ChatColorTranslator.translate(
+						ChatColorTranslator
+								.translate((String) getFromLanguage("title"))));
 
-        List<List<Object>> allflags = LandsManager.listEnabledAndDisabledFlagsForLand(new Integer(land_id));
+		List<List<Object>> allflags = LandsManager.listEnabledAndDisabledFlagsForLand(new Integer(land_id));
 
-        for (List<Object> flag : allflags) {
-            ItemStack flagButton = new ItemStack(
-                    getMaterialItemFromFlagName("nature_" + flag.get(0)));
+		for (List<Object> flag : allflags) {
+			ItemStack flagButton = new ItemStack(
+					getMaterialItemFromFlagName("nature_" + flag.get(0)));
 
-            ItemMeta flagButtonMeta = flagButton.getItemMeta();
-            flagButtonMeta.setDisplayName(ColoredString
-                    .translate(LoadConfig.guiString("nature_flags.content.flag_style.displayname")
-                            .replace("%flag%", "" + flag.get(0)).replace("%displayname%",
-                                    LoadConfig.guiString("flags_displayname.nature_flags." + flag.get(0)))));
+			ItemMeta flagButtonMeta = flagButton.getItemMeta();
+			flagButtonMeta.setDisplayName(ChatColorTranslator
+					.translate(((String) getFromLanguage("content.__FLAGS_REPEAT_STYLE__.displayname"))
+							.replace("%flag%", "" + flag.get(0)).replace("%displayname%",
+									(String) Language.get("flags.nature_flags.displayname." + flag.get(0)))));
 
-            ArrayList<String> flagButtonLore = new ArrayList<>();
-            List<String> natureflagslore = LoadConfig
-                    .guiStringList("nature_flags.content.flag_style.lore");
+			ArrayList<String> flagButtonLore = new ArrayList<>();
+			@SuppressWarnings("unchecked")
+			List<String> natureflagslore = (List<String>) getFromLanguage("content.__FLAGS_REPEAT_STYLE__.lore");
 
-            for (String lore : natureflagslore) {
-                if ((boolean) flag.get(1) == true) {
-                    flagButtonLore.add(ColoredString
-                            .translate(lore
-                                    .replace("%description%",
-                                            "" + LoadConfig.guiString(
-                                                    "flags_description.nature_flags." + flag.get(0)))
-                                    .replace("%value%", LoadConfig.generalString("flags.enabled"))));
-                } else {
-                    flagButtonLore.add(ColoredString
-                            .translate(lore
-                                    .replace("%description%",
-                                            "" + LoadConfig.guiString(
-                                                    "flags_description.nature_flags." + flag.get(0)))
-                                    .replace("%value%", LoadConfig.generalString("flags.disabled"))));
-                }
-            }
+			for (String lore : natureflagslore) {
+				if ((boolean) flag.get(1) == true) {
+					flagButtonLore.add(ChatColorTranslator
+							.translate(lore
+									.replace("%description%",
+											"" + (String) Language.get("flags.nature_flags.description." + flag.get(0)))
+									.replace("%value%", (String) Language.get("general.flags.enabled"))));
+				} else {
+					flagButtonLore.add(ChatColorTranslator
+							.translate(lore
+									.replace("%description%",
+											"" + (String) Language.get("flags.nature_flags.description." + flag.get(0)))
+									.replace("%value%", (String) Language.get("general.flags.disabled"))));
+				}
+			}
 
-            flagButtonMeta.setLore(flagButtonLore);
-            flagButton.setItemMeta(flagButtonMeta);
+			flagButtonMeta.setLore(flagButtonLore);
+			flagButton.setItemMeta(flagButtonMeta);
 
-            inventory.addItem(flagButton);
-        }
+			inventory.addItem(flagButton);
+		}
 
-        ItemStack landNameButton = new ItemStack(
-                Material.getMaterial(LoadConfig.guiString("nature_flags.content.land_name.type")));
-        ItemMeta landNameButtonMeta = landNameButton.getItemMeta();
-        landNameButtonMeta.setDisplayName(ColoredString
-                .translate(LoadConfig.guiString("nature_flags.content.land_name.displayname")
-                        .replace("%land_name%", land_name)));
-        landNameButton.setItemMeta(landNameButtonMeta);
+		ItemStack landNameButton = new ItemStack(
+				Material.getMaterial((String) getFromLanguage("content.land_name.type")));
+		ItemMeta landNameButtonMeta = landNameButton.getItemMeta();
+		landNameButtonMeta.setDisplayName(ChatColorTranslator
+				.translate(((String) getFromLanguage("content.land_name.displayname"))
+						.replace("%land_name%", land_name)));
+		landNameButton.setItemMeta(landNameButtonMeta);
 
-        ItemStack closeButton = new ItemStack(
-                Material.getMaterial(LoadConfig.generalString("gui.close_button.type")));
-        ItemMeta closeButtonMeta = closeButton.getItemMeta();
-        closeButtonMeta.setDisplayName(
-                ColoredString.translate(LoadConfig.generalString("gui.close_button.displayname")));
-        closeButton.setItemMeta(closeButtonMeta);
+		ItemStack closeButton = new ItemStack(
+				Material.getMaterial((String) Language.get("general.guis.close_button.item.type")));
+		ItemMeta closeButtonMeta = closeButton.getItemMeta();
+		closeButtonMeta.setDisplayName(
+				ChatColorTranslator.translate((String) Language.get("general.guis.close_button.item.displayname")));
+		closeButton.setItemMeta(closeButtonMeta);
 
-        inventory.setItem(27, landNameButton);
-        if (LoadConfig.generalBoolean("gui.close_button.enabled") == true) {
-            inventory.setItem(35, closeButton);
-        }
+		inventory.setItem(27, landNameButton);
+		if ((Boolean) Language.get("general.guis.close_button.enabled")) {
+			inventory.setItem(35, closeButton);
+		}
 
-        player.openInventory(inventory);
-    }
+		player.openInventory(inventory);
+	}
 
-    public static Material getMaterialItemFromFlagName(String flag) {
-        String[] splitted = flag.split("_");
-        List<String> splittedlist = new ArrayList<>();
+	private static Material getMaterialItemFromFlagName(String flag) {
+		String[] splitted = flag.split("_");
+		List<String> splittedlist = new ArrayList<>();
 
-        for (String split : splitted) {
-            splittedlist.add(split);
-        }
+		for (String split : splitted) {
+			splittedlist.add(split);
+		}
 
-        Material material = Material.getMaterial(LoadConfig.guiString("nature_flags.items." + splittedlist.get(1)));
+		Material material = Material.getMaterial((String) getFromLanguage("__FLAGS_REPEAT_STYLE_ITEMS_CONFIG__." + splittedlist.get(1)));
 
-        if (material != null) {
-            return material;
-        } else {
-            return Material.STRUCTURE_VOID;
-        }
-    }
+		if (material != null) {
+			return material;
+		} else {
+			return Material.STRUCTURE_VOID;
+		}
+	}
+
+	private static Object getFromLanguage(String path) {
+		return Language.get("gui.commands.nature_flags." + path);
+	}
 }

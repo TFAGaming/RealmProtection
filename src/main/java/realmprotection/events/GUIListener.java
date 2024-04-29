@@ -11,15 +11,15 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.ItemStack;
 
 import realmprotection.managers.LandStorageManager;
-import realmprotection.utils.ColoredString;
-import realmprotection.utils.LoadConfig;
+import realmprotection.utils.ChatColorTranslator;
+import realmprotection.utils.Language;
 
 public class GUIListener implements Listener {
     @EventHandler
     public void onClick(InventoryClickEvent event) {
         Player player = (Player) event.getWhoClicked();
 
-        if (event.getView().getTitle().startsWith(ColoredString.translate(LoadConfig.guiString("land_info.title")))) {
+        if (event.getView().getTitle().startsWith(ChatColorTranslator.translate((String) Language.get("gui.commands.land_info.title")))) {
             event.setCancelled(true);
 
             ItemStack item = event.getCurrentItem();
@@ -42,7 +42,7 @@ public class GUIListener implements Listener {
                     break;
             }
         } else if (event.getView().getTitle()
-                .startsWith(ColoredString.translate(LoadConfig.guiString("role_flags.title")))) {
+                .startsWith(ChatColorTranslator.translate((String) Language.get("gui.commands.role_flags.title")))) {
             event.setCancelled(true);
 
             ItemStack item = event.getCurrentItem();
@@ -60,7 +60,7 @@ public class GUIListener implements Listener {
                     break;
             }
         } else if (event.getView().getTitle()
-                .startsWith(ColoredString.translate(LoadConfig.guiString("nature_flags.title")))) {
+                .startsWith(ChatColorTranslator.translate((String) Language.get("gui.commands.nature_flags.title")))) {
             event.setCancelled(true);
 
             ItemStack item = event.getCurrentItem();
@@ -85,7 +85,7 @@ public class GUIListener implements Listener {
         Player player = (Player) event.getPlayer();
 
         if (event.getView().getTitle()
-                .equalsIgnoreCase(ColoredString.translate(LoadConfig.guiString("land_storage.title")))) {
+                .equalsIgnoreCase(ChatColorTranslator.translate((String) Language.get("gui.commands.land_storage.title")))) {
             List<List<Object>> prunedItems = new ArrayList<>();
 
             for (int slot = 0; slot < event.getInventory().getSize(); slot++) {

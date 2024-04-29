@@ -12,7 +12,6 @@ import java.util.Map;
 import com.google.common.collect.Lists;
 
 import realmprotection.RealmProtection;
-import realmprotection.utils.LoadConfig;
 
 public class LandMembersManager {
     private static final Map<String, List<Object>> cache = new HashMap<>();
@@ -119,7 +118,9 @@ public class LandMembersManager {
             e.printStackTrace();
         }
 
-        return LoadConfig.landRolesDefaultString("__DEFAULT_VISITOR_ROLE__");
+        RealmProtection plugin = RealmProtection.getPlugin(RealmProtection.class);
+
+        return plugin.getConfig().getString("roles.__DEFAULT_VISITOR_ROLE__");
     }
 
     public static boolean isPlayerInTheLand(int land_id, String player_name) {
@@ -129,18 +130,20 @@ public class LandMembersManager {
     public static boolean hasPlayerThePermissionToDo(int land_id, String player_name, String permission_name) {
         boolean isTrusted = isPlayerInTheLand(land_id, player_name);
 
-        if (isTrusted) {
-            String role_id = getRoleNameFromPlayername(land_id, player_name);
+        RealmProtection plugin = RealmProtection.getPlugin(RealmProtection.class);
 
-            if (role_id == LoadConfig.landRolesDefaultString("__DEFAULT_VISITOR_ROLE__")) {
-                boolean value = RolesManager.getPermissionValue(land_id, LoadConfig.landRolesDefaultString("__DEFAULT_VISITOR_ROLE__"), permission_name);
+        if (isTrusted) {
+            String role_name = getRoleNameFromPlayername(land_id, player_name);
+
+            if (role_name == plugin.getConfig().getString("roles.__DEFAULT_VISITOR_ROLE__")) {
+                boolean value = RolesManager.getPermissionValue(land_id, plugin.getConfig().getString("roles.__DEFAULT_VISITOR_ROLE__"), permission_name);
                 return value;
             } else {
-                boolean value = RolesManager.getPermissionValue(land_id, role_id, permission_name);
+                boolean value = RolesManager.getPermissionValue(land_id, role_name, permission_name);
                 return value;
             }
         } else {
-            boolean value = RolesManager.getPermissionValue(land_id, LoadConfig.landRolesDefaultString("__DEFAULT_VISITOR_ROLE__"), permission_name);
+            boolean value = RolesManager.getPermissionValue(land_id, plugin.getConfig().getString("roles.__DEFAULT_VISITOR_ROLE__"), permission_name);
             return value;
         }
     }

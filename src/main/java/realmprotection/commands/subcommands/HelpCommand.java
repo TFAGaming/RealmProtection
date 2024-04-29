@@ -7,15 +7,16 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import realmprotection.utils.ColoredString;
-import realmprotection.utils.LoadConfig;
+import realmprotection.utils.ChatColorTranslator;
+import realmprotection.utils.Language;
 public class HelpCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
             Player player = (Player) sender;
             
-            List<String> stringlist = LoadConfig.commandStringList("help.stringlist");
+            @SuppressWarnings("unchecked")
+            List<String> stringlist = (List<String>) Language.get("commands.help.__STRING_LIST__");
             String finalstring = "";
 
             for (String string : stringlist) {
@@ -26,7 +27,7 @@ public class HelpCommand implements CommandExecutor {
                 }
             }
 
-            player.sendMessage(ColoredString.translate(finalstring));
+            player.sendMessage(ChatColorTranslator.translate(finalstring));
 
             return true;
         } else {

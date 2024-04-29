@@ -10,7 +10,7 @@ import realmprotection.managers.LandBansManager;
 import realmprotection.managers.LandMembersManager;
 import realmprotection.managers.LandsManager;
 import realmprotection.managers.RolesManager;
-import realmprotection.utils.LoadConfig;
+import realmprotection.utils.Language;
 
 public class DeleteCommand implements CommandExecutor {
     @Override
@@ -19,14 +19,14 @@ public class DeleteCommand implements CommandExecutor {
             Player player = (Player) sender;
 
             if (!LandsManager.hasLand(player.getName())) {
-                player.sendMessage(LoadConfig.commandString("delete.land_not_found"));
+                player.sendMessage(Language.getCommand("delete.land_not_found"));
                 return true;
             }
 
             String land_id = LandsManager.getLandDetail(player.getName(), "id");
 
             if (args.length == 1 || !args[1].equalsIgnoreCase("confirm")) {
-                player.sendMessage(LoadConfig.commandString("delete.confirm_missing"));
+                player.sendMessage(Language.getCommand("delete.confirm_missing"));
                 return true;
             }
 
@@ -36,7 +36,7 @@ public class DeleteCommand implements CommandExecutor {
             LandBansManager.deleteAllBannedPlayersFromLand(new Integer(land_id));
             ChunksManager.deleteAllChunksFromLand(new Integer(land_id));
 
-            player.sendMessage(LoadConfig.commandString("delete.land_deleted_success"));
+            player.sendMessage(Language.getCommand("delete.land_deleted_success"));
 
             return true;
         } else {

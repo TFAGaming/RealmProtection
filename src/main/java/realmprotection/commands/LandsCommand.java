@@ -11,7 +11,6 @@ import org.bukkit.entity.Player;
 
 import realmprotection.commands.subcommands.ViewCommand;
 import realmprotection.commands.subcommands.WithdrawCommand;
-import realmprotection.RealmProtection;
 import realmprotection.commands.subcommands.AcceptCommand;
 import realmprotection.commands.subcommands.BalanceCommand;
 import realmprotection.commands.subcommands.BanCommand;
@@ -40,7 +39,8 @@ import realmprotection.commands.subcommands.UpdateRoleFlagsCommand;
 import realmprotection.managers.LandBansManager;
 import realmprotection.managers.LandsManager;
 import realmprotection.managers.RolesManager;
-import realmprotection.utils.ColoredString;
+import realmprotection.utils.ChatColorTranslator;
+import realmprotection.utils.Language;
 
 public class LandsCommand implements TabExecutor {
     @Override
@@ -48,10 +48,8 @@ public class LandsCommand implements TabExecutor {
         if (sender instanceof Player) {
             if (args.length > 0) {
                 if (!sender.hasPermission("realmprotection.lands." + args[0])) {
-                    RealmProtection plugin = RealmProtection.getPlugin(RealmProtection.class);
 
-                    sender.sendMessage(
-                            ColoredString.translate(plugin.getConfig().getString("messages.permissions.default")));
+                    sender.sendMessage(ChatColorTranslator.translate((String) Language.get("permissions.commands")));
 
                     return true;
                 }
@@ -325,7 +323,7 @@ public class LandsCommand implements TabExecutor {
 
             currentindex = 3;
         } else if (args.length == 4 && args[0].equalsIgnoreCase("roles") && args[1].equalsIgnoreCase("flags")) {
-            
+
             arraylist = RolesManager.listAllPermissions();
 
             currentindex = 4;
