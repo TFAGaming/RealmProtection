@@ -22,32 +22,38 @@ RealmProtection is a Minecraft plugin that allows you to claim a 16x16 block seg
 - Free, easy to use, and open-source.
 - **36+** role flags and **10+** land nature flags.
 - Protects any claimed chunk from:
-    - Lavacasts (lava and water).
-    - Wilderness pistons.
+    - Lavacast.
+    - PvP:
+        - Weapons
+        - Arrows (from from bows)
+        - Splash and lingering potions
+    - Wilderness pistons and dispensers.
     - Explosions:
         - TNT
-        - Creeper
-        - Respawn Anchor
-        - End crystal
-        - Bed (Nether and End)
-    - Interactions (in general):
+        - Creepers
+        - Respawn Anchors
+        - End crystals
+        - Beds (in Nether/End)
+    - Interactions:
         - Item frames
         - Armor stands
         - Flower pots
         - Doors, trapdoors, and fence gates
-        - And many more!
+        - Redstone components
+        - Getting book from lecterns
+        - Editing signs
+        - And many more!...
     - Building and breaking blocks.
-    - Opening containers (chests, furnaces, droppers...).
-    - Using/spawning vehicles.
-    - Damaging hostile/passive mobs (by the player or by an explosion).
-    - Interacting with redstone (repeaters, comparators...).
-    - And many more!
+    - Opening containers.
+    - Using, spawning, and riding vehicles.
+    - Damaging hostile/passive entities.
+    - And many more!...
 - External plugins APIs used:
-    - [VaultAPI](https://github.com/MilkBowl/VaultAPI) (used for Economy)
-    - [LuckPerms](https://github.com/LuckPerms/LuckPerms) (used for permissions)
+    - [VaultAPI](https://github.com/MilkBowl/VaultAPI)
+    - [LuckPerms](https://github.com/LuckPerms/LuckPerms)
 
 <details>
-    <summary>Screenshots</summary>
+    <summary>Screenshots (Click here)</summary>
     <h3>Role flags GUI:</h3>
     <img src="./images/img3.png"><br><br>
     <h3>Nature flags GUI:</h3>
@@ -62,23 +68,29 @@ RealmProtection is a Minecraft plugin that allows you to claim a 16x16 block seg
 
 Go to the [releases section](https://github.com/TFAGaming/RealmProtector/releases), scroll down to find the version you want to use, click on **Assets** and then click on the **.jar** file to download.
 
+<img src="images/img6.png">
+
 Once the download is finished, copy the **.jar** file, open the plugins folder from your Minecraft server directory, and paste it there. If your Minecraft server is running, you can use the command `/reload` to get the plugin ready for the server, but we recommend you stop the server and then start it again for a fresh startup.
 
-## How does it work?
-Once you try to claim a chunk, the plugin will ask you to enter a new land name with the command arguments. This will make the plugin create a new land with its specific name and ID, and protect the chunk that the player (you) is standing in. When new land is created, there will be two default roles to maintain the land; The first one is the **Visitor** role, which has nearly every flag disabled by default. The role is given by default to any non-trusted player in the land. The second role is the **Member**, which has nearly every flag enabled by default. These two roles are uneditable, which means they cannot be deleted or renamed because they're plugin-based roles. You can create other roles, but these two specific roles cannot be changed.
+For your server type, we recommend you to use [PaperMC](https://papermc.io/) for performance and it's optimizing even more than [Spigot](https://www.spigotmc.org/).
 
-> [!NOTE]
-> If you try to invite a player to the land, you have to give the player a role to join. Note that if the **Visitor** role has a flag enabled and the role that the trusted player got has the same flag but is disabled, the player won't have permission to use that flag in the land.
+> [!WARNING]  
+> You must install the plugins from the list below to make the plugin fully functional:
+> - [Vault](https://github.com/milkbowl/Vault)
+> - [Essentials](https://github.com/EssentialsX/Essentials)
+> - [LuckPerms](https://github.com/LuckPerms/LuckPerms)
+>
+> [Click here](#why-essentials-vault-and-luckperms-are-required) to understand why you must install these plugins on your server.
 
 ## Commands
 The main command for the plugin is `/land`, aliases: `/lands`. It's not `/realmprotection` because the command name is long, while `/land` is short and easy to remember.
 
 ### Sub-commands:
 - `/land claim {name}`: Creates a new land (if the player doesn't have one) and protects the chunk that the player is on it.
-- `/land unclaim [confirm]`: Unclaims the chunk that the player is on it, deletes the land if there are no chunks to maintain it.
+- `/land unclaim [confirm]`: Unclaims the chunk that the player is on it, deletes a land if there are no chunks to maintain it.
 - `/land roles [create/delete/rename/flags]`: The main roles manager command:
-    - `/land roles create [role name]`: Creates a new role with a unique ID for the land, has nearly every flag enabled.
-    - `/land roles delete [role name]`: Deletes an existing role from the land.
+    - `/land roles create [role name]`: Creates a new role with a unique ID for a land, has nearly every flag enabled.
+    - `/land roles delete [role name]`: Deletes an existing role from a land.
     - `/land roles rename [old name] [new name]`: Renames a role's name.
     - `/land roles flags [role role] (flag) (true/false)`:
         - If the argument **flag** is undefined, it will show a GUI of enabled and disabled flags for the role.
@@ -87,24 +99,26 @@ The main command for the plugin is `/land`, aliases: `/lands`. It's not `/realmp
     - If the argument **flag** is undefined, it will show a GUI of enabled and disabled flags for the land's nature.
     - If the argument **flag** is not undefined, it will update the flag's value from the second optional argument **true/false**.
 - `/land spawn [land name]`: Teleports a player to a land, only if the player has the flag **teleporttospawn** enabled or the player is the owner of the land.
-- `/land setspawn`: Updates the spawn point of the land with the coordinates of the player's current position.
-- `/land info (land name)`: Opens a GUI of land information; Number of chunks, ID, Owner, Members and their roles... etc.
-- `/land view`: Spawns colored particles around the claimed chunks of the land, without the need of **F3 + G** Minecraft hotkey.
+- `/land setspawn`: Updates the spawn point of a land with the coordinates of the player's current position.
+- `/land info {land name}`: Opens a GUI of land information; Number of chunks, ID, Owner, Members and their roles... etc.
+- `/land view`: Spawns colored particles around the claimed chunks of a land, without the need of **F3 + G** Minecraft hotkey.
     - If the particles' colors are **Green**, it means you are the owner of the land and you have every permission to modify and update land's data.
     - If the particles' colors are **Yellow**, it means you are trusted in the land but you do not have the enough power to be like the land's owner.
     - If the particles' colors are **Red**, it means you are not trusted in the land and you are marked as a Visitor.
-- `/land deposit [amount]`: Deposit an amount of money to the land's bank system.
-- `/land withdraw [amount]`: Withdraw an amount of money from the land's bank system.
-- `/land balance`: View the land's balance (bank).
-- `/land trust [player name] [role name]`: Trust a player to your land, and let that player to be a member in your land with a specific role.
-- `/land untrust [player name]`: Untrust a player from your land.
-- `/land leave [land name]`: Leave a land that you are trusted in.
-- `/land ban [player name] (reason)`: Ban a player to enter to your land.
-- `/land unban [player name]`: Unban a player from your land.
-- `/land banlist`: Returns a list of banned players from the land.
-- `/land fly`: Toggle fly mode for a player, only allowed to fly in their own claimed chunks.
+- `/land deposit [amount]`: Puts an amount of money to a land's bank system.
+- `/land withdraw [amount]`: Removes an amount of money from a land's bank system.
+- `/land balance`: Returns a land's balance (bank).
+- `/land trust [player name] [role name]`: Creates an invite to a player to join a land.
+- `/land accept [land name]`: Accepts a land invite.
+- `/land invites`: Returns a list of invites of a player.
+- `/land untrust [player name]`: Removes a player from a land.
+- `/land leave [land name]`: Removes a land that a player is trusted in, without the owner actions.
+- `/land ban [player name] (reason)`: Bans a player to enter to a land.
+- `/land unban [player name]`: Unbans a player from a land.
+- `/land banlist`: Returns a list of banned players from a land.
+- `/land fly`: Toggle fly mode for a player (players are only allowed to fly in their own claimed chunks).
 - `/land storage`: Opens a big inventory, holds any item and saves it like an Ender chest.
-- `/land delete [confirm]`: Deletes the land; Deletes every role, removes every trusted member and unclaims every claimed chunk (for the land).
+- `/land delete [confirm]`: Deletes a land; Deletes every role, removes every trusted member and unclaims every claimed chunk from the land.
 
 ### Arguments:
 - `{arg}`: An argument that could be required or optional.
@@ -112,6 +126,15 @@ The main command for the plugin is `/land`, aliases: `/lands`. It's not `/realmp
 - `[arg]`: A required argument.
 
 ## Frequently Asked Questions (FAQs)
+
+### Why Essentials, Vault and LuckPerms are required?
+
+You must install Essentials and LuckPerms on your server so the plugin can use the API of each plugin. Here is a list of what the plugin needs from the other plugins:
+- **Essentials** and **Vault**:
+    - Economy
+- **LuckPerms**:
+    - Groups
+    - Permissions
 
 ### Can I use this plugin with a Minecraft server version below the supported versions?
 
@@ -123,14 +146,14 @@ Run the command on the server `/lp editor` and open the link generated. Once the
 
 <img src="./images/img1.png">
 
-> [!WARNING]  
+> [!CAUTION]  
 > The permission `realmprotection.lands.__operator__` is a dangerous permission that allows any player to:
 > - Bypass disabled flags in any land.
 > - Claim next to any land.
 >
-> Please use this permission for player groups with more trust on the server like Administrator or Owner.
+> Please use this permission for player groups with more trust on the server like **Administrator** or **Owner**. By default, the permission is set for server operators only.
 
-Once you finish configuring permissions, click on the **Save** button. If there is a popup with a command to use, copy the command and use it.
+Once you finish configuring permissions, click on the **Save** button. If there is a popup with a command to use, copy the command and execute it on the server.
 
 ### What's the difference between role flag and nature flag?
 
@@ -138,7 +161,7 @@ A role flag is a permission that is allowed/disallowed for a specific land role.
 
 ### Why must every player claim one chunk away from any land?
 
-To avoid any neighbor claiming right next to you and some other reasons to tell. Note that if a player has the operator permission, they can claim chunks next to other claimed chunks.
+To avoid any neighbor claiming right next to you and keeping space between claims.
 
 ## Contributing
 Feel free to fork the repository and submit a new pull request if you wish to contribute to this project.
