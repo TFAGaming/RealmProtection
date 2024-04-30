@@ -3,17 +3,21 @@ database:
   provider: "sqlite" # Support databases: sqlite
   path: "/database.db"
 
-# The language file to load
+# The language file to load (file extension ".yml" is optional)
 languages:
   locale: "en_US.yml"
 
+# The ratelimits for each player group
 ratelimits:
+  # Chunks ratelimit
   chunks:
     __DEFAULT__: 10 # If the player's group not found
     default: 10
     vip: 20
     admin: 50
     owner: 100
+
+  # Land roles ratelimit
   roles:
     __DEFAULT__: 10 # If the player's group not found
     default: 5
@@ -21,6 +25,7 @@ ratelimits:
     admin: 20
     owner: 50
 
+# The border particles colors, by default: visitor = (255, 0, 0); trusted = (255, 255); owner = (0, 255, 0)
 border_colors: # Note: RBG colors based
   visitor:
       - 255
@@ -35,15 +40,22 @@ border_colors: # Note: RBG colors based
     - 255
     - 0
 
+# Land roles configuration
 roles:
+  # The role names that should be created once there is a new land created
+  # IMPORTANT 1: You must provide 2 role names! More than 2 is OK, but make sure to not exceed follow the ratelimit from "ratelimits.roles.__DEFAULT__".
+  # IMPORTANT 2: YOU MUST PROVIDE A ROLE NAME THAT IS EQUAL TO "roles.__DEFAULT_VISITOR_ROLE__" OR ELSE THE ENTIRE PLUGIN WILL BE BUGGED OUT.
   names:
     - "Visitor"
     - "Member"
 
-  __DEFAULT_VISITOR_ROLE__: "Visitor" # Important, and unchangeable role name
+  # IMPORTANT 1: This role is unchangeable, which means it cannot be deleted or renamed.
+  # IMPORTANT 2: YOU MUST PROVIDE THE ROLE NAME THAT EXISTS FROM THE ARRAY "roles.names" OR ELSE THE ENTIRE PLUGIN WILL BE BUGGED OUT.
+  __DEFAULT_VISITOR_ROLE__: "Visitor"
 
+  # Configure each role permissions
   permissions:
-      # Permissions for the role: Visitor
+    # Permissions for the role: Visitor
     Visitor:
       - false # breakblocks
       - false # placeblocks

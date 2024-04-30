@@ -1,28 +1,50 @@
-# General
+# ---------------------------------------------------------------------------------------------
+# This is the language file used for languages directory.
+# Language used: English (US)
+# 
+# If you want to make another language file, copy this file and dp any changes you want.
+# Once you finish, go to "config.yml" and set the new locale language with the new file name.
+# ---------------------------------------------------------------------------------------------
+
+# General configuration
 general:
+  # The prefix of each message that will be sent to the user, mostly used for commands
   prefix:
     enabled: true
     value: "&8[&9RealmProtection&8] &r"
+
+  # The flags toggle value, it could be enabled or disabled
   flags:
     enabled: "&a✔ Enabled &r"
     disabled: "&c✘ Disabled &r"
+
+  # This part is for the GUIs
   guis:
+    # The main close button, always located on right below of GUIs.
     close_button:
       enabled: true
       item:
         displayname: "&cClose"
         type: "BARRIER"
-  date_format: "dd MMM yyy HH:mm:ss" # 01 Jan 1970 00:00:00
+
+  # The date format
+  date_format: "dd-MM-yyyy" # Example: 31-12-1970
+
+  # For players when they enter or leave a claimed chunk
   player_chunk_entry:
+    # If a player enters a claimed chunk
     claimed:
       action_bar: "&aYou entered to the land: &6%land% &9(Owner: &c%land_owner%&9)"
       __PLAYER_BANNED__: "&cYou are banned from the land &6%land%&c with the reason: &7%reason%"
+
+    # If a player leaves a claimed chunk
     unclaimed:
       action_bar: "&aYou are in &2wilderness&a!"
-  fly_mode_disabled: "&cThe fly mode has been disabled since you are not in a claimed chunk anymore!"
+      __FLY_MODE_DISABLED__: "&cThe fly mode has been disabled since you are not in a claimed chunk anymore!"
 
 # Permissions configuration
 permissions:
+  # Configure prefix and suffix for permissions messages
   config:
     prefix:
       enabled: true
@@ -30,7 +52,11 @@ permissions:
     suffix:
       enabled: true
       value: " &c(Land: &9%land_name%&c, Flag: &7%flag%&c)"
+
+  # This one is for a player when they don't have a permission to use a command
   commands: "&cYou do not have permission to run this command!"
+
+  # The land roles permissions messages
   lands:
     breakblocks: "&cYou do not have permission to break blocks here"
     placeblocks: "&cYou do not have permission to place blocks here"
@@ -71,16 +97,20 @@ permissions:
 
 # Commands configuration  
 commands:
+  # Allow or deny prefix from "general.prefix" to be set with the messages
   __ALLOW_PREFIX__: true
+
   accept:
     missing_land_name: "&cYou must provide the land name!"
     land_name_not_found: "&cThis land name doesn't exist."
     player_not_invited: "&cYou are not invited to join this land."
     player_trusted_success: "&aYou are now a member to the land!"
+
   balance:
     vault_plugin_not_ready: "&cUnable to run the command, Vault economy API is disabled in config.yml."
     land_not_found: "&cYou don't have a land!"
     balance_string: "&aYour land balance: &6$%land_balance%"
+
   ban:
     __DEFAULT_REASON__: "No reason was provided"
     land_not_found: "&cYou don't have a land!"
@@ -88,6 +118,7 @@ commands:
     player_already_banned: "&cThis player is already been banned."
     player_owner_of_land: "&cYou are the owner of the land."
     player_banned_success: "&aSuccessfully banned &6%player% &afor: &7%reason%"
+
   banlist:
     land_not_found: "&cYou don't have a land!"
     no_bans_found: "&aThere are currently no banned players!"
@@ -97,6 +128,7 @@ commands:
       - ""
       - "%repeatstyle%"
     __REPEAT_STYLE__: "&7- &6%player%&7: %reason%\n"
+
   claim:
     chunk_already_claimed: "&cThis chunk has already been claimed."
     neighbor_chunk_claimed: "&cThere is a chunk next to this one is claimed! Always keep a 1 chunk distance between claimed chunks."
@@ -105,10 +137,12 @@ commands:
     land_name_already_taken: "&cThis land name is already been taken, please choose another one."
     max_chunks_claimed: "&cYou have claimed the maximum of chunks you have!"
     chunk_claimed_success: "&aYou have successfully claimed the chunk! &9%chunk_x%, %chunk_z%"
+
   delete:
       land_not_found: "&cYou don't have a land!"
       confirm_missing: "&7You must confirm to continue..."
       land_deleted_success: "&cYour land has been deleted, it is now &4vulnerable&c."
+
   delete_role:
     land_not_found: "&cYou don't have a land!"
     min_roles_reached: "&cYou cannot delete any role, it should be there at least 2 roles to maintain the land!"
@@ -116,6 +150,7 @@ commands:
     role_not_found: "&cThis role was not found in your land."
     role_name_is_visitor: "&cThe role is default Visitor role, cannot be deleted."
     role_delete_success: "&aSuccessfully deleted the role %role%!"
+
   deposit:
     vault_plugin_not_ready: "&cUnable to run the command, Vault economy API is disabled in config.yml."
     land_not_found: "&cYou don't have a land!"
@@ -124,12 +159,14 @@ commands:
     input_larger_than_player_balance: "&cYou don't have that amount of money."
     input_not_double_or_integer: "&cNot a valid integer or double."
     deposited_success: "&aYou deposited &6$%amount%&a, now your land got &6$%land_balance%&a!"
+
   fly:
     land_not_found: "&cYou don't have a land!"
     chunk_not_claimed: "&cYou cannot fly in an unclaimed chunk."
     chunk_not_owned_by_player: "&cYou are not the owner of this land!"
     fly_enabled_success: "&6Fly mode: &aEnabled"
     fly_disabled_success: "&6Fly mode: &cDisabled"
+
   help:
     __STRING_LIST__:
       - "&9Help | RealmProtection plugin"
@@ -145,9 +182,11 @@ commands:
       - "&aCreated by TFAGaming"
       - ""
       - "&aSource: &fhttps://github.com/TFAGaming/RealmProtection/"
+
   info:
     chunk_wilderness: "&cThis is wilderness, you must use this command inside a claimed chunk!"
     land_name_not_found: "&cThis land name doesn't exist."
+
   invites:
     no_invites: "&aNobody invited you to join a land."
     __STRING_LIST__:
@@ -156,12 +195,14 @@ commands:
       - ""
       - "%repeatstyle%"
     __REPEAT_STYLE__: "&7- &6%land_name% (%land_id%)&a, invited by: &c%inviter%\n"
+
   leave:
     missing_land_name: "&cYou must provide the land name!"
     land_name_not_alphanumeric: "&cThe land name must be alphanumeric; Do not use colors or any other symbols."
     land_name_not_found: "&cThis land name doesn't exist."
     playername_not_found: "&cYou are not trusted in the land!"
     player_left_success: "&aYou left the land &6%land_name%&a."
+
   new_role:
     land_not_found: "&cYou don't have a land!"
     no_role_provided: "&cYou must provide a new role name to create."
@@ -169,12 +210,14 @@ commands:
     role_name_not_alphanumeric: "&cThe role name must be alphanumeric; Do not use colors or any other symbols."
     max_roles_created: "&cYou have created the maximum of roles in your land!"
     role_create_success: "&aSuccessfully created a new role!"
+
   rename:
     land_not_found: "&cYou don't have a land!"
     missing_new_land_name: "&cYou must provide a new land name!"
     land_name_already_taken: "&cThis land name is already been taken, please choose another one."
     land_name_not_alphanumeric: "&cYour land name must be alphanumeric; Do not use colors or any other symbols."
     land_name_update_success: "&aSuccessfully renamed your land to &9%new%&a!"
+
   rename_role:
     land_not_found: "&cYou don't have a land!"
     no_role_provided: "&cYou must provide an existing role name to rename."
@@ -183,11 +226,13 @@ commands:
     role_name_not_alphanumeric: "&cThe role name must be alphanumeric; Do not use colors or any other symbols."
     missing_new_role_name: "&cYou must provide a new role name!"
     role_update_success: "&aSuccessfully renamed &9%old% &ato &9%new%&a!"
+
   set_spawn:
     land_not_found: "&cYou don't have a land!"
     chunk_not_claimed: "&cThis chunk is not claimed."
     not_owner_of_chunk: "&cYou don't own this chunk."
     spawn_set_success: "&aSuccessfully updated spawn coordinates: &9%x%, %y%, %z%"
+
   spawn:
     missing_land_name: "&cYou must provide the land name!"
     land_name_not_found: "&cThis land name doesn't exist."
@@ -195,6 +240,7 @@ commands:
     player_banned: "&cYou are banned from the land &6%land%&c with the reason: &7%reason%"
     location_not_safe: "&cThe location is not safe, it could be a trap."
     spawn_teleport_success: "&aTeleported to &6%land_name%&a: &9%x%, %y%, %z% &a(%world%)"
+
   trust:
     land_not_found: "&cYou don't have a land!"
     no_playername_provided: "&cYou must name the player to trust."
@@ -206,11 +252,13 @@ commands:
     role_not_found: "&cThis role was not found in your land."
     player_cannot_have_default_role: "&cThe player cannot have a default (Visitor) role!"
     player_invited_success: "&aYou invited &6%player% &ato join the land! Wait until they accept the invite."
+
   unban:
     land_not_found: "&cYou don't have a land!"
     no_playername_provided: "&cYou must provide a player name to ban!"
     player_not_banned: "&cThis player is not banned."
     player_unbanned_success: "&aSuccessfully unbanned &6%player%&a."
+    
   unclaim:
     land_not_found: "&cYou don't have a land!"
     chunk_not_claimed: "&cThis chunk is not claimed."
@@ -218,12 +266,14 @@ commands:
     confirm_missing: "&7You must confirm to continue..."
     chunk_unclaimed_success: "&aYou have successfully unclaimed this chunk!"
     show_note_land_deleted: "&6Note: Your land has been deleted because you have no chunks to maintain it!"
+
   untrust:
     land_not_found: "&cYou don't have a land!"
     no_playername_provided: "&cYou must name the player to trust."
     player_invite_removed_success: "&cThe invite for &6%player% &chas been removed."
     playername_not_trusted: "&cThis playername is not in the land!"
     player_untrusted_success: "&aYou untrusted &6%player% &ato leave the land."
+
   update_role_flags:
     land_not_found: "&cYou don't have a land!"
     no_role_provided: "&cYou must provide a role name to update/read it's flags."
@@ -232,15 +282,18 @@ commands:
     missing_boolean_value: "&cYou must provide a boolean value to update the role's flag (true/1 or false/0)."
     not_boolean_value: "&cYou must choose true/1 or false/0, not any kind of other values"
     role_flag_updated_success: "&aThe flag &7%flag% &afor &9%role_name% &ahas been updated to &6%new_value%&a."
+
   update_nature_flags:
     land_not_found: "&cYou don't have a land!"
     not_valid_flag: "&cThis is not a valid flag."
     missing_boolean_value: "&cYou must provide a boolean value to update the role's flag (true/1 or false/0)."
     not_boolean_value: "&cYou must choose true/1 or false/0, not any kind of other values"
     nature_flag_updated_success: "&aThe flag &7%flag% &ahas been updated to &6%new_value%&a."
+
   view:
     chunk_wilderness: "&cThis is wilderness, you must use this command inside a claimed chunk!"
     particles_spawned_success: "&aDone! You can check the particles around the land to see the chunks limits."
+
   withdraw:
     vault_plugin_not_ready: "&cUnable to run the command, Vault economy API is disabled in config.yml."
     land_not_found: "&cYou don't have a land!"
@@ -251,6 +304,7 @@ commands:
     withdrew_success: "&aYou withdrew &6$%amount%&a, now your land got &6$%land_balance%&a!"
 
 # GUI (Graphical User Interface, using inventories)
+# IMPORTANT: The slots cannot be changed, unless you download the source of the plugin and set each specific item with it's index, and then package it to a ".jar" file.
 gui:
   commands:
     # /land info [land name]
@@ -273,7 +327,8 @@ gui:
           lore:
             - "%repeatstyle%"
           __LORE_REPEAT_STYLE__: "&a%role_name%&f: &6%member_name%"
-          type: "EMERALD"     
+          type: "EMERALD"   
+            
     # /land roles flags [role name]
     role_flags:
       title: "&9Role Flags"
@@ -323,6 +378,7 @@ gui:
         useanvil: "ANVIL"
         createfire: "FLINT_AND_STEEL"
         usevehicles: "MINECART"
+
     # /land nature flags
     nature_flags:
       title: "&9Nature Flags"
@@ -346,12 +402,14 @@ gui:
         pistonsfromwilderness: "PISTON"
         dispensersfromwilderness: "DISPENSER"
         plantgrowth: "OAK_SAPLING"
+
     # /land storage
     land_storage:
       title: "&9Land storage"
 
 # Flags configuration (for GUIs)
 flags:
+  # For role flags
   role_flags:  
     displayname:
       breakblocks: "Break blocks"
@@ -390,6 +448,7 @@ flags:
       useanvil: "Anvils"
       createfire: "Ignite"
       usevehicles: "Vehicles"
+
     description:
       breakblocks: "Allow players to break blocks?"
       placeblocks: "Allow players to place blocks?"
@@ -427,6 +486,8 @@ flags:
       useanvil: "Allow players to use anvils?"
       createfire: "Allow players to start fire?"
       usevehicles: "Allow players to ride minecarts and boats?"
+
+  # For nature flags
   nature_flags:
     displayname:
       hostilemobsspawn: "Hostile mobs spawn"
@@ -439,6 +500,7 @@ flags:
       pistonsfromwilderness: "Wilderness pistons"
       dispensersfromwilderness: "Wilderness dispensers"
       plantgrowth: "Plant growth"
+
     description:
       hostilemobsspawn: "Allow any hostile mob to spawn?"
       passivemobsspawn: "Allow any passive mob to spawn?"

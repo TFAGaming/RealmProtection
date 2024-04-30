@@ -1551,7 +1551,7 @@ public class ChunksProtection implements Listener {
             if (player.getAllowFlight() && !isPlayerAnOperator(player)) {
                 player.setAllowFlight(false);
 
-                player.sendMessage(ChatColorTranslator.translate(((String) Language.get("general.fly_mode_disabled"))));
+                player.sendMessage(ChatColorTranslator.translate(((String) Language.get("general.player_chunk_entry.unclaimed.__FLY_MODE_DISABLED__"))));
             }
         }
     }
