@@ -127,8 +127,10 @@ public class RolesManager {
             }
 
             statement.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (SQLException error) {
+            error.printStackTrace();
+
+            cacheUpdateAll();
         }
     }
 

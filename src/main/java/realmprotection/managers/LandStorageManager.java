@@ -47,7 +47,7 @@ public class LandStorageManager {
 
                 os.close();
             } catch (IOException exception) {
-                System.out.println(exception);
+                exception.printStackTrace();
             }
         }
     }

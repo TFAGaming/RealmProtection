@@ -11,24 +11,30 @@ import realmprotection.managers.LandsManager;
 import realmprotection.managers.RolesManager;
 
 public class Database {
+    public static RealmProtection plugin = RealmProtection.getPlugin(RealmProtection.class);
+
     private final String DATABASE_PATH;
     private Connection connection;
 
     public Database(String database_path) {
         this.DATABASE_PATH = database_path;
     }
-
+    
     public Connection getConnection() throws SQLException {
         if (connection != null) {
             return connection;
         }
 
-        Connection connection = DriverManager.getConnection("jdbc:sqlite:" + this.DATABASE_PATH);
-        this.connection = connection;
+        if (plugin.getConfig().getString("database.provider").equalsIgnoreCase("sqlite")) {
+            Connection connection = DriverManager.getConnection("jdbc:sqlite:" + this.DATABASE_PATH);
+            this.connection = connection;
 
-        RealmProtection.logger.info("[RealmProtection] Successfully connected to the database!");
+            RealmProtection.logger.info("[RealmProtection] Successfully connected to the database! (SQLite)");
 
-        return connection;
+            return connection;
+        } else {
+            throw new Error("Invalid database provider in config.yml.");
+        }
     }
 
     public void closeConnection() throws SQLException {

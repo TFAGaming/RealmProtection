@@ -34,18 +34,22 @@ public class RealmProtection extends JavaPlugin implements Listener {
 
     @Override
     public void onEnable() {
-        logger.info("[RealmProtection] The plugin has been enabled.");
+        logger.info("[RealmProtection] The plugin has been enabled, getting everything ready...");
 
         saveDefaultConfig();
 
         try {
             LanguageLoader languageLoader = new LanguageLoader(this);
-            
+
             RealmProtection.language = languageLoader;
         } catch (IOException error) {
             logger.severe("[RealmProtection] Failed to load language file.");
 
             error.printStackTrace();
+
+            disablePlugin();
+
+            return;
         }
 
         try {
@@ -61,22 +65,30 @@ public class RealmProtection extends JavaPlugin implements Listener {
             logger.severe("[RealmProtection] Failed to connect to the database.");
 
             error.printStackTrace();
+
+            disablePlugin();
+
+            return;
         }
 
         if (!VaultAPIEconomy.setupVault()) {
-            logger.severe("[RealmProtection] Unable to load Vault API, plugin now is disabled.");
+            logger.severe("[RealmProtection] Unable to load Vault API.");
 
-            getServer().getPluginManager().disablePlugin(this);
+            disablePlugin();
+
+            return;
         } else {
-            logger.info("[RealmProtection] Vault API is loaded.");
+            logger.info("[RealmProtection] Vault API has been successfully loaded.");
         }
 
         if (!LuckPermsAPI.setupLuckperms()) {
-            logger.severe("[RealmProtection] Unable to load LuckPerms API, plugin is now disabled.");
+            logger.severe("[RealmProtection] Unable to load LuckPerms API.");
 
-            getServer().getPluginManager().disablePlugin(this);
+            disablePlugin();
+
+            return;
         } else {
-            logger.info("[RealmProtection] LuckPerms API is loaded.");
+            logger.info("[RealmProtection] LuckPerms API has been successfully loaded.");
         }
 
         getServer().getPluginManager().registerEvents(new ChunksProtection(), this);
@@ -84,6 +96,8 @@ public class RealmProtection extends JavaPlugin implements Listener {
 
         getCommand("lands").setExecutor(new LandsCommand());
         getCommand("land").setExecutor(new LandsCommand());
+
+        logger.info("[RealmProtection] The plugin is now fully functional!");
     }
 
     @Override
@@ -93,12 +107,16 @@ public class RealmProtection extends JavaPlugin implements Listener {
         try {
             RealmProtection.database.closeConnection();
 
-            logger.info("[RealmProtection] Successfully closed the database.");
+            logger.info("[RealmProtection] Successfully closed the connection to database.");
         } catch (SQLException error) {
-            logger.severe("[RealmProtection] Failed to close the database.");
+            logger.severe("[RealmProtection] Failed to close the connection to database.");
 
             error.printStackTrace();
         }
+    }
+
+    private void disablePlugin() {
+        getServer().getPluginManager().disablePlugin(this);
     }
 
     public static void _sendMessageWithTimeout(Player player, String permission, Chunk claimed_chunk) {
