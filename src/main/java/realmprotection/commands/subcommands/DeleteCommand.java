@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 
 import realmprotection.managers.ChunksManager;
 import realmprotection.managers.LandBansManager;
+import realmprotection.managers.LandInvitesManager;
 import realmprotection.managers.LandMembersManager;
 import realmprotection.managers.LandsManager;
 import realmprotection.managers.RolesManager;
@@ -33,6 +34,7 @@ public class DeleteCommand implements CommandExecutor {
             LandsManager.deleteLand(new Integer(land_id));
             RolesManager.deleteAllRolesFromLand(new Integer(land_id));
             LandMembersManager.deleteAllMembersFromLand(new Integer(land_id));
+            LandInvitesManager.deleteAllInvitesFromLand(new Integer(land_id));
             LandBansManager.deleteAllBannedPlayersFromLand(new Integer(land_id));
             ChunksManager.deleteAllChunksFromLand(new Integer(land_id));
 

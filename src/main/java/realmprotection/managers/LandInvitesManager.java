@@ -193,6 +193,24 @@ public class LandInvitesManager {
         return data;
     }
 
+    public static void deleteAllInvitesFromLand(int land_id) {
+        String sql = "DELETE FROM land_invites WHERE land_id = ?";
+
+        try {
+            Connection connection = RealmProtection.database.getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql);
+
+            statement.setInt(1, land_id);
+
+            statement.executeUpdate();
+            statement.close();
+
+            cacheUpdateAll();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     private static String createCacheKey(Object land_id, String player_name) {
         return land_id + "," + player_name;
     }
