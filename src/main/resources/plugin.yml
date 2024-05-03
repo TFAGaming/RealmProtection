@@ -4,7 +4,7 @@ version: 1.1.0
 description: "A Minecraft plugin that allows you to claim a 16x16 block segment from a world (a chunk) and protects it from griefers and thieves"
 author: TFAGaming
 api-version: 1.20
-depend: [Vault, LuckPerms]
+softdepend: [Vault, LuckPerms]
 commands:
   lands:
     description: 'The main RealmProtection command'
