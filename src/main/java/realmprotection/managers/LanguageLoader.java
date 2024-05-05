@@ -32,7 +32,7 @@ public class LanguageLoader {
         String locale = plugin.getConfig().getString("languages.locale");
 
         if (locale != null) {
-            File localefile = new File(plugin.getDataFolder(), "languages/" + locale);
+            File localefile = new File(plugin.getDataFolder(), "languages/" + locale + (locale.endsWith(".yml") ? "" : ".yml"));
 
             FileConfiguration loaded = YamlConfiguration.loadConfiguration(localefile);
 
