@@ -16,7 +16,7 @@ RealmProtection is a Minecraft plugin that allows you to claim a 16x16 block seg
 <br>
 
 **Supported Minecraft version:** 1.20 <br>
-**Tested Minecraft versions:** 1.20
+**Tested Minecraft versions:** 1.19, 1.20
 
 ## Features
 - Free, easy to use, and open-source.
