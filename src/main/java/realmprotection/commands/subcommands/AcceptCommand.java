@@ -28,15 +28,15 @@ public class AcceptCommand implements CommandExecutor {
 
             String land_id = LandsManager.getLandDetailByLandName(args[1], "id");
 
-            if (!LandInvitesManager.isPlayerInvited(new Integer(land_id), player.getName())) {
+            if (!LandInvitesManager.isPlayerInvited(new Integer(land_id), player.getUniqueId().toString())) {
                 player.sendMessage(Language.getCommand("accept.player_not_invited"));
                 return true;
             }
 
-            String role_id = LandInvitesManager.getInviteDetail(new Integer(land_id), player.getName(), "role_id");
+            String role_id = LandInvitesManager.getInviteDetail(new Integer(land_id), player.getUniqueId().toString(), "role_id");
 
-            LandMembersManager.invitePlayerToLand(new Integer(land_id), player.getName(), new Integer(role_id));
-            LandInvitesManager.removeInviteFromPlayer(new Integer(land_id), player.getName());
+            LandMembersManager.invitePlayerToLand(new Integer(land_id), player.getUniqueId().toString(), new Integer(role_id));
+            LandInvitesManager.removeInviteFromPlayer(new Integer(land_id), player.getUniqueId().toString());
 
             player.sendMessage(Language.getCommand("accept.player_trusted_success"));
 

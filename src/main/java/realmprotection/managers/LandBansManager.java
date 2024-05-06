@@ -8,6 +8,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
+
+import org.bukkit.Bukkit;
 
 import com.google.common.collect.Lists;
 
@@ -30,12 +33,12 @@ public class LandBansManager {
             while (result.next()) {
                 int ban_id = result.getInt("id");
                 String land_id = result.getString("land_id");
-                String player_name = result.getString("player_name");
+                String player_uuid = result.getString("player_uuid");
                 String reason = result.getString("reason");
 
-                List<Object> data_land_member_cache = Lists.newArrayList(ban_id, land_id, player_name, reason);
+                List<Object> data_land_member_cache = Lists.newArrayList(ban_id, land_id, player_uuid, reason);
 
-                cache.put(createCacheKey(land_id, player_name), data_land_member_cache);
+                cache.put(createCacheKey(land_id, player_uuid), data_land_member_cache);
             }
 
             statement.close();
@@ -46,15 +49,15 @@ public class LandBansManager {
         }
     }
 
-    public static void banPlayerFromLand(int land_id, String player_name, String reason) {
-        String sql = "INSERT INTO land_bans (land_id, player_name, reason) VALUES (?, ?, ?)";
+    public static void banPlayerFromLand(int land_id, String player_uuid, String reason) {
+        String sql = "INSERT INTO land_bans (land_id, player_uuid, reason) VALUES (?, ?, ?)";
 
         try {
             Connection connection = RealmProtection.database.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql);
 
             statement.setInt(1, land_id);
-            statement.setString(2, player_name);
+            statement.setString(2, player_uuid);
             statement.setString(3, reason);
 
             statement.executeUpdate();
@@ -66,15 +69,15 @@ public class LandBansManager {
         }
     }
 
-    public static void unbanPlayerFromLand(int land_id, String player_name) {
-        String sql = "DELETE FROM land_bans WHERE land_id = ? AND player_name COLLATE NOCASE = ?";
+    public static void unbanPlayerFromLand(int land_id, String player_uuid) {
+        String sql = "DELETE FROM land_bans WHERE land_id = ? AND player_uuid COLLATE NOCASE = ?";
 
         try {
             Connection connection = RealmProtection.database.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql);
 
             statement.setInt(1, land_id);
-            statement.setString(2, player_name);
+            statement.setString(2, player_uuid);
 
             statement.executeUpdate();
             statement.close();
@@ -85,21 +88,21 @@ public class LandBansManager {
         }
     }
 
-    public static String getBanReason(int land_id, String player_name) {
-        if (cache.containsKey(createCacheKey(land_id, player_name))) {
-            List<Object> data = cache.get(createCacheKey(land_id, player_name));
+    public static String getBanReason(int land_id, String player_uuid) {
+        if (cache.containsKey(createCacheKey(land_id, player_uuid))) {
+            List<Object> data = cache.get(createCacheKey(land_id, player_uuid));
 
             return (String) data.get(3);
         }
 
-        String sql = "SELECT * FROM land_bans WHERE land_id = ? AND player_name COLLATE NOCASE = ?";
+        String sql = "SELECT * FROM land_bans WHERE land_id = ? AND player_uuid COLLATE NOCASE = ?";
 
         try {
             Connection connection = RealmProtection.database.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql);
 
             statement.setInt(1, land_id);
-            statement.setString(2, player_name);
+            statement.setString(2, player_uuid);
 
             ResultSet rs = statement.executeQuery();
 
@@ -118,8 +121,8 @@ public class LandBansManager {
         return "No reason was provided";
     }
 
-    public static boolean isPlayerBannedFromLand(int land_id, String player_name) {
-        return cache.containsKey(createCacheKey(land_id, player_name));
+    public static boolean isPlayerBannedFromLand(int land_id, String player_uuid) {
+        return cache.containsKey(createCacheKey(land_id, player_uuid));
     }
 
     public static List<List<String>> listAllBannedPlayersData(int land_id) {
@@ -136,10 +139,10 @@ public class LandBansManager {
             ResultSet result = statement.executeQuery();
 
             while (result.next()) {
-                String player = result.getString("player_name");
+                String player_uuid = result.getString("player_uuid");
                 String reason = result.getString("reason");
 
-                data.add(Lists.newArrayList(player, reason));
+                data.add(Lists.newArrayList(Bukkit.getOfflinePlayer(UUID.fromString(player_uuid)).getName(), reason));
             }
             
             statement.close();
@@ -168,7 +171,7 @@ public class LandBansManager {
         }
     }
 
-    private static String createCacheKey(Object land_id, String player_name) {
-        return land_id + "," + player_name;
+    private static String createCacheKey(Object land_id, String player_uuid) {
+        return land_id + "," + player_uuid;
     }
 }

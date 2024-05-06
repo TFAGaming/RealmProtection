@@ -17,7 +17,7 @@ public class InvitesCommand implements CommandExecutor {
         if (sender instanceof Player) {
             Player player = (Player) sender;
 
-            List<List<String>> alldata = LandInvitesManager.listAllInvitesForPlayer(player.getName());
+            List<List<String>> alldata = LandInvitesManager.listAllInvitesForPlayer(player.getUniqueId().toString());
 
             if (alldata.size() == 0) {
                 player.sendMessage(Language.getCommand("invites.no_invites"));

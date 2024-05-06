@@ -210,20 +210,10 @@ public class LandsCommand implements TabExecutor {
                 case "view":
                     break;
                 case "trust":
-                    List<String> playernames = new ArrayList<>();
-                    Player[] players = new Player[Bukkit.getServer().getOnlinePlayers().size()];
-
-                    Bukkit.getServer().getOnlinePlayers().toArray(players);
-
-                    for (int i = 0; i < players.length; i++) {
-                        playernames.add(players[i].getName());
-                    }
-
-                    arraylist = playernames;
+                    arraylist = getOnlinePlayersList();
                     break;
                 case "untrust":
                     arraylist = getOnlinePlayersList();
-
                     break;
                 case "spawn":
                     arraylist = LandsManager.listAllLandNames();
@@ -242,8 +232,8 @@ public class LandsCommand implements TabExecutor {
                     arraylist = getOnlinePlayersList();
                     break;
                 case "unban":
-                    if (LandsManager.hasLand(sender.getName())) {
-                        String land_id = LandsManager.getLandDetail(sender.getName(), "id");
+                    if (LandsManager.hasLand(((Player) sender).getUniqueId().toString())) {
+                        String land_id = LandsManager.getLandDetail(((Player) sender).getUniqueId().toString(), "id");
 
                         List<List<String>> alldata = LandBansManager.listAllBannedPlayersData(new Integer(land_id));
 
@@ -277,22 +267,22 @@ public class LandsCommand implements TabExecutor {
                 case "create":
                     break;
                 case "delete":
-                    if (LandsManager.hasLand(sender.getName())) {
-                        String land_id = LandsManager.getLandDetail(sender.getName(), "id");
+                    if (LandsManager.hasLand(((Player) sender).getUniqueId().toString())) {
+                        String land_id = LandsManager.getLandDetail(((Player) sender).getUniqueId().toString(), "id");
 
                         arraylist = RolesManager.listAllRolesNames(new Integer(land_id));
                     }
                     break;
                 case "flags":
-                    if (LandsManager.hasLand(sender.getName())) {
-                        String land_id = LandsManager.getLandDetail(sender.getName(), "id");
+                    if (LandsManager.hasLand(((Player) sender).getUniqueId().toString())) {
+                        String land_id = LandsManager.getLandDetail(((Player) sender).getUniqueId().toString(), "id");
 
                         arraylist = RolesManager.listAllRolesNames(new Integer(land_id));
                     }
                     break;
                 case "rename":
-                    if (LandsManager.hasLand(sender.getName())) {
-                        String land_id = LandsManager.getLandDetail(sender.getName(), "id");
+                    if (LandsManager.hasLand(((Player) sender).getUniqueId().toString())) {
+                        String land_id = LandsManager.getLandDetail(((Player) sender).getUniqueId().toString(), "id");
 
                         arraylist = RolesManager.listAllRolesNames(new Integer(land_id));
                     }
@@ -302,8 +292,8 @@ public class LandsCommand implements TabExecutor {
 
             currentindex = 3;
         } else if (args.length == 3 && args[0].equalsIgnoreCase("trust")) {
-            if (LandsManager.hasLand(sender.getName())) {
-                String land_id = LandsManager.getLandDetail(sender.getName(), "id");
+            if (LandsManager.hasLand(((Player) sender).getUniqueId().toString())) {
+                String land_id = LandsManager.getLandDetail(((Player) sender).getUniqueId().toString(), "id");
 
                 arraylist = RolesManager.listAllRolesNames(new Integer(land_id));
             }

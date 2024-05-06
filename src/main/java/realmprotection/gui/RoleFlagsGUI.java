@@ -17,7 +17,7 @@ import realmprotection.utils.Language;
 
 public class RoleFlagsGUI {
 	public static void create(Player player, String role_name) {
-		String land_id = LandsManager.getLandDetail(player.getName(), "id");
+		String land_id = LandsManager.getLandDetail(player.getUniqueId().toString(), "id");
 
 		Inventory inventory = Bukkit.createInventory(player, 9 * 6,
 				ChatColorTranslator.translate((String) getFromLanguage("title")));

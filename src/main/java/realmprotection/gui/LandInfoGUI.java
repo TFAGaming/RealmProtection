@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -73,8 +74,8 @@ public class LandInfoGUI {
 		landOwnerButtonMeta.setDisplayName(ChatColorTranslator
 				.translate(((String) getFromLanguage("content.land_owner.displayname")).replace(
 						"%land_owner%",
-						LandsManager.getLandDetailById(new Integer(land_id),
-								"owner_name"))));
+						Bukkit.getOfflinePlayer(UUID.fromString(LandsManager.getLandDetailById(new Integer(land_id),
+								"owner_uuid"))).getName())));
 		landOwnerButton.setItemMeta(landOwnerButtonMeta);
 
 		List<List<String>> membersdata = LandMembersManager.listAllMembersData(new Integer(land_id));

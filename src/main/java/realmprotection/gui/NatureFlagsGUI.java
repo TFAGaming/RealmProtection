@@ -16,7 +16,7 @@ import realmprotection.utils.Language;
 
 public class NatureFlagsGUI {
 	public static void create(Player player) {
-		String land_id = LandsManager.getLandDetail(player.getName(), "id");
+		String land_id = LandsManager.getLandDetail(player.getUniqueId().toString(), "id");
 		String land_name = LandsManager.getLandDetailById(new Integer(land_id), "land_name");
 
 		Inventory inventory = Bukkit.createInventory(player, 9 * 4,

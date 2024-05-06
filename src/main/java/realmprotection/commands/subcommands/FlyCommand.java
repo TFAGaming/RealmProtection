@@ -17,7 +17,7 @@ public class FlyCommand implements CommandExecutor {
             Player player = (Player) sender;
             Chunk chunk = player.getLocation().getChunk();
 
-            if (!LandsManager.hasLand(player.getName())) {
+            if (!LandsManager.hasLand(player.getUniqueId().toString())) {
                 player.sendMessage(Language.getCommand("fly.land_not_found"));
                 return true;
             }
@@ -27,9 +27,9 @@ public class FlyCommand implements CommandExecutor {
                 return true;
             }
 
-            String chunk_owner_name = ChunksManager.getOwnerByChunk(chunk);
+            String chunk_owner_uuid = ChunksManager.getOwnerUUIDByChunk(chunk);
 
-            if (!chunk_owner_name.equalsIgnoreCase(player.getName())) {
+            if (!chunk_owner_uuid.equals(player.getUniqueId().toString())) {
                 player.sendMessage(Language.getCommand("fly.chunk_not_owned_by_player"));
                 return true;
             }

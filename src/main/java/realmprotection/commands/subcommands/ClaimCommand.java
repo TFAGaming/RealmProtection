@@ -36,7 +36,7 @@ public class ClaimCommand implements CommandExecutor {
                 return true;
             }
 
-            if (!LandsManager.hasLand(player.getName())) {
+            if (!LandsManager.hasLand(player.getUniqueId().toString())) {
                 if (args.length == 1) {
                     player.sendMessage(Language.getCommand("claim.missing_land_name"));
                     return true;
@@ -52,7 +52,7 @@ public class ClaimCommand implements CommandExecutor {
                     return true;
                 }
 
-                LandsManager.createNewLand(args[1], player.getName(), chunk.getWorld().getName(),
+                LandsManager.createNewLand(args[1], player.getUniqueId().toString(), chunk.getWorld().getName(),
                         player.getLocation().getX(), player.getLocation().getY(), player.getLocation().getZ());
             }
 
@@ -61,7 +61,7 @@ public class ClaimCommand implements CommandExecutor {
                 return true;
             }
 
-            String land_id = LandsManager.getLandDetail(player.getName(), "id");
+            String land_id = LandsManager.getLandDetail(player.getUniqueId().toString(), "id");
 
             boolean hasOneChunkClaimedForLand = ChunksManager.isLandHaveAtLeastOneChunk(new Integer(land_id));
 
@@ -84,11 +84,11 @@ public class ClaimCommand implements CommandExecutor {
             boolean is_owner = false;
             boolean is_trusted = false;
 
-            String land_owner_land = LandsManager.getLandDetailById(new Integer(land_id), "owner_name");
+            String land_owner_land = LandsManager.getLandDetailById(new Integer(land_id), "owner_uuid");
 
-            if (player.getName().equalsIgnoreCase(land_owner_land))
+            if (player.getUniqueId().toString().equals(land_owner_land))
                 is_owner = true;
-            if (LandMembersManager.isPlayerInTheLand(new Integer(land_id), player.getName()))
+            if (LandMembersManager.isPlayerInTheLand(new Integer(land_id), player.getUniqueId().toString()))
                 is_trusted = true;
 
             ChunksManager.startParticleTask(player, new Integer(land_id), 1, is_owner, is_trusted);

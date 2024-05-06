@@ -31,17 +31,17 @@ public class SpawnCommand implements CommandExecutor {
             }
 
             String land_id = LandsManager.getLandDetailByLandName(args[1], "id");
-            String land_owner_name = LandsManager.getLandDetailById(new Integer(land_id), "owner_name");
+            String land_owner_uuid = LandsManager.getLandDetailById(new Integer(land_id), "owner_uuid");
 
-            if (!player.getName().equalsIgnoreCase(land_owner_name) && !LandMembersManager
-                    .hasPlayerThePermissionToDo(new Integer(land_id), player.getName(), "teleporttospawn")) {
+            if (!player.getUniqueId().toString().equals(land_owner_uuid) && !LandMembersManager
+                    .hasPlayerThePermissionToDo(new Integer(land_id), player.getUniqueId().toString(), "teleporttospawn")) {
                 player.sendMessage(Language.getCommand("spawn.missing_permissions_to_teleport")
                         .replace("%land_name%", args[1]));
                 return true;
             }
 
-            if (LandBansManager.isPlayerBannedFromLand(new Integer(land_id), player.getName())) {
-                String ban_reason = LandBansManager.getBanReason(new Integer(land_id), player.getName());
+            if (LandBansManager.isPlayerBannedFromLand(new Integer(land_id), player.getUniqueId().toString())) {
+                String ban_reason = LandBansManager.getBanReason(new Integer(land_id), player.getUniqueId().toString());
                 String land_name = LandsManager.getLandDetailById(new Integer(land_id), "land_name");
 
                 player.sendMessage(Language.getCommand("spawn.player_banned").replace("%land%", land_name)

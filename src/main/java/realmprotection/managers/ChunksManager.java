@@ -26,7 +26,7 @@ import realmprotection.utils.LuckPermsAPI;
 public class ChunksManager {
     private static final Map<String, List<Object>> cache = new HashMap<>();
     private static final Set<String> land_ids_cache = new HashSet<>();
-    private static final Set<String> particles_players_cache = new HashSet<>();
+    private static final Map<String, BukkitTask> particles_players_cache = new HashMap<>();
 
     public static void cacheUpdateAll() {
         String sql = "SELECT * FROM claimed_chunks";
@@ -146,7 +146,7 @@ public class ChunksManager {
             groupchunkslimit = plugin.getConfig().getInt("ratelimits.chunks.__DEFAULT__");
         }
 
-        String land_id = LandsManager.getLandDetail(player.getName(), "id");
+        String land_id = LandsManager.getLandDetail(player.getUniqueId().toString(), "id");
         int landchunkscount = ChunksManager.getChunksCountOfLand(new Integer(land_id));
 
         if (landchunkscount >= groupchunkslimit) {
@@ -290,11 +290,11 @@ public class ChunksManager {
         return 0;
     }
 
-    public static String getOwnerByChunk(Chunk chunk) {
+    public static String getOwnerUUIDByChunk(Chunk chunk) {
         String land_id = getChunkDetail(chunk, "land_id");
 
         if (land_id != null) {
-            return LandsManager.getLandDetailById(new Integer(land_id), "owner_name");
+            return LandsManager.getLandDetailById(new Integer(land_id), "owner_uuid");
         } else {
             return null;
         }
@@ -389,33 +389,33 @@ public class ChunksManager {
 
         if (ChunksManager.isChunkClaimed(north)) {
             String temp_land_id = ChunksManager.getChunkDetail(north, "land_id");
-            String temp_land_owner = LandsManager.getLandDetailById(new Integer(temp_land_id), "owner_name");
+            String temp_land_owner_uuid = LandsManager.getLandDetailById(new Integer(temp_land_id), "owner_uuid");
 
-            if (!temp_land_owner.equalsIgnoreCase(player.getName()))
+            if (!temp_land_owner_uuid.equals(player.getUniqueId().toString()))
                 return true;
         }
 
         if (ChunksManager.isChunkClaimed(south)) {
             String temp_land_id = ChunksManager.getChunkDetail(south, "land_id");
-            String temp_land_owner = LandsManager.getLandDetailById(new Integer(temp_land_id), "owner_name");
+            String temp_land_owner_uuid = LandsManager.getLandDetailById(new Integer(temp_land_id), "owner_uuid");
 
-            if (!temp_land_owner.equalsIgnoreCase(player.getName()))
+            if (!temp_land_owner_uuid.equals(player.getUniqueId().toString()))
                 return true;
         }
 
         if (ChunksManager.isChunkClaimed(west)) {
             String temp_land_id = ChunksManager.getChunkDetail(west, "land_id");
-            String temp_land_owner = LandsManager.getLandDetailById(new Integer(temp_land_id), "owner_name");
+            String temp_land_owner_uuid = LandsManager.getLandDetailById(new Integer(temp_land_id), "owner_uuid");
 
-            if (!temp_land_owner.equalsIgnoreCase(player.getName()))
+            if (!temp_land_owner_uuid.equalsIgnoreCase(player.getUniqueId().toString()))
                 return true;
         }
 
         if (ChunksManager.isChunkClaimed(east)) {
             String temp_land_id = ChunksManager.getChunkDetail(east, "land_id");
-            String temp_land_owner = LandsManager.getLandDetailById(new Integer(temp_land_id), "owner_name");
+            String temp_land_owner_uuid = LandsManager.getLandDetailById(new Integer(temp_land_id), "owner_uuid");
 
-            if (!temp_land_owner.equalsIgnoreCase(player.getName()))
+            if (!temp_land_owner_uuid.equalsIgnoreCase(player.getUniqueId().toString()))
                 return true;
         }
 
@@ -463,77 +463,43 @@ public class ChunksManager {
                 for (int x = minX; x < minX + 16; x++) {
                     player.spawnParticle(Particle.REDSTONE, x, y, minZ, 5, dustoptions);
                 }
-            }/* else {
-                String temp_land_id = ChunksManager.getChunkDetail(north, "land_id");
-                String temp_land_owner = LandsManager.getLandDetailById(new Integer(temp_land_id), "owner_name");
-
-                if (!temp_land_owner.equalsIgnoreCase(player.getName())) {
-                    for (int x = minX; x < minX + 16; x++) {
-                        player.spawnParticle(Particle.REDSTONE, x, y, minZ, 5, dustoptions);
-                    }
-                }
-            }*/
+            }
 
             Chunk south = world.getChunkAt(chunkX, chunkZ + 1);
             if (!ChunksManager.isChunkClaimed(south)) {
                 for (int x = minX; x < minX + 16; x++) {
                     player.spawnParticle(Particle.REDSTONE, x, y, minZ + 16, 5, dustoptions);
                 }
-            }/* else {
-                String temp_land_id = ChunksManager.getChunkDetail(south, "land_id");
-                String temp_land_owner = LandsManager.getLandDetailById(new Integer(temp_land_id), "owner_name");
-
-                if (!temp_land_owner.equalsIgnoreCase(player.getName())) {
-                    for (int x = minX; x < minX + 16; x++) {
-                        player.spawnParticle(Particle.REDSTONE, x, y, minZ + 16, 5, dustoptions);
-                    }
-                }
-            }*/
+            }
 
             Chunk west = world.getChunkAt(chunkX - 1, chunkZ);
             if (!ChunksManager.isChunkClaimed(west)) {
                 for (int z = minZ; z < minZ + 16; z++) {
                     player.spawnParticle(Particle.REDSTONE, minX, y, z, 5, dustoptions);
                 }
-            }/* else {
-                String temp_land_id = ChunksManager.getChunkDetail(west, "land_id");
-                String temp_land_owner = LandsManager.getLandDetailById(new Integer(temp_land_id), "owner_name");
-
-                if (!temp_land_owner.equalsIgnoreCase(player.getName())) {
-                    for (int z = minZ; z < minZ + 16; z++) {
-                        player.spawnParticle(Particle.REDSTONE, minX, y, z, 5, dustoptions);
-                    }
-                }
-            }*/
+            }
 
             Chunk east = world.getChunkAt(chunkX + 1, chunkZ);
             if (!ChunksManager.isChunkClaimed(east)) {
                 for (int z = minZ; z < minZ + 16; z++) {
                     player.spawnParticle(Particle.REDSTONE, minX + 16, y, z, 5, dustoptions);
                 }
-            }/* else {
-                String temp_land_id = ChunksManager.getChunkDetail(east, "land_id");
-                String temp_land_owner = LandsManager.getLandDetailById(new Integer(temp_land_id), "owner_name");
-
-                if (!temp_land_owner.equalsIgnoreCase(player.getName())) {
-                    for (int z = minZ; z < minZ + 16; z++) {
-                        player.spawnParticle(Particle.REDSTONE, minX + 16, y, z, 5, dustoptions);
-                    }
-                }
-            }*/
+            }
         }
     }
 
     public static void startParticleTask(Player player, int land_id, double y, boolean is_owner, boolean is_trusted) {
-        if (particles_players_cache.contains(player.getName())) {
-            return;
-        }
+        if (particles_players_cache.containsKey(player.getName())) {
+            BukkitTask taskFromMap = particles_players_cache.get(player.getName());
 
-        particles_players_cache.add(player.getName());
+            cancelParticleTask(taskFromMap, player.getName());
+        }
 
         BukkitTask task = Bukkit.getScheduler().runTaskTimer(RealmProtection.getPlugin(RealmProtection.class), () -> {
             spawnParticlesAroundChunk(player, land_id, player.getLocation().getY() + y, is_owner, is_trusted);
         }, 0L, 15L);
+
+        particles_players_cache.put(player.getName(), task);
 
         Bukkit.getScheduler().runTaskLater(RealmProtection.getPlugin(RealmProtection.class),
                 () -> cancelParticleTask(task, player.getName()), 60 * 20L);

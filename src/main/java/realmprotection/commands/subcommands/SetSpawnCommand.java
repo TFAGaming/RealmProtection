@@ -17,7 +17,7 @@ public class SetSpawnCommand implements CommandExecutor {
             Player player = (Player) sender;
             Chunk chunk = player.getLocation().getChunk();
 
-            if (!LandsManager.hasLand(player.getName())) {
+            if (!LandsManager.hasLand(player.getUniqueId().toString())) {
                 player.sendMessage(Language.getCommand("set_spawn.land_not_found"));
                 return true;
             }
@@ -28,9 +28,9 @@ public class SetSpawnCommand implements CommandExecutor {
             }
 
             String land_id = ChunksManager.getChunkDetail(chunk, "land_id");
-            String land_owner_name = LandsManager.getLandDetailById(new Integer(land_id), "owner_name");
+            String land_owner_uuid = LandsManager.getLandDetailById(new Integer(land_id), "owner_uuid");
 
-            if (!land_owner_name.equalsIgnoreCase(player.getName())) {
+            if (!land_owner_uuid.equalsIgnoreCase(player.getUniqueId().toString())) {
                 player.sendMessage(Language.getCommand("set_spawn.not_owner_of_chunk"));
                 return true;
             }

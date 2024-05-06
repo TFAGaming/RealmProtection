@@ -19,12 +19,12 @@ public class DeleteCommand implements CommandExecutor {
         if (sender instanceof Player) {
             Player player = (Player) sender;
 
-            if (!LandsManager.hasLand(player.getName())) {
+            if (!LandsManager.hasLand(player.getUniqueId().toString())) {
                 player.sendMessage(Language.getCommand("delete.land_not_found"));
                 return true;
             }
 
-            String land_id = LandsManager.getLandDetail(player.getName(), "id");
+            String land_id = LandsManager.getLandDetail(player.getUniqueId().toString(), "id");
 
             if (args.length == 1 || !args[1].equalsIgnoreCase("confirm")) {
                 player.sendMessage(Language.getCommand("delete.confirm_missing"));

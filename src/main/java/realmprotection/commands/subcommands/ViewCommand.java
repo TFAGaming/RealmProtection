@@ -28,11 +28,11 @@ public class ViewCommand implements CommandExecutor {
 
             String land_id = ChunksManager.getChunkDetail(chunk, "land_id");
 
-            String land_owner_land = LandsManager.getLandDetailById(new Integer(land_id), "owner_name");
+            String land_owner_land = LandsManager.getLandDetailById(new Integer(land_id), "owner_uuid");
 
-            if (player.getName().equalsIgnoreCase(land_owner_land))
+            if (player.getUniqueId().toString().equals(land_owner_land))
                 is_owner = true;
-            if (LandMembersManager.isPlayerInTheLand(new Integer(land_id), player.getName()))
+            if (LandMembersManager.isPlayerInTheLand(new Integer(land_id), player.getUniqueId().toString()))
                 is_trusted = true;
 
             ChunksManager.startParticleTask(player, new Integer(land_id), 1, is_owner, is_trusted);

@@ -8,6 +8,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
+
+import org.bukkit.Bukkit;
 
 import com.google.common.collect.Lists;
 
@@ -30,12 +33,12 @@ public class LandMembersManager {
             while (result.next()) {
                 int member_id = result.getInt("id");
                 String land_id = result.getString("land_id");
-                String member_name = result.getString("member_name");
+                String member_uuid = result.getString("member_uuid");
                 String role_id = result.getString("role_id");
 
-                List<Object> data_land_member_cache = Lists.newArrayList(member_id, land_id, member_name, role_id);
+                List<Object> data_land_member_cache = Lists.newArrayList(member_id, land_id, member_uuid, role_id);
 
-                cache.put(createCacheKey(land_id, member_name), data_land_member_cache);
+                cache.put(createCacheKey(land_id, member_uuid), data_land_member_cache);
             }
 
             statement.close();
@@ -46,15 +49,15 @@ public class LandMembersManager {
         }
     }
 
-    public static void invitePlayerToLand(int land_id, String player_name, int role_id) {
-        String sql = "INSERT INTO land_members (land_id, member_name, role_id) VALUES (?, ?, ?)";
+    public static void invitePlayerToLand(int land_id, String player_uuid, int role_id) {
+        String sql = "INSERT INTO land_members (land_id, member_uuid, role_id) VALUES (?, ?, ?)";
 
         try {
             Connection connection = RealmProtection.database.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql);
 
             statement.setInt(1, land_id);
-            statement.setString(2, player_name);
+            statement.setString(2, player_uuid);
             statement.setInt(3, role_id);
 
             statement.executeUpdate();
@@ -66,15 +69,15 @@ public class LandMembersManager {
         }
     }
 
-    public static void removePlayerFromLand(int land_id, String player_name) {
-        String sql = "DELETE FROM land_members WHERE land_id = ? AND member_name COLLATE NOCASE = ?";
+    public static void removePlayerFromLand(int land_id, String player_uuid) {
+        String sql = "DELETE FROM land_members WHERE land_id = ? AND member_uuid COLLATE NOCASE = ?";
 
         try {
             Connection connection = RealmProtection.database.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql);
 
             statement.setInt(1, land_id);
-            statement.setString(2, player_name);
+            statement.setString(2, player_uuid);
 
             statement.executeUpdate();
             statement.close();
@@ -85,9 +88,9 @@ public class LandMembersManager {
         }
     }
 
-    public static String getRoleNameFromPlayername(int land_id, String player_name) {
-        if (cache.containsKey(createCacheKey(land_id, player_name))) {
-            List<Object> data = cache.get(createCacheKey(land_id, player_name));
+    public static String getRoleNameFromPlayername(int land_id, String player_uuid) {
+        if (cache.containsKey(createCacheKey(land_id, player_uuid))) {
+            List<Object> data = cache.get(createCacheKey(land_id, player_uuid));
 
             String role_id = (String) data.get(3);
             String role_name = RolesManager.getRoleDetailById(land_id, new Integer(role_id), "role_name");
@@ -95,14 +98,14 @@ public class LandMembersManager {
             return role_name;
         }
 
-        String sql = "SELECT * FROM land_members WHERE land_id = ? AND member_name COLLATE NOCASE = ?";
+        String sql = "SELECT * FROM land_members WHERE land_id = ? AND member_uuid COLLATE NOCASE = ?";
 
         try {
             Connection connection = RealmProtection.database.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql);
 
             statement.setInt(1, land_id);
-            statement.setString(2, player_name);
+            statement.setString(2, player_uuid);
 
             ResultSet rs = statement.executeQuery();
 
@@ -125,17 +128,17 @@ public class LandMembersManager {
         return plugin.getConfig().getString("roles.__DEFAULT_VISITOR_ROLE__");
     }
 
-    public static boolean isPlayerInTheLand(int land_id, String player_name) {
-        return cache.containsKey(createCacheKey(land_id, player_name));
+    public static boolean isPlayerInTheLand(int land_id, String player_uuid) {
+        return cache.containsKey(createCacheKey(land_id, player_uuid));
     }
 
-    public static boolean hasPlayerThePermissionToDo(int land_id, String player_name, String permission_name) {
-        boolean isTrusted = isPlayerInTheLand(land_id, player_name);
+    public static boolean hasPlayerThePermissionToDo(int land_id, String player_uuid, String permission_name) {
+        boolean isTrusted = isPlayerInTheLand(land_id, player_uuid);
 
         RealmProtection plugin = RealmProtection.getPlugin(RealmProtection.class);
 
         if (isTrusted) {
-            String role_name = getRoleNameFromPlayername(land_id, player_name);
+            String role_name = getRoleNameFromPlayername(land_id, player_uuid);
 
             if (role_name == plugin.getConfig().getString("roles.__DEFAULT_VISITOR_ROLE__")) {
                 boolean value = RolesManager.getPermissionValue(land_id, plugin.getConfig().getString("roles.__DEFAULT_VISITOR_ROLE__"), permission_name);
@@ -164,12 +167,12 @@ public class LandMembersManager {
             ResultSet result = statement.executeQuery();
 
             while (result.next()) {
-                String member_name = result.getString("member_name");
+                String member_uuid = result.getString("member_uuid");
                 String role_id = result.getString("role_id");
 
                 String role_name = RolesManager.getRoleDetailById(land_id, new Integer(role_id), "role_name");
 
-                data.add(Lists.newArrayList(member_name, role_name));
+                data.add(Lists.newArrayList(Bukkit.getOfflinePlayer(UUID.fromString(member_uuid)).getName(), role_name));
             }
 
             statement.close();
@@ -221,7 +224,7 @@ public class LandMembersManager {
         }
     }
 
-    private static String createCacheKey(Object land_id, String member_name) {
-        return land_id + "," + member_name;
+    private static String createCacheKey(Object land_id, String member_uuid) {
+        return land_id + "," + member_uuid;
     }
 }

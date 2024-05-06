@@ -1,5 +1,7 @@
 package realmprotection.commands.subcommands;
 
+import java.util.UUID;
+
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -7,6 +9,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import realmprotection.RealmProtection;
+import realmprotection.managers.LandBansManager;
 import realmprotection.managers.LandInvitesManager;
 import realmprotection.managers.LandMembersManager;
 import realmprotection.managers.LandsManager;
@@ -19,7 +22,7 @@ public class TrustCommand implements CommandExecutor {
         if (sender instanceof Player) {
             Player player = (Player) sender;
 
-            if (!LandsManager.hasLand(player.getName())) {
+            if (!LandsManager.hasLand(player.getUniqueId().toString())) {
                 player.sendMessage(Language.getCommand("trust.land_not_found"));
                 return true;
             }
@@ -29,27 +32,30 @@ public class TrustCommand implements CommandExecutor {
                 return true;
             }
 
-            Player player_searched = Bukkit.getPlayer(args[1]);
-
-            if (player_searched == null) {
-                player.sendMessage(Language.getCommand("trust.playername_not_found"));
+            if (Bukkit.getPlayer(args[1]) == null) {
+                player.sendMessage(Language.getCommand("trust.player_not_found"));
                 return true;
             }
 
-            String land_id = LandsManager.getLandDetail(player.getName(), "id");
-            String land_owner_name = LandsManager.getLandDetailById(new Integer(land_id), "owner_name");
+            String land_id = LandsManager.getLandDetail(player.getUniqueId().toString(), "id");
+            String land_owner_uuid = LandsManager.getLandDetailById(new Integer(land_id), "owner_uuid");
 
-            if (LandMembersManager.isPlayerInTheLand(new Integer(land_id), args[1])) {
+            if (LandBansManager.isPlayerBannedFromLand(new Integer(land_id), Bukkit.getPlayer(args[1]).getUniqueId().toString())) {
+                player.sendMessage(Language.getCommand("trust.player_is_banned"));
+                return true;
+            }
+
+            if (LandMembersManager.isPlayerInTheLand(new Integer(land_id), Bukkit.getPlayer(args[1]).getUniqueId().toString())) {
                 player.sendMessage(Language.getCommand("trust.playername_already_trusted"));
                 return true;
             }
 
-            if (LandInvitesManager.isPlayerInvited(new Integer(land_id), args[1])) {
+            if (LandInvitesManager.isPlayerInvited(new Integer(land_id), Bukkit.getPlayer(args[1]).getUniqueId().toString())) {
                 player.sendMessage(Language.getCommand("trust.playername_already_invited"));
                 return true;
             }
 
-            if (args[1].equalsIgnoreCase(land_owner_name)) {
+            if (Bukkit.getPlayer(args[1]).getUniqueId().toString().equals(Bukkit.getOfflinePlayer(UUID.fromString(land_owner_uuid)).getName())) {
                 player.sendMessage(Language.getCommand("trust.playername_owner_of_land"));
                 return true;
             }
@@ -71,8 +77,7 @@ public class TrustCommand implements CommandExecutor {
                 return true;
             }
 
-            //LandMembersManager.invitePlayerToLand(new Integer(land_id), args[1], args[2]);
-            LandInvitesManager.invitePlayerToLand(new Integer(land_id), player.getName(), args[1], new Integer(RolesManager.getRoleDetail(new Integer(land_id), args[2], "id")));
+            LandInvitesManager.invitePlayerToLand(new Integer(land_id), player.getUniqueId().toString(), Bukkit.getPlayer(args[1]).getUniqueId().toString(), new Integer(RolesManager.getRoleDetail(new Integer(land_id), args[2], "id")));
 
             player.sendMessage(Language.getCommand("trust.player_invited_success").replace("%player%", args[1]));
 

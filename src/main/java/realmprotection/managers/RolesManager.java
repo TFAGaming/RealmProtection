@@ -395,7 +395,7 @@ public class RolesManager {
             grouproleslimit = plugin.getConfig().getInt("ratelimits.roles.__DEFAULT__");
         }
 
-        String land_id = LandsManager.getLandDetail(player.getName(), "id");
+        String land_id = LandsManager.getLandDetail(player.getUniqueId().toString(), "id");
         int landrolescount = listAllRolesNames(new Integer(land_id)).size();
 
         if (landrolescount >= grouproleslimit) {

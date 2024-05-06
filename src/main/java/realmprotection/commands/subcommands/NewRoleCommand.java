@@ -16,7 +16,7 @@ public class NewRoleCommand implements CommandExecutor {
         if (sender instanceof Player) {
             Player player = (Player) sender;
 
-            if (!LandsManager.hasLand(player.getName())) {
+            if (!LandsManager.hasLand(player.getUniqueId().toString())) {
                 player.sendMessage(Language.getCommand("new_role.land_not_found"));
                 return true;
             }
@@ -31,7 +31,7 @@ public class NewRoleCommand implements CommandExecutor {
                 return true;
             }
 
-            String land_id = LandsManager.getLandDetail(player.getName(), "id");
+            String land_id = LandsManager.getLandDetail(player.getUniqueId().toString(), "id");
 
             if (RolesManager.hasRole(new Integer(land_id), args[2])) {
                 player.sendMessage(Language.getCommand("new_role.role_found"));

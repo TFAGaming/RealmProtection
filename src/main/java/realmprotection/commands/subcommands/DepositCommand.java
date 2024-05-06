@@ -20,12 +20,12 @@ public class DepositCommand implements CommandExecutor {
                 return true;
             }
 
-            if (!LandsManager.hasLand(player.getName())) {
+            if (!LandsManager.hasLand(player.getUniqueId().toString())) {
                 player.sendMessage(Language.getCommand("deposit.land_not_found"));
                 return true;
             }
 
-            String land_id = LandsManager.getLandDetail(player.getName(), "id");
+            String land_id = LandsManager.getLandDetail(player.getUniqueId().toString(), "id");
             double land_balance = Double.parseDouble(LandsManager.getLandDetailById(new Integer(land_id), "balance"));
 
             if (args.length == 1) {

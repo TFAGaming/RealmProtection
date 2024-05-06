@@ -18,7 +18,7 @@ import realmprotection.RealmProtection;
 public class LandsManager {
     private static final Map<String, List<Object>> land_id_cache = new HashMap<>();
     private static final Map<String, List<Object>> land_name_cache = new HashMap<>();
-    private static final Map<String, List<Object>> land_owner_name_cache = new HashMap<>();
+    private static final Map<String, List<Object>> land_owner_uuid_cache = new HashMap<>();
     private static final Map<String, List<Boolean>> land_id_nature_flags_cache = new HashMap<>();
 
     public static void cacheUpdateAll() {
@@ -27,7 +27,7 @@ public class LandsManager {
         try {
             land_id_cache.clear();
             land_name_cache.clear();
-            land_owner_name_cache.clear();
+            land_owner_uuid_cache.clear();
             land_id_nature_flags_cache.clear();
 
             Connection connection = RealmProtection.database.getConnection();
@@ -38,7 +38,7 @@ public class LandsManager {
             while (result.next()) {
                 int land_id = result.getInt("id");
                 String land_name = result.getString("land_name");
-                String owner_name = result.getString("owner_name");
+                String owner_uuid = result.getString("owner_uuid");
                 double location_x = result.getDouble("location_x");
                 double location_y = result.getDouble("location_y");
                 double location_z = result.getDouble("location_z");
@@ -58,7 +58,7 @@ public class LandsManager {
                 boolean nature_dispensersfromwilderness = result.getBoolean("nature_dispensersfromwilderness");
                 boolean nature_plantgrowth = result.getBoolean("nature_plantgrowth");
 
-                List<Object> data_land_cache = Lists.newArrayList(land_id, land_name, owner_name,
+                List<Object> data_land_cache = Lists.newArrayList(land_id, land_name, owner_uuid,
                         location_x, location_y, location_z, location_world, created_at, balance, location_yaw);
                 List<Boolean> data_land_id_nature_flags_cache = Lists.newArrayList(
                         nature_hostilemobsspawn,
@@ -74,7 +74,7 @@ public class LandsManager {
 
                 land_id_cache.put("" + land_id, data_land_cache);
                 land_name_cache.put(land_name, data_land_cache);
-                land_owner_name_cache.put(owner_name, data_land_cache);
+                land_owner_uuid_cache.put(owner_uuid, data_land_cache);
                 land_id_nature_flags_cache.put("" + land_id, data_land_id_nature_flags_cache);
             }
 
@@ -86,11 +86,11 @@ public class LandsManager {
         }
     }
 
-    public static void createNewLand(String land_name, String player_name, String location_world, double location_x,
+    public static void createNewLand(String land_name, String player_uuid, String location_world, double location_x,
             double location_y, double location_z) {
         String sql = "INSERT INTO lands ( " +
                 "land_name, " +
-                "owner_name, " +
+                "owner_uuid, " +
                 "created_at, " +
                 "location_world, " +
                 "location_x, " +
@@ -117,7 +117,7 @@ public class LandsManager {
             long timestamp = System.currentTimeMillis();
 
             statement.setString(1, land_name);
-            statement.setString(2, player_name);
+            statement.setString(2, player_uuid);
             statement.setLong(3, timestamp);
             statement.setString(4, location_world);
             statement.setDouble(5, location_x);
@@ -163,15 +163,15 @@ public class LandsManager {
         }
     }
 
-    public static boolean hasLand(String player_name) {
-        String sql = "SELECT COUNT (*) AS count FROM lands WHERE owner_name = ?";
+    public static boolean hasLand(String player_uuid) {
+        String sql = "SELECT COUNT (*) AS count FROM lands WHERE owner_uuid = ?";
         boolean bool = false;
 
         try {
             Connection connection = RealmProtection.database.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql);
 
-            statement.setString(1, player_name);
+            statement.setString(1, player_uuid);
 
             ResultSet rs = statement.executeQuery();
 
@@ -213,16 +213,16 @@ public class LandsManager {
         return exists;
     }
 
-    public static String getLandDetail(String player_name, String variable) {
-        if (land_owner_name_cache.containsKey(player_name)) {
-            List<Object> data = land_owner_name_cache.get(player_name);
+    public static String getLandDetail(String player_uuid, String variable) {
+        if (land_owner_uuid_cache.containsKey(player_uuid)) {
+            List<Object> data = land_owner_uuid_cache.get(player_uuid);
 
             switch (variable) {
                 case "id":
                     return "" + data.get(0);
                 case "land_name":
                     return "" + data.get(1);
-                case "owner_name":
+                case "owner_uuid":
                     return "" + data.get(2);
                 case "location_x":
                     return "" + data.get(3);
@@ -243,13 +243,13 @@ public class LandsManager {
             }
         }
 
-        String sql = "SELECT * FROM lands WHERE owner_name = ?";
+        String sql = "SELECT * FROM lands WHERE owner_uuid = ?";
 
         try {
             Connection connection = RealmProtection.database.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql);
 
-            statement.setString(1, player_name);
+            statement.setString(1, player_uuid);
 
             ResultSet result = statement.executeQuery();
 
@@ -276,7 +276,7 @@ public class LandsManager {
                     return "" + data.get(0);
                 case "land_name":
                     return "" + data.get(1);
-                case "owner_name":
+                case "owner_uuid":
                     return "" + data.get(2);
                 case "location_x":
                     return "" + data.get(3);
@@ -330,7 +330,7 @@ public class LandsManager {
                     return "" + data.get(0);
                 case "land_name":
                     return "" + data.get(1);
-                case "owner_name":
+                case "owner_uuid":
                     return "" + data.get(2);
                 case "location_x":
                     return "" + data.get(3);

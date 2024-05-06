@@ -33,12 +33,12 @@ public class LeaveCommand implements CommandExecutor {
 
             String land_id = LandsManager.getLandDetailByLandName(args[1], "id");
 
-            if (!LandMembersManager.isPlayerInTheLand(new Integer(land_id), player.getName())) {
-                player.sendMessage(Language.getCommand("leave.playername_not_found"));
+            if (!LandMembersManager.isPlayerInTheLand(new Integer(land_id), player.getUniqueId().toString())) {
+                player.sendMessage(Language.getCommand("leave.player_not_in_land"));
                 return true;
             }
 
-            LandMembersManager.removePlayerFromLand(new Integer(land_id), player.getName());
+            LandMembersManager.removePlayerFromLand(new Integer(land_id), player.getUniqueId().toString());
 
             player.sendMessage(
                     Language.getCommand("leave.player_left_success").replace("%land_name%",

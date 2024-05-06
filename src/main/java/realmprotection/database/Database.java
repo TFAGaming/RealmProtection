@@ -47,7 +47,7 @@ public class Database {
         statementExecute("CREATE TABLE IF NOT EXISTS lands (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "land_name TEXT NOT NULL, " +
-                "owner_name TEXT NOT NULL, " +
+                "owner_uuid TEXT NOT NULL, " +
                 "location_x REAL NOT NULL, " +
                 "location_y REAL NOT NULL, " +
                 "location_z REAL NOT NULL, " +
@@ -118,20 +118,20 @@ public class Database {
         statementExecute("CREATE TABLE IF NOT EXISTS land_members (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "land_id INTEGER NOT NULL," +
-                "member_name TEXT NOT NULL," +
+                "member_uuid TEXT NOT NULL," +
                 "role_id INTEGER NOT NULL)");
 
         statementExecute("CREATE TABLE IF NOT EXISTS land_bans (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "land_id INTEGER NOT NULL," +
-                "player_name INTEGER NOT NULL," +
+                "player_uuid INTEGER NOT NULL," +
                 "reason TEXT NOT NULL)");
 
         statementExecute("CREATE TABLE IF NOT EXISTS land_invites (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "land_id INTEGER NOT NULL," +
-                "inviter_name TEXT NOT NULL," +
-                "player_name TEXT NOT NULL," +
+                "inviter_uuid TEXT NOT NULL," +
+                "player_uuid TEXT NOT NULL," +
                 "role_id INTEGER NOT NULL)");
 
         ChunksManager.cacheUpdateAll();

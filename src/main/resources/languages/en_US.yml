@@ -115,6 +115,7 @@ commands:
     __DEFAULT_REASON__: "No reason was provided"
     land_not_found: "&cYou don't have a land!"
     no_playername_provided: "&cYou must provide a player name to ban!"
+    player_not_found: "&cThe playername was not found."
     player_already_banned: "&cThis player is already been banned."
     player_owner_of_land: "&cYou are the owner of the land."
     player_banned_success: "&aSuccessfully banned &6%player% &afor: &7%reason%"
@@ -200,7 +201,7 @@ commands:
     missing_land_name: "&cYou must provide the land name!"
     land_name_not_alphanumeric: "&cThe land name must be alphanumeric; Do not use colors or any other symbols."
     land_name_not_found: "&cThis land name doesn't exist."
-    playername_not_found: "&cYou are not trusted in the land!"
+    player_not_in_land: "&cYou are not trusted in the land!"
     player_left_success: "&aYou left the land &6%land_name%&a."
 
   new_role:
@@ -244,7 +245,8 @@ commands:
   trust:
     land_not_found: "&cYou don't have a land!"
     no_playername_provided: "&cYou must name the player to trust."
-    playername_not_found: "&cThis playername doens't exist."
+    player_not_found: "&cThis playername doens't exist."
+    player_is_banned: "&cYou cannot trust a player that is banned from this land."
     playername_already_invited: "&cThis playername is already invited!"
     playername_already_trusted: "&cThis playername is already in the land!"
     playername_owner_of_land: "&cYou are the owner of the land."
@@ -255,6 +257,7 @@ commands:
 
   unban:
     land_not_found: "&cYou don't have a land!"
+    player_not_found: "&cThe playername was not found."
     no_playername_provided: "&cYou must provide a player name to ban!"
     player_not_banned: "&cThis player is not banned."
     player_unbanned_success: "&aSuccessfully unbanned &6%player%&a."
@@ -269,7 +272,8 @@ commands:
 
   untrust:
     land_not_found: "&cYou don't have a land!"
-    no_playername_provided: "&cYou must name the player to trust."
+    no_playername_provided: "&cYou must name the player to untrust."
+    player_not_found: "&cThe playername was not found."
     player_invite_removed_success: "&cThe invite for &6%player% &chas been removed."
     playername_not_trusted: "&cThis playername is not in the land!"
     player_untrusted_success: "&aYou untrusted &6%player% &ato leave the land."

@@ -18,10 +18,10 @@ public class UpdateNatureFlagsCommand implements CommandExecutor {
         if (sender instanceof Player) {
             Player player = (Player) sender;
 
-            if (!LandsManager.hasLand(player.getName())) {
+            if (!LandsManager.hasLand(player.getUniqueId().toString())) {
                 player.sendMessage(Language.getCommand("update_nature_flags.land_not_found"));
             } else {
-                String land_id = LandsManager.getLandDetail(player.getName(), "id");
+                String land_id = LandsManager.getLandDetail(player.getUniqueId().toString(), "id");
 
                 if (args.length == 2) {
                     NatureFlagsGUI.create(player);

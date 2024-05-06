@@ -18,12 +18,12 @@ public class BanlistCommand implements CommandExecutor {
         if (sender instanceof Player) {
             Player player = (Player) sender;
 
-            if (!LandsManager.hasLand(player.getName())) {
+            if (!LandsManager.hasLand(player.getUniqueId().toString())) {
                 player.sendMessage(Language.getCommand("banlist.land_not_found"));
                 return true;
             }
 
-            String land_id = LandsManager.getLandDetail(player.getName(), "id");
+            String land_id = LandsManager.getLandDetail(player.getUniqueId().toString(), "id");
             String land_name = LandsManager.getLandDetailById(new Integer(land_id), "land_name");
 
             List<List<String>> alldata = LandBansManager.listAllBannedPlayersData(new Integer(land_id));
