@@ -47,7 +47,7 @@ public class BanCommand implements CommandExecutor {
 
             String land_owner_uuid = LandsManager.getLandDetailById(new Integer(land_id), "owner_uuid");
 
-            if (args[1].equals(land_owner_uuid)) {
+            if (Bukkit.getPlayer(args[1]).getUniqueId().toString().equals(land_owner_uuid)) {
                 player.sendMessage(Language.getCommand("ban.player_owner_of_land"));
                 return true;
             }

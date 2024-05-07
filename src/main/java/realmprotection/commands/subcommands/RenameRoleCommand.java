@@ -9,7 +9,7 @@ import realmprotection.RealmProtection;
 import realmprotection.managers.LandsManager;
 import realmprotection.managers.RolesManager;
 import realmprotection.utils.Language;
-import realmprotection.utils.StringValidator;
+import realmprotection.utils.StringUtils;
 
 public class RenameRoleCommand implements CommandExecutor {
     @Override
@@ -46,7 +46,7 @@ public class RenameRoleCommand implements CommandExecutor {
                 return true;
             }
 
-            if (!StringValidator.isCleanString(args[3])) {
+            if (!StringUtils.isAlphanumericString(args[3])) {
                 player.sendMessage(Language.getCommand("rename_role.role_name_not_alphanumeric"));
                 return true;
             }

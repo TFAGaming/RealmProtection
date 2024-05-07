@@ -55,7 +55,7 @@ public class TrustCommand implements CommandExecutor {
                 return true;
             }
 
-            if (Bukkit.getPlayer(args[1]).getUniqueId().toString().equals(Bukkit.getOfflinePlayer(UUID.fromString(land_owner_uuid)).getName())) {
+            if (Bukkit.getPlayer(args[1]).getUniqueId().toString().equals(Bukkit.getOfflinePlayer(UUID.fromString(land_owner_uuid)).getUniqueId().toString())) {
                 player.sendMessage(Language.getCommand("trust.playername_owner_of_land"));
                 return true;
             }

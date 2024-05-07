@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 import realmprotection.managers.LandMembersManager;
 import realmprotection.managers.LandsManager;
 import realmprotection.utils.Language;
-import realmprotection.utils.StringValidator;
+import realmprotection.utils.StringUtils;
 
 public class LeaveCommand implements CommandExecutor {
     @Override
@@ -21,7 +21,7 @@ public class LeaveCommand implements CommandExecutor {
                 return true;
             }
 
-            if (!StringValidator.isCleanString(args[1])) {
+            if (!StringUtils.isAlphanumericString(args[1])) {
                 player.sendMessage(Language.getCommand("leave.land_name_not_alphanumeric"));
                 return true;
             }

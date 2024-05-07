@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 import realmprotection.managers.LandsManager;
 import realmprotection.managers.RolesManager;
 import realmprotection.utils.Language;
-import realmprotection.utils.StringValidator;
+import realmprotection.utils.StringUtils;
 
 public class NewRoleCommand implements CommandExecutor {
     @Override
@@ -38,7 +38,7 @@ public class NewRoleCommand implements CommandExecutor {
                 return true;
             }
 
-            if (!StringValidator.isCleanString(args[2])) {
+            if (!StringUtils.isAlphanumericString(args[2])) {
                 player.sendMessage(Language.getCommand("new_role.role_name_not_alphanumeric"));
                 return true;
             }

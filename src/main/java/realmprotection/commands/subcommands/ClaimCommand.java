@@ -15,7 +15,7 @@ import realmprotection.managers.LandMembersManager;
 import realmprotection.managers.LandsManager;
 import realmprotection.managers.RolesManager;
 import realmprotection.utils.Language;
-import realmprotection.utils.StringValidator;
+import realmprotection.utils.StringUtils;
 
 public class ClaimCommand implements CommandExecutor {
     @Override
@@ -42,7 +42,7 @@ public class ClaimCommand implements CommandExecutor {
                     return true;
                 }
 
-                if (!StringValidator.isCleanString(args[1])) {
+                if (!StringUtils.isAlphanumericString(args[1])) {
                     player.sendMessage(Language.getCommand("claim.land_name_not_alphanumeric"));
                     return true;
                 }
