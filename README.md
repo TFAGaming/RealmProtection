@@ -72,7 +72,7 @@ Go to the [releases section](https://github.com/TFAGaming/RealmProtector/release
 
 Once the download is finished, copy the **.jar** file, open the plugins folder from your Minecraft server directory, and paste it there. If your Minecraft server is running, you can use the command `/reload` to get the plugin ready for the server, but we recommend you stop the server and then start it again for a fresh startup.
 
-For your server type, we recommend you to use [PaperMC](https://papermc.io/) for performance and it's optimizing even more than [Spigot](https://www.spigotmc.org/).
+For your Minecraft server type, we recommend you to use [PaperMC](https://papermc.io/) for performance and it's optimizing even more than [Spigot](https://www.spigotmc.org/).
 
 > [!WARNING]  
 > You must install the plugins from the list below to make the plugin fully functional:
@@ -129,16 +129,12 @@ The main command for the plugin is `/land`, aliases: `/lands`. It's not `/realmp
 
 ### Why Essentials, Vault and LuckPerms are required?
 
-You must install Essentials and LuckPerms on your server so the plugin can use the API of each plugin. Here is a list of what the plugin needs from the other plugins:
+You must install the three plugins on your server so RealmProtection can use the API of each plugin. Here is a list of what the plugin needs from the other plugins:
 - **Essentials** and **Vault**:
     - Economy
 - **LuckPerms**:
     - Groups
     - Permissions
-
-### Can I use this plugin with a Minecraft server version below the supported versions?
-
-No, we do not recommend you to do this. It **may** work, but there is a higher chance of getting a lot of errors in the console.
 
 ### How do I configure the plugin commands permissions for player groups (using LuckPerms)?
 

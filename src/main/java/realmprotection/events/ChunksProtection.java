@@ -1611,8 +1611,6 @@ public class ChunksProtection implements Listener {
 
         if (player_is_in_claimed_chunk_cache.containsKey(player.getUniqueId().toString())) {
             player_is_in_claimed_chunk_cache.remove(player.getUniqueId().toString());
-
-            System.out.println("Deleted");
         }
     }
 
