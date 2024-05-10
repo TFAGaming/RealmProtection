@@ -10,6 +10,7 @@ import realmprotection.managers.ChunksManager;
 import realmprotection.managers.LandMembersManager;
 import realmprotection.managers.LandsManager;
 import realmprotection.utils.Language;
+import realmprotection.utils.ParticleSpawner;
 
 public class ViewCommand implements CommandExecutor {
     @Override
@@ -35,7 +36,7 @@ public class ViewCommand implements CommandExecutor {
             if (LandMembersManager.isPlayerInTheLand(new Integer(land_id), player.getUniqueId().toString()))
                 is_trusted = true;
 
-            ChunksManager.startParticleTask(player, new Integer(land_id), 1, is_owner, is_trusted);
+            ParticleSpawner.spawnDelayedParticlesAroundClaimedChunk(player, new Integer(land_id), 1, is_owner, is_trusted);
 
             player.sendMessage(Language.getCommand("view.particles_spawned_success"));
 

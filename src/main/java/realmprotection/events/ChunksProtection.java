@@ -110,7 +110,7 @@ public class ChunksProtection implements Listener {
 
                 StringUtils.sendMessageToPlayerWithTimeout(player, "placeblocks", chunk);
 
-                new ParticleSpawner().spawnTemporaryParticle(chunk.getWorld(), event.getBlock().getX() + 0.5,
+                ParticleSpawner.spawnTemporarySmokeParticle(chunk.getWorld(), event.getBlock().getX() + 0.5,
                         event.getBlock().getY() + 1, event.getBlock().getZ() + 0.5, 0, 0, 0, 0, 0);
             }
         }
@@ -139,7 +139,7 @@ public class ChunksProtection implements Listener {
                 event.setCancelled(true);
                 StringUtils.sendMessageToPlayerWithTimeout(player, "breakblocks", chunk);
 
-                new ParticleSpawner().spawnTemporaryParticle(chunk.getWorld(), event.getBlock().getX() + 0.5,
+                ParticleSpawner.spawnTemporarySmokeParticle(chunk.getWorld(), event.getBlock().getX() + 0.5,
                         event.getBlock().getY() + 1, event.getBlock().getZ() + 0.5, 0, 0, 0, 0, 0);
             }
         }
@@ -242,7 +242,7 @@ public class ChunksProtection implements Listener {
                 event.setCancelled(true);
                 StringUtils.sendMessageToPlayerWithTimeout(player, "emptybuckets", chunk);
 
-                new ParticleSpawner().spawnTemporaryParticle(chunk.getWorld(), event.getBlock().getX() + 0.5,
+                ParticleSpawner.spawnTemporarySmokeParticle(chunk.getWorld(), event.getBlock().getX() + 0.5,
                         event.getBlock().getY() + 1, event.getBlock().getZ() + 0.5, 0, 0, 0, 0, 0);
             }
         }
@@ -267,7 +267,7 @@ public class ChunksProtection implements Listener {
                 event.setCancelled(true);
                 StringUtils.sendMessageToPlayerWithTimeout(player, "fillbuckets", chunk);
 
-                new ParticleSpawner().spawnTemporaryParticle(chunk.getWorld(), event.getBlock().getX() + 0.5,
+                ParticleSpawner.spawnTemporarySmokeParticle(chunk.getWorld(), event.getBlock().getX() + 0.5,
                         event.getBlock().getY() + 1, event.getBlock().getZ() + 0.5, 0, 0, 0, 0, 0);
             }
         }
@@ -298,7 +298,7 @@ public class ChunksProtection implements Listener {
                         event.setCancelled(true);
                         StringUtils.sendMessageToPlayerWithTimeout(player, "harvestcrops", chunk);
 
-                        new ParticleSpawner().spawnTemporaryParticle(chunk.getWorld(),
+                        ParticleSpawner.spawnTemporarySmokeParticle(chunk.getWorld(),
                                 event.getClickedBlock().getX() + 0.5,
                                 event.getClickedBlock().getY() + 1, event.getClickedBlock().getZ() + 0.5, 0, 0, 0, 0,
                                 0);
@@ -323,7 +323,7 @@ public class ChunksProtection implements Listener {
                     event.setCancelled(true);
                     StringUtils.sendMessageToPlayerWithTimeout(player, "harvestcrops", chunk);
 
-                    new ParticleSpawner().spawnTemporaryParticle(chunk.getWorld(), event.getClickedBlock().getX() + 0.5,
+                    ParticleSpawner.spawnTemporarySmokeParticle(chunk.getWorld(), event.getClickedBlock().getX() + 0.5,
                             event.getClickedBlock().getY() + 1, event.getClickedBlock().getZ() + 0.5, 0, 0, 0, 0, 0);
                 }
             }
@@ -364,7 +364,7 @@ public class ChunksProtection implements Listener {
                         event.setCancelled(true);
                         StringUtils.sendMessageToPlayerWithTimeout(player, "frostwalker", chunk);
 
-                        new ParticleSpawner().spawnTemporaryParticle(chunk.getWorld(), event.getBlock().getX() + 0.5,
+                        ParticleSpawner.spawnTemporarySmokeParticle(chunk.getWorld(), event.getBlock().getX() + 0.5,
                                 event.getBlock().getY() + 1, event.getBlock().getZ() + 0.5, 0, 0, 0, 0, 0);
                     }
                 }
@@ -502,7 +502,7 @@ public class ChunksProtection implements Listener {
                 event.setCancelled(true);
                 StringUtils.sendMessageToPlayerWithTimeout(player, "createfire", chunk);
 
-                new ParticleSpawner().spawnTemporaryParticle(chunk.getWorld(), event.getBlock().getX() + 0.5,
+                ParticleSpawner.spawnTemporarySmokeParticle(chunk.getWorld(), event.getBlock().getX() + 0.5,
                         event.getBlock().getY() + 1, event.getBlock().getZ() + 0.5, 0, 0, 0, 0, 0);
             }
         }
@@ -918,7 +918,7 @@ public class ChunksProtection implements Listener {
                 }
 
                 if (spawn_particle) {
-                    new ParticleSpawner().spawnTemporaryParticle(chunk.getWorld(), event.getClickedBlock().getX() + 0.5,
+                    ParticleSpawner.spawnTemporarySmokeParticle(chunk.getWorld(), event.getClickedBlock().getX() + 0.5,
                             event.getClickedBlock().getY() + 1, event.getClickedBlock().getZ() + 0.5, 0, 0, 0, 0, 0);
                 }
             } else {
@@ -934,7 +934,7 @@ public class ChunksProtection implements Listener {
                             event.setCancelled(true);
                             StringUtils.sendMessageToPlayerWithTimeout(player, "pressureplates", chunk);
 
-                            new ParticleSpawner().spawnTemporaryParticle(chunk.getWorld(),
+                            ParticleSpawner.spawnTemporarySmokeParticle(chunk.getWorld(),
                                     event.getClickedBlock().getX() + 0.5,
                                     event.getClickedBlock().getY() + 1, event.getClickedBlock().getZ() + 0.5, 0, 0, 0,
                                     0, 0);
@@ -952,7 +952,7 @@ public class ChunksProtection implements Listener {
                                 event.setCancelled(true);
                                 StringUtils.sendMessageToPlayerWithTimeout(player, "tripwires", chunk);
 
-                                new ParticleSpawner().spawnTemporaryParticle(chunk.getWorld(),
+                                ParticleSpawner.spawnTemporarySmokeParticle(chunk.getWorld(),
                                         event.getClickedBlock().getX() + 0.5,
                                         event.getClickedBlock().getY() + 1, event.getClickedBlock().getZ() + 0.5, 0, 0,
                                         0,
@@ -1319,6 +1319,9 @@ public class ChunksProtection implements Listener {
                     event.setCancelled(true);
                     StringUtils.sendMessageToPlayerWithTimeout((Player) entity, "usevehicles", chunk);
 
+                    ParticleSpawner.spawnTemporarySmokeParticle(chunk.getWorld(), vehicle.getLocation().getX() + 0.5,
+                        vehicle.getLocation().getY() + 1, vehicle.getLocation().getZ() + 0.5, 0, 0, 0, 0, 0);
+
                     return;
                 }
             }
@@ -1346,6 +1349,9 @@ public class ChunksProtection implements Listener {
                                 "breakblocks")) {
                     event.setCancelled(true);
                     StringUtils.sendMessageToPlayerWithTimeout((Player) entity, "breakblocks", chunk);
+
+                    ParticleSpawner.spawnTemporarySmokeParticle(chunk.getWorld(), vehicle.getLocation().getX() + 0.5,
+                        vehicle.getLocation().getY() + 1, vehicle.getLocation().getZ() + 0.5, 0, 0, 0, 0, 0);
 
                     return;
                 }
@@ -1455,6 +1461,9 @@ public class ChunksProtection implements Listener {
                             "containers")) {
                 event.setCancelled(true);
                 StringUtils.sendMessageToPlayerWithTimeout(player, "containers", chunk);
+
+                ParticleSpawner.spawnTemporarySmokeParticle(chunk.getWorld(), block.getX() + 0.5,
+                        block.getY() + 1, block.getZ() + 0.5, 0, 0, 0, 0, 0);
 
                 return;
             }

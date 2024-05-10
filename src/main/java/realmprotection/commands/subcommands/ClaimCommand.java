@@ -15,6 +15,7 @@ import realmprotection.managers.LandMembersManager;
 import realmprotection.managers.LandsManager;
 import realmprotection.managers.RolesManager;
 import realmprotection.utils.Language;
+import realmprotection.utils.ParticleSpawner;
 import realmprotection.utils.StringUtils;
 
 public class ClaimCommand implements CommandExecutor {
@@ -91,7 +92,7 @@ public class ClaimCommand implements CommandExecutor {
             if (LandMembersManager.isPlayerInTheLand(new Integer(land_id), player.getUniqueId().toString()))
                 is_trusted = true;
 
-            ChunksManager.startParticleTask(player, new Integer(land_id), 1, is_owner, is_trusted);
+            ParticleSpawner.spawnDelayedParticlesAroundClaimedChunk(player, new Integer(land_id), 1, is_owner, is_trusted);
 
             return true;
         } else {
