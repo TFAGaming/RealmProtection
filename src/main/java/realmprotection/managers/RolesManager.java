@@ -328,7 +328,7 @@ public class RolesManager {
             }
         }
 
-        String sql = "SELECT * FROM land_roles WHERE land_id = ? AND role_id = ?";
+        String sql = "SELECT * FROM land_roles WHERE land_id = ? AND id = ?";
 
         try {
             Connection connection = RealmProtection.database.getConnection();

@@ -104,6 +104,7 @@ commands:
     missing_land_name: "&cYou must provide the land name!"
     land_name_not_found: "&cThis land name doesn't exist."
     player_not_invited: "&cYou are not invited to join this land."
+    role_deleted: "&cThe role was deleted, the invite has been revoked."
     player_trusted_success: "&aYou are now a member to the land!"
 
   balance:

@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import realmprotection.managers.LandInvitesManager;
 import realmprotection.managers.LandMembersManager;
 import realmprotection.managers.LandsManager;
+import realmprotection.managers.RolesManager;
 import realmprotection.utils.Language;
 
 public class AcceptCommand implements CommandExecutor {
@@ -34,6 +35,16 @@ public class AcceptCommand implements CommandExecutor {
             }
 
             String role_id = LandInvitesManager.getInviteDetail(new Integer(land_id), player.getUniqueId().toString(), "role_id");
+
+            String role_fetch = RolesManager.getRoleDetailById(new Integer(land_id), new Integer(role_id), "id");
+
+            if (role_fetch == null) {
+                LandInvitesManager.removeInviteFromPlayer(new Integer(land_id), player.getUniqueId().toString());
+
+                player.sendMessage(Language.getCommand("accept.role_deleted"));
+                
+                return true;
+            }
 
             LandMembersManager.invitePlayerToLand(new Integer(land_id), player.getUniqueId().toString(), new Integer(role_id));
             LandInvitesManager.removeInviteFromPlayer(new Integer(land_id), player.getUniqueId().toString());
