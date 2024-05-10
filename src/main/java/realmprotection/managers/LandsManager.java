@@ -454,7 +454,8 @@ public class LandsManager {
     public static void updateSpawnLocation(int land_id, double location_x, double location_y, double location_z,
             String location_world, float player_yaw) {
         String sql = "UPDATE lands SET location_x=" + location_x + ", location_y=" + location_y + ", location_z="
-                + location_z + ", location_world = '" + location_world + "', location_yaw=" + player_yaw + " WHERE id = ?";
+                + location_z + ", location_world = '" + location_world + "', location_yaw=" + player_yaw
+                + " WHERE id = ?";
 
         try {
             Connection connection = RealmProtection.database.getConnection();
@@ -613,5 +614,22 @@ public class LandsManager {
         }
 
         return allflags;
+    }
+
+    public static List<String> listAllFlags() {
+        List<String> arraylist = new ArrayList<>();
+
+        arraylist.add("hostilemobsspawn");
+        arraylist.add("passivemobsspawn");
+        arraylist.add("leavesdecay");
+        arraylist.add("firespread");
+        arraylist.add("liquidflow");
+        arraylist.add("tntblockdamage");
+        arraylist.add("respawnanchorblockdamage");
+        arraylist.add("pistonsfromwilderness");
+        arraylist.add("dispensersfromwilderness");
+        arraylist.add("plantgrowth");
+
+        return arraylist;
     }
 }

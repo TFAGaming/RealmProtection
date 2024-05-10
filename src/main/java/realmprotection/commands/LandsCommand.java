@@ -300,16 +300,7 @@ public class LandsCommand implements TabExecutor {
 
             currentindex = 3;
         } else if (args.length == 3 && args[0].equalsIgnoreCase("nature") && args[1].equalsIgnoreCase("flags")) {
-            arraylist.add("hostilemobsspawn");
-            arraylist.add("passivemobsspawn");
-            arraylist.add("leavesdecay");
-            arraylist.add("firespread");
-            arraylist.add("liquidflow");
-            arraylist.add("tntblockdamage");
-            arraylist.add("respawnanchorblockdamage");
-            arraylist.add("pistonsfromwilderness");
-            arraylist.add("dispensersfromwilderness");
-            arraylist.add("plantgrowth");
+            arraylist = LandsManager.listAllFlags();
 
             currentindex = 3;
         } else if (args.length == 4 && args[0].equalsIgnoreCase("roles") && args[1].equalsIgnoreCase("flags")) {
