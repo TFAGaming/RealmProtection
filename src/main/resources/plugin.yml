@@ -1,6 +1,6 @@
 name: RealmProtection
 main: realmprotection.RealmProtection
-version: 1.2.0
+version: 1.2.1
 description: "A Minecraft plugin that allows you to claim a 16x16 block segment from a world (a chunk) and protects it from griefers and thieves"
 author: TFAGaming
 api-version: 1.20
