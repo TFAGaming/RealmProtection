@@ -1,7 +1,9 @@
 package realmprotection.gui;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -16,6 +18,8 @@ import realmprotection.utils.ChatColorTranslator;
 import realmprotection.utils.Language;
 
 public class RoleFlagsGUI {
+	public static Map<String, String> cache = new HashMap<>();
+
 	public static void create(Player player, String role_name) {
 		String land_id = LandsManager.getLandDetail(player.getUniqueId().toString(), "id");
 
@@ -81,6 +85,8 @@ public class RoleFlagsGUI {
 		}
 
 		player.openInventory(inventory);
+		
+		cache.put(player.getUniqueId().toString(), role_name);
 	}
 
 	private static Material getMaterialItemFromPermissionName(String permission) {
