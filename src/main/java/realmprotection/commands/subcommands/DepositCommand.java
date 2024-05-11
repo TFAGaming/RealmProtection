@@ -15,8 +15,8 @@ public class DepositCommand implements CommandExecutor {
         if (sender instanceof Player) {
             Player player = (Player) sender;
 
-            if (!VaultAPIEconomy.isReady()) {
-                player.sendMessage(Language.getCommand("deposit.vault_plugin_not_ready"));
+            if (!VaultAPIEconomy.isEnabledInConfig() || !VaultAPIEconomy.isReady()) {
+                player.sendMessage(Language.getCommand("__FEATURE_DISABLED__"));
                 return true;
             }
 

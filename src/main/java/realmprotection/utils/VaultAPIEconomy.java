@@ -33,4 +33,10 @@ public class VaultAPIEconomy {
     public static boolean isReady() {
         return vaultapieconomy != null ? true : false;
     }
+
+    public static boolean isEnabledInConfig() {
+        RealmProtection plugin = RealmProtection.getPlugin(RealmProtection.class);
+
+        return plugin.getConfig().getBoolean("general.economy");
+    }
 }

@@ -15,8 +15,8 @@ public class WithdrawCommand implements CommandExecutor {
         if (sender instanceof Player) {
             Player player = (Player) sender;
 
-            if (!VaultAPIEconomy.isReady()) {
-                player.sendMessage(Language.getCommand("withdraw.vault_plugin_not_ready"));
+            if (!VaultAPIEconomy.isEnabledInConfig() || !VaultAPIEconomy.isReady()) {
+                player.sendMessage(Language.getCommand("__FEATURE_DISABLED__"));
                 return true;
             }
 

@@ -99,6 +99,7 @@ permissions:
 commands:
   # Allow or deny prefix from "general.prefix" to be set with the messages
   __ALLOW_PREFIX__: true
+  __FEATURE_DISABLED__: "&cThis feature is disabled by server Administrators. If you think this is a mistake and you are an operator, please configure the plugin in 'config.yml' file."
 
   accept:
     missing_land_name: "&cYou must provide the land name!"
@@ -108,9 +109,10 @@ commands:
     player_trusted_success: "&aYou are now a member to the land!"
 
   balance:
-    vault_plugin_not_ready: "&cUnable to run the command, Vault economy API is disabled in config.yml."
     land_not_found: "&cYou don't have a land!"
-    balance_string: "&aYour land balance: &6$%land_balance%"
+    land_name_not_found: "&cThe land name doesn't exist."
+    balance_string_player_owns: "&aYour land balance: &6$%land_balance%"
+    balance_string_other_land: "&6%land%&a's balance: &6$%land_balance%"
 
   ban:
     __DEFAULT_REASON__: "No reason was provided"
@@ -154,7 +156,6 @@ commands:
     role_delete_success: "&aSuccessfully deleted the role %role%!"
 
   deposit:
-    vault_plugin_not_ready: "&cUnable to run the command, Vault economy API is disabled in config.yml."
     land_not_found: "&cYou don't have a land!"
     no_amount_provided: "&cYou must provide the amount to deposit!"
     input_negative_or_zero: "&cThe amount must be higher than 0."
@@ -300,7 +301,6 @@ commands:
     particles_spawned_success: "&aDone! You can check the particles around the land to see the chunks limits."
 
   withdraw:
-    vault_plugin_not_ready: "&cUnable to run the command, Vault economy API is disabled in config.yml."
     land_not_found: "&cYou don't have a land!"
     no_amount_provided: "&cYou must provide the amount to withdraw!"
     input_negative_or_zero: "&cThe amount must be higher than 0."

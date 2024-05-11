@@ -223,6 +223,9 @@ public class LandsCommand implements TabExecutor {
                 case "nature":
                     arraylist.add("flags");
                     break;
+                case "balance":
+                    arraylist = LandsManager.listAllLandNames();
+                    break;
                 case "leave":
                     arraylist = LandsManager.listAllLandNames();
                     break;
