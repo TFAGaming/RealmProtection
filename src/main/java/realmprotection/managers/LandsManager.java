@@ -243,27 +243,6 @@ public class LandsManager {
             }
         }
 
-        String sql = "SELECT * FROM lands WHERE owner_uuid = ?";
-
-        try {
-            Connection connection = RealmProtection.database.getConnection();
-            PreparedStatement statement = connection.prepareStatement(sql);
-
-            statement.setString(1, player_uuid);
-
-            ResultSet result = statement.executeQuery();
-
-            if (result.next()) {
-                String string = result.getString(variable);
-
-                return string;
-            }
-
-            statement.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
         return null;
     }
 
@@ -295,27 +274,6 @@ public class LandsManager {
                 default:
                     return null;
             }
-        }
-
-        String sql = "SELECT * FROM lands WHERE id = ?";
-
-        try {
-            Connection connection = RealmProtection.database.getConnection();
-            PreparedStatement statement = connection.prepareStatement(sql);
-
-            statement.setInt(1, land_id);
-
-            ResultSet result = statement.executeQuery();
-
-            if (result.next()) {
-                String string = result.getString(variable);
-
-                return string;
-            }
-
-            statement.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
 
         return null;
@@ -351,27 +309,6 @@ public class LandsManager {
             }
         }
 
-        String sql = "SELECT * FROM lands WHERE land_name COLLATE NOCASE = ?";
-
-        try {
-            Connection connection = RealmProtection.database.getConnection();
-            PreparedStatement statement = connection.prepareStatement(sql);
-
-            statement.setString(1, land_name);
-
-            ResultSet result = statement.executeQuery();
-
-            if (result.next()) {
-                String string = result.getString(variable);
-
-                return string;
-            }
-
-            statement.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
         return null;
     }
 
@@ -405,28 +342,6 @@ public class LandsManager {
             }
         }
 
-        String sql = "SELECT * FROM lands WHERE id = ?";
-
-        try {
-            Connection connection = RealmProtection.database.getConnection();
-            PreparedStatement statement = connection.prepareStatement(sql);
-
-            statement.setInt(1, land_id);
-
-            ResultSet result = statement.executeQuery();
-
-            if (result.next()) {
-                boolean value = result.getBoolean("nature_" + flag_name);
-                return value;
-            }
-
-            statement.close();
-
-            cacheUpdateAll();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
         return false;
     }
 
@@ -440,7 +355,6 @@ public class LandsManager {
             statement.setInt(1, land_id);
 
             statement.execute();
-
             statement.close();
 
             cacheUpdateAll();
@@ -464,7 +378,6 @@ public class LandsManager {
             statement.setInt(1, land_id);
 
             statement.execute();
-
             statement.close();
 
             cacheUpdateAll();
@@ -485,7 +398,6 @@ public class LandsManager {
             statement.setInt(1, land_id);
 
             statement.execute();
-
             statement.close();
 
             cacheUpdateAll();
@@ -506,7 +418,6 @@ public class LandsManager {
             statement.setInt(1, land_id);
 
             statement.execute();
-
             statement.close();
 
             cacheUpdateAll();
@@ -517,14 +428,12 @@ public class LandsManager {
         return;
     }
 
+    @SuppressWarnings("rawtypes")
     public static List<String> listAllLandNames() {
         List<String> landnames = new ArrayList<>();
 
         if (!land_name_cache.isEmpty()) {
-            @SuppressWarnings("rawtypes")
             Set keys = land_name_cache.keySet();
-
-            @SuppressWarnings("rawtypes")
             Iterator iterator = keys.iterator();
 
             while (iterator.hasNext()) {
@@ -532,27 +441,6 @@ public class LandsManager {
             }
 
             return landnames;
-        }
-
-        String sql = "SELECT * FROM lands";
-
-        try {
-            Connection connection = RealmProtection.database.getConnection();
-            PreparedStatement statement = connection.prepareStatement(sql);
-
-            ResultSet result = statement.executeQuery();
-
-            while (result.next()) {
-                String string = result.getString("land_name");
-
-                landnames.add(string);
-            }
-
-            statement.close();
-
-            cacheUpdateAll();
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
 
         return landnames;
@@ -578,39 +466,6 @@ public class LandsManager {
             allflags.add(Lists.newArrayList("plantgrowth", data.get(9)));
 
             return allflags;
-        }
-
-        String sql = "SELECT * FROM lands WHERE id = ?";
-
-        try {
-            Connection connection = RealmProtection.database.getConnection();
-            PreparedStatement statement = connection.prepareStatement(sql);
-
-            statement.setInt(1, land_id);
-
-            ResultSet result = statement.executeQuery();
-
-            while (result.next()) {
-                allflags.add(Lists.newArrayList("hostilemobsspawn", result.getBoolean("nature_hostilemobsspawn")));
-                allflags.add(Lists.newArrayList("passivemobsspawn", result.getBoolean("nature_passivemobsspawn")));
-                allflags.add(Lists.newArrayList("leavesdecay", result.getBoolean("nature_leavesdecay")));
-                allflags.add(Lists.newArrayList("firespread", result.getBoolean("nature_firespread")));
-                allflags.add(Lists.newArrayList("liquidflow", result.getBoolean("nature_liquidflow")));
-                allflags.add(Lists.newArrayList("tntblockdamage", result.getBoolean("nature_tntblockdamage")));
-                allflags.add(Lists.newArrayList("respawnanchorblockdamage",
-                        result.getBoolean("nature_respawnanchorblockdamage")));
-                allflags.add(
-                        Lists.newArrayList("pistonsfromwilderness", result.getBoolean("nature_pistonsfromwilderness")));
-                allflags.add(Lists.newArrayList("dispensersfromwilderness",
-                        result.getBoolean("nature_dispensersfromwilderness")));
-                allflags.add(Lists.newArrayList("plantgrowth", result.getBoolean("nature_plantgrowth")));
-            }
-
-            statement.close();
-
-            cacheUpdateAll();
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
 
         return allflags;

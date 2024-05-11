@@ -90,6 +90,24 @@ public class LandInvitesManager {
         }
     }
 
+    public static void deleteAllInvitesFromLand(int land_id) {
+        String sql = "DELETE FROM land_invites WHERE land_id = ?";
+
+        try {
+            Connection connection = RealmProtection.database.getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql);
+
+            statement.setInt(1, land_id);
+
+            statement.executeUpdate();
+            statement.close();
+
+            cacheUpdateAll();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static String getInviteDetail(int land_id, String player_uuid, String variable) {
         if (cache.containsKey(createCacheKey(land_id, player_uuid))) {
             List<Object> data = cache.get(createCacheKey(land_id, player_uuid));
@@ -110,27 +128,6 @@ public class LandInvitesManager {
             }
         }
 
-        String sql = "SELECT * FROM lands WHERE id = ?";
-
-        try {
-            Connection connection = RealmProtection.database.getConnection();
-            PreparedStatement statement = connection.prepareStatement(sql);
-
-            statement.setInt(1, land_id);
-
-            ResultSet result = statement.executeQuery();
-
-            if (result.next()) {
-                String string = result.getString(variable);
-
-                return string;
-            }
-
-            statement.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
         return null;
     }
 
@@ -139,79 +136,33 @@ public class LandInvitesManager {
     }
 
     public static List<List<String>> listAllInvitesFromLandId(int land_id) {
-        String sql = "SELECT * FROM land_invites WHERE land_id = ?";
+        List<List<String>> invites = new ArrayList<>();
 
-        List<List<String>> data = new ArrayList<>();
+        for (Map.Entry<String, List<Object>> entry : cache.entrySet()) {
+            List<Object> data = entry.getValue();
 
-        try {
-            Connection connection = RealmProtection.database.getConnection();
-            PreparedStatement statement = connection.prepareStatement(sql);
-
-            statement.setInt(1, land_id);
-
-            ResultSet result = statement.executeQuery();
-
-            while (result.next()) {
-                String inviter_uuid = result.getString("inviter_uuid");
-                String player_uuid = result.getString("player_uuid");
-
-                data.add(Lists.newArrayList(Bukkit.getOfflinePlayer(UUID.fromString(inviter_uuid)).getName(), player_uuid));
+            if (new Integer((String) data.get(1)) == land_id) {
+                invites.add(Lists.newArrayList(Bukkit.getOfflinePlayer(UUID.fromString((String) data.get(2))).getName(), (String) data.get(3))); 
             }
-            
-            statement.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
 
-        return data;
+        return invites;
     }
 
     public static List<List<String>> listAllInvitesForPlayer(String player_uuid) {
-        String sql = "SELECT * FROM land_invites WHERE player_uuid = ?";
+        List<List<String>> invites = new ArrayList<>();
 
-        List<List<String>> data = new ArrayList<>();
+        for (Map.Entry<String, List<Object>> entry : cache.entrySet()) {
+            List<Object> data = entry.getValue();
 
-        try {
-            Connection connection = RealmProtection.database.getConnection();
-            PreparedStatement statement = connection.prepareStatement(sql);
+            if (((String) data.get(3)).equals(player_uuid)) {
+                String land_name = LandsManager.getLandDetailById(new Integer((String) data.get(1)), "land_name");
 
-            statement.setString(1, player_uuid);
-
-            ResultSet result = statement.executeQuery();
-
-            while (result.next()) {
-                String inviter_uuid = result.getString("inviter_uuid");
-                String land_id = result.getString("land_id");
-
-                String land_name = LandsManager.getLandDetailById(new Integer(land_id), "land_name");
-
-                data.add(Lists.newArrayList(Bukkit.getOfflinePlayer(UUID.fromString(inviter_uuid)).getName(), land_id, land_name));
+                invites.add(Lists.newArrayList(Bukkit.getOfflinePlayer(UUID.fromString((String) data.get(2))).getName(), (String) data.get(1), land_name)); 
             }
-            
-            statement.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
 
-        return data;
-    }
-
-    public static void deleteAllInvitesFromLand(int land_id) {
-        String sql = "DELETE FROM land_invites WHERE land_id = ?";
-
-        try {
-            Connection connection = RealmProtection.database.getConnection();
-            PreparedStatement statement = connection.prepareStatement(sql);
-
-            statement.setInt(1, land_id);
-
-            statement.executeUpdate();
-            statement.close();
-
-            cacheUpdateAll();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        return invites;
     }
 
     private static String createCacheKey(Object land_id, String player_uuid) {

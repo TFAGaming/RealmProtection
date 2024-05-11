@@ -33,7 +33,7 @@ public class DeleteCommand implements CommandExecutor {
 
             LandsManager.deleteLand(new Integer(land_id));
             RolesManager.deleteAllRolesFromLand(new Integer(land_id));
-            LandMembersManager.deleteAllMembersFromLand(new Integer(land_id));
+            LandMembersManager.removeAllMembersFromLand(new Integer(land_id));
             LandInvitesManager.deleteAllInvitesFromLand(new Integer(land_id));
             LandBansManager.deleteAllBannedPlayersFromLand(new Integer(land_id));
             ChunksManager.deleteAllChunksFromLand(new Integer(land_id));

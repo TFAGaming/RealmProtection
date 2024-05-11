@@ -88,71 +88,6 @@ public class LandBansManager {
         }
     }
 
-    public static String getBanReason(int land_id, String player_uuid) {
-        if (cache.containsKey(createCacheKey(land_id, player_uuid))) {
-            List<Object> data = cache.get(createCacheKey(land_id, player_uuid));
-
-            return (String) data.get(3);
-        }
-
-        String sql = "SELECT * FROM land_bans WHERE land_id = ? AND player_uuid COLLATE NOCASE = ?";
-
-        try {
-            Connection connection = RealmProtection.database.getConnection();
-            PreparedStatement statement = connection.prepareStatement(sql);
-
-            statement.setInt(1, land_id);
-            statement.setString(2, player_uuid);
-
-            ResultSet rs = statement.executeQuery();
-
-            if (rs.next()) {
-                String reason = rs.getString("reason");
-                return reason;
-            }
-
-            statement.close();
-
-            cacheUpdateAll();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return "No reason was provided";
-    }
-
-    public static boolean isPlayerBannedFromLand(int land_id, String player_uuid) {
-        return cache.containsKey(createCacheKey(land_id, player_uuid));
-    }
-
-    public static List<List<String>> listAllBannedPlayersData(int land_id) {
-        String sql = "SELECT * FROM land_bans WHERE land_id = ?";
-
-        List<List<String>> data = new ArrayList<>();
-
-        try {
-            Connection connection = RealmProtection.database.getConnection();
-            PreparedStatement statement = connection.prepareStatement(sql);
-
-            statement.setInt(1, land_id);
-
-            ResultSet result = statement.executeQuery();
-
-            while (result.next()) {
-                String player_uuid = result.getString("player_uuid");
-                String reason = result.getString("reason");
-
-                data.add(Lists.newArrayList(Bukkit.getOfflinePlayer(UUID.fromString(player_uuid)).getName(), reason));
-            }
-            
-            statement.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return data;
-    }
-
     public static void deleteAllBannedPlayersFromLand(int land_id) {
         String sql = "DELETE FROM land_bans WHERE land_id = ?";
 
@@ -169,6 +104,34 @@ public class LandBansManager {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public static String getBanReason(int land_id, String player_uuid) {
+        if (cache.containsKey(createCacheKey(land_id, player_uuid))) {
+            List<Object> data = cache.get(createCacheKey(land_id, player_uuid));
+
+            return (String) data.get(3);
+        }
+
+        return "No reason was provided";
+    }
+
+    public static boolean isPlayerBannedFromLand(int land_id, String player_uuid) {
+        return cache.containsKey(createCacheKey(land_id, player_uuid));
+    }
+
+    public static List<List<String>> listAllBannedPlayersData(int land_id) {
+        List<List<String>> banlist = new ArrayList<>();
+
+        for (Map.Entry<String, List<Object>> entry : cache.entrySet()) {
+            List<Object> data = entry.getValue();
+
+            if (new Integer((String) data.get(1)) == land_id) {
+                banlist.add(Lists.newArrayList(Bukkit.getOfflinePlayer(UUID.fromString((String) data.get(2))).getName(), (String) data.get(3))); 
+            }
+        }
+
+        return banlist;
     }
 
     private static String createCacheKey(Object land_id, String player_uuid) {

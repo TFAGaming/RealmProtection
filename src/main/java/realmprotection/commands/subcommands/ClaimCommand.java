@@ -64,14 +64,14 @@ public class ClaimCommand implements CommandExecutor {
 
             String land_id = LandsManager.getLandDetail(player.getUniqueId().toString(), "id");
 
-            boolean hasOneChunkClaimedForLand = ChunksManager.isLandHaveAtLeastOneChunk(new Integer(land_id));
+            boolean hasOneChunkClaimedBefore = ChunksManager.getChunksCountOfLand(new Integer(land_id)) == 0 ? false : true;
 
             ChunksManager.claimNewChunk(chunk, new Integer(land_id));
 
             player.sendMessage(Language.getCommand("claim.chunk_claimed_success")
                     .replace("%chunk_x%", "" + chunk.getX()).replace("%chunk_z%", "" + chunk.getZ()));
 
-            if (!hasOneChunkClaimedForLand) {
+            if (!hasOneChunkClaimedBefore) {
                 RealmProtection plugin = RealmProtection.getPlugin(RealmProtection.class);
 
                 List<String> rolenames = plugin.getConfig().getStringList("roles.names");

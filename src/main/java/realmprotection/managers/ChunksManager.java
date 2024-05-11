@@ -3,31 +3,25 @@ package realmprotection.managers;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
-import com.google.common.collect.Lists;
-
 import realmprotection.RealmProtection;
 import realmprotection.utils.LuckPermsAPI;
 
 public class ChunksManager {
     private static final Map<String, List<Object>> cache = new HashMap<>();
-    private static final Set<String> land_ids_cache = new HashSet<>();
 
     public static void cacheUpdateAll() {
         String sql = "SELECT * FROM claimed_chunks";
 
         try {
             cache.clear();
-            land_ids_cache.clear();
 
             Connection connection = RealmProtection.database.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql);
@@ -52,7 +46,6 @@ public class ChunksManager {
                 data.add(created_at);
 
                 cache.put(createCacheKey(chunk_x, chunk_z, chunk_world), data);
-                land_ids_cache.add("" + land_id);
             }
 
             statement.close();
@@ -151,64 +144,7 @@ public class ChunksManager {
     }
 
     public static boolean isChunkClaimed(Chunk chunk) {
-        if (cache.containsKey(createCacheKey(chunk.getX(), chunk.getZ(), chunk.getWorld().getName()))) {
-            return true;
-        }
-
-        String sql = "SELECT COUNT (*) AS count FROM claimed_chunks WHERE chunk_x = ? AND chunk_z = ? AND chunk_world = ?";
-        boolean claimed = false;
-
-        try {
-            Connection connection = RealmProtection.database.getConnection();
-            PreparedStatement statement = connection.prepareStatement(sql);
-
-            statement.setInt(1, chunk.getX());
-            statement.setInt(2, chunk.getZ());
-            statement.setString(3, chunk.getWorld().getName());
-
-            ResultSet rs = statement.executeQuery();
-
-            if (rs.next()) {
-                int count = rs.getInt("count");
-                claimed = count > 0;
-            }
-
-            statement.close();
-
-            cacheUpdateAll();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return claimed;
-    }
-
-    public static boolean isLandHaveAtLeastOneChunk(int land_id) {
-        return land_ids_cache.contains("" + land_id);
-        /*
-        String sql = "SELECT COUNT (*) AS count FROM claimed_chunks WHERE land_id = ?";
-        boolean claimed = false;
-
-        try {
-            Connection connection = RealmProtection.database.getConnection();
-            PreparedStatement statement = connection.prepareStatement(sql);
-
-            statement.setInt(1, new Integer(land_id));
-
-            ResultSet rs = statement.executeQuery();
-
-            if (rs.next()) {
-                int count = rs.getInt("count");
-                claimed = count > 0;
-            }
-
-            statement.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return claimed;
-        */
+        return cache.containsKey(createCacheKey(chunk.getX(), chunk.getZ(), chunk.getWorld().getName()));
     }
 
     public static String getChunkDetail(Chunk chunk, String variable) {
@@ -235,53 +171,21 @@ public class ChunksManager {
             }
         }
 
-        String sql = "SELECT * FROM claimed_chunks WHERE chunk_x = ? AND chunk_z = ? AND chunk_world = ?";
-
-        try {
-            Connection connection = RealmProtection.database.getConnection();
-            PreparedStatement statement = connection.prepareStatement(sql);
-
-            statement.setInt(1, chunk.getX());
-            statement.setInt(2, chunk.getZ());
-            statement.setString(3, chunk.getWorld().getName());
-
-            ResultSet result = statement.executeQuery();
-
-            if (result.next()) {
-                String string = result.getString(variable);
-
-                return string;
-            }
-
-            statement.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
         return null;
     }
 
     public static int getChunksCountOfLand(int land_id) {
-        String sql = "SELECT COUNT (*) AS count FROM claimed_chunks WHERE land_id = ?";
+        int count = 0;
 
-        try {
-            Connection connection = RealmProtection.database.getConnection();
-            PreparedStatement statement = connection.prepareStatement(sql);
+        for (Map.Entry<String, List<Object>> entry : cache.entrySet()) {
+            List<Object> data = entry.getValue();
 
-            statement.setInt(1, land_id);
-            ResultSet rs = statement.executeQuery();
-
-            if (rs.next()) {
-                int count = rs.getInt("count");
-                return count;
+            if ((int) data.get(4) == land_id) {
+                count++;
             }
-
-            statement.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
 
-        return 0;
+        return count;
     }
 
     public static String getOwnerUUIDByChunk(Chunk chunk) {
@@ -295,30 +199,14 @@ public class ChunksManager {
     }
 
     public static List<List<Object>> listChunksFromLandId(int land_id) {
-        String sql = "SELECT * FROM claimed_chunks WHERE land_id = ?";
-        List<List<Object>> chunks = Lists.newArrayList();
+        List<List<Object>> chunks = new ArrayList<>();
 
-        try {
-            Connection connection = RealmProtection.database.getConnection();
-            PreparedStatement statement = connection.prepareStatement(sql);
+        for (Map.Entry<String, List<Object>> entry : cache.entrySet()) {
+            List<Object> data = entry.getValue();
 
-            statement.setInt(1, land_id);
-
-            ResultSet result = statement.executeQuery();
-
-            while (result.next()) {
-                int chunk_x = new Integer(result.getString("chunk_x"));
-                int chunk_z = new Integer(result.getString("chunk_z"));
-                String chunk_world = result.getString("chunk_world");
-
-                chunks.add(Lists.newArrayList(chunk_x, chunk_z, chunk_world));
+            if ((int) data.get(4) == land_id) {
+                chunks.add(data.subList(1, 4));
             }
-
-            statement.close();
-
-            return chunks;
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
 
         return chunks;

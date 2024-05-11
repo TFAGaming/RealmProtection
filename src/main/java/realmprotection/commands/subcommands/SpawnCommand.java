@@ -34,7 +34,7 @@ public class SpawnCommand implements CommandExecutor {
             String land_owner_uuid = LandsManager.getLandDetailById(new Integer(land_id), "owner_uuid");
 
             if (!player.getUniqueId().toString().equals(land_owner_uuid) && !LandMembersManager
-                    .hasPlayerThePermissionToDo(new Integer(land_id), player.getUniqueId().toString(), "teleporttospawn")) {
+                    .hasFlagPermission(new Integer(land_id), player.getUniqueId().toString(), "teleporttospawn")) {
                 player.sendMessage(Language.getCommand("spawn.missing_permissions_to_teleport")
                         .replace("%land_name%", args[1]));
                 return true;

@@ -105,7 +105,7 @@ public class ChunksProtection implements Listener {
             String land_owner_uuid = LandsManager.getLandDetailById(new Integer(land_id), "owner_uuid");
 
             if (!player.getUniqueId().toString().equals(land_owner_uuid) && !LandMembersManager
-                    .hasPlayerThePermissionToDo(new Integer(land_id), player.getUniqueId().toString(), "placeblocks")) {
+                    .hasFlagPermission(new Integer(land_id), player.getUniqueId().toString(), "placeblocks")) {
                 event.setCancelled(true);
 
                 StringUtils.sendMessageToPlayerWithTimeout(player, "placeblocks", chunk);
@@ -135,7 +135,7 @@ public class ChunksProtection implements Listener {
             String land_owner_uuid = LandsManager.getLandDetailById(new Integer(land_id), "owner_uuid");
 
             if (!player.getUniqueId().toString().equals(land_owner_uuid) && !LandMembersManager
-                    .hasPlayerThePermissionToDo(new Integer(land_id), player.getUniqueId().toString(), "breakblocks")) {
+                    .hasFlagPermission(new Integer(land_id), player.getUniqueId().toString(), "breakblocks")) {
                 event.setCancelled(true);
                 StringUtils.sendMessageToPlayerWithTimeout(player, "breakblocks", chunk);
 
@@ -166,7 +166,7 @@ public class ChunksProtection implements Listener {
                         "owner_uuid");
 
                 if (!player.getUniqueId().toString().equals(land_owner_uuid)
-                        && !LandMembersManager.hasPlayerThePermissionToDo(new Integer(land_id),
+                        && !LandMembersManager.hasFlagPermission(new Integer(land_id),
                                 player.getUniqueId().toString(),
                                 "tradewithvillagers")) {
                     event.setCancelled(true);
@@ -191,7 +191,7 @@ public class ChunksProtection implements Listener {
                         "owner_uuid");
 
                 if (!player.getUniqueId().toString().equals(land_owner_uuid)
-                        && !LandMembersManager.hasPlayerThePermissionToDo(new Integer(land_id),
+                        && !LandMembersManager.hasFlagPermission(new Integer(land_id),
                                 player.getUniqueId().toString(),
                                 "containers")) {
                     event.setCancelled(true);
@@ -236,7 +236,7 @@ public class ChunksProtection implements Listener {
             String land_owner_uuid = LandsManager.getLandDetailById(new Integer(land_id), "owner_uuid");
 
             if (!player.getUniqueId().toString().equals(land_owner_uuid)
-                    && !LandMembersManager.hasPlayerThePermissionToDo(new Integer(land_id),
+                    && !LandMembersManager.hasFlagPermission(new Integer(land_id),
                             player.getUniqueId().toString(),
                             "emptybuckets")) {
                 event.setCancelled(true);
@@ -263,7 +263,7 @@ public class ChunksProtection implements Listener {
             String land_owner_uuid = LandsManager.getLandDetailById(new Integer(land_id), "owner_uuid");
 
             if (!player.getUniqueId().toString().equals(land_owner_uuid) && !LandMembersManager
-                    .hasPlayerThePermissionToDo(new Integer(land_id), player.getUniqueId().toString(), "fillbuckets")) {
+                    .hasFlagPermission(new Integer(land_id), player.getUniqueId().toString(), "fillbuckets")) {
                 event.setCancelled(true);
                 StringUtils.sendMessageToPlayerWithTimeout(player, "fillbuckets", chunk);
 
@@ -292,7 +292,7 @@ public class ChunksProtection implements Listener {
                     String land_owner_uuid = LandsManager.getLandDetailById(new Integer(land_id), "owner_uuid");
 
                     if (!player.getUniqueId().toString().equals(land_owner_uuid)
-                            && !LandMembersManager.hasPlayerThePermissionToDo(new Integer(land_id),
+                            && !LandMembersManager.hasFlagPermission(new Integer(land_id),
                                     player.getUniqueId().toString(),
                                     "harvestcrops")) {
                         event.setCancelled(true);
@@ -317,7 +317,7 @@ public class ChunksProtection implements Listener {
                 String land_owner_uuid = LandsManager.getLandDetailById(new Integer(land_id), "owner_uuid");
 
                 if (!player.getUniqueId().toString().equals(land_owner_uuid)
-                        && !LandMembersManager.hasPlayerThePermissionToDo(new Integer(land_id),
+                        && !LandMembersManager.hasFlagPermission(new Integer(land_id),
                                 player.getUniqueId().toString(),
                                 "harvestcrops")) {
                     event.setCancelled(true);
@@ -358,7 +358,7 @@ public class ChunksProtection implements Listener {
                     String land_owner_uuid = LandsManager.getLandDetailById(new Integer(land_id), "owner_uuid");
 
                     if (!player.getUniqueId().toString().equals(land_owner_uuid)
-                            && !LandMembersManager.hasPlayerThePermissionToDo(new Integer(land_id),
+                            && !LandMembersManager.hasFlagPermission(new Integer(land_id),
                                     player.getUniqueId().toString(),
                                     "frostwalker")) {
                         event.setCancelled(true);
@@ -449,7 +449,7 @@ public class ChunksProtection implements Listener {
             String land_owner_uuid = LandsManager.getLandDetailById(new Integer(land_id), "owner_uuid");
 
             if (!player.getUniqueId().toString().equals(land_owner_uuid) && !LandMembersManager
-                    .hasPlayerThePermissionToDo(new Integer(land_id), player.getUniqueId().toString(),
+                    .hasFlagPermission(new Integer(land_id), player.getUniqueId().toString(),
                             "shearentities")) {
                 StringUtils.sendMessageToPlayerWithTimeout(player, "shearentities", chunk);
                 event.setCancelled(true);
@@ -498,7 +498,7 @@ public class ChunksProtection implements Listener {
             }
 
             if (!player.getUniqueId().toString().equals(land_owner_uuid) && !LandMembersManager
-                    .hasPlayerThePermissionToDo(new Integer(land_id), player.getUniqueId().toString(), "createfire")) {
+                    .hasFlagPermission(new Integer(land_id), player.getUniqueId().toString(), "createfire")) {
                 event.setCancelled(true);
                 StringUtils.sendMessageToPlayerWithTimeout(player, "createfire", chunk);
 
@@ -566,7 +566,7 @@ public class ChunksProtection implements Listener {
 
             if (entity.getUniqueId().toString().contains("Armor Stand")) {
                 if (damager instanceof Player && !damager.getUniqueId().toString().equals(land_owner_uuid)
-                        && !LandMembersManager.hasPlayerThePermissionToDo(new Integer(land_id),
+                        && !LandMembersManager.hasFlagPermission(new Integer(land_id),
                                 damager.getUniqueId().toString(),
                                 "breakblocks")) {
                     event.setCancelled(true);
@@ -575,7 +575,7 @@ public class ChunksProtection implements Listener {
                     return;
                 }
             } else if (entity instanceof Player && damager instanceof Player) {
-                if (!LandMembersManager.hasPlayerThePermissionToDo(new Integer(land_id),
+                if (!LandMembersManager.hasFlagPermission(new Integer(land_id),
                         damager.getUniqueId().toString(),
                         "pvp")) {
                     event.setCancelled(true);
@@ -585,7 +585,7 @@ public class ChunksProtection implements Listener {
                 }
             } else if (damager instanceof Player && (entity instanceof Monster || entity instanceof IronGolem)) {
                 if (!damager.getUniqueId().toString().equals(land_owner_uuid)
-                        && !LandMembersManager.hasPlayerThePermissionToDo(new Integer(land_id),
+                        && !LandMembersManager.hasFlagPermission(new Integer(land_id),
                                 damager.getUniqueId().toString(),
                                 "damagehostilemobs")) {
                     event.setCancelled(true);
@@ -596,7 +596,7 @@ public class ChunksProtection implements Listener {
                 }
             } else if (damager instanceof Player && (entity instanceof Animals || entity instanceof Mob)) {
                 if (!damager.getUniqueId().toString().equals(land_owner_uuid)
-                        && !LandMembersManager.hasPlayerThePermissionToDo(new Integer(land_id),
+                        && !LandMembersManager.hasFlagPermission(new Integer(land_id),
                                 damager.getUniqueId().toString(),
                                 "damagepassivemobs")) {
                     event.setCancelled(true);
@@ -763,7 +763,7 @@ public class ChunksProtection implements Listener {
                     String land_owner_uuid = LandsManager.getLandDetailById(new Integer(land_id), "owner_uuid");
 
                     if (!player.getUniqueId().toString().equals(land_owner_uuid)
-                            && !LandMembersManager.hasPlayerThePermissionToDo(new Integer(land_id),
+                            && !LandMembersManager.hasFlagPermission(new Integer(land_id),
                                     player.getUniqueId().toString(),
                                     "placeblocks")) {
                         event.setCancelled(true);
@@ -789,7 +789,7 @@ public class ChunksProtection implements Listener {
                         || material.equals(Material.DROPPER) || material.equals(Material.DISPENSER)
                         || material.equals(Material.CHISELED_BOOKSHELF)) {
                     if (!player.getUniqueId().toString().equals(land_owner_uuid)
-                            && !LandMembersManager.hasPlayerThePermissionToDo(new Integer(land_id),
+                            && !LandMembersManager.hasFlagPermission(new Integer(land_id),
                                     player.getUniqueId().toString(),
                                     "containers")) {
                         event.setCancelled(true);
@@ -799,7 +799,7 @@ public class ChunksProtection implements Listener {
                     }
                 } else if (material.name().contains("ANVIL")) {
                     if (!player.getUniqueId().toString().equals(land_owner_uuid)
-                            && !LandMembersManager.hasPlayerThePermissionToDo(new Integer(land_id),
+                            && !LandMembersManager.hasFlagPermission(new Integer(land_id),
                                     player.getUniqueId().toString(),
                                     "useanvil")) {
                         event.setCancelled(true);
@@ -809,7 +809,7 @@ public class ChunksProtection implements Listener {
                     }
                 } else if (material.name().contains("TRAPDOOR")) {
                     if (!player.getUniqueId().toString().equals(land_owner_uuid)
-                            && !LandMembersManager.hasPlayerThePermissionToDo(new Integer(land_id),
+                            && !LandMembersManager.hasFlagPermission(new Integer(land_id),
                                     player.getUniqueId().toString(),
                                     "trapdoors")) {
                         event.setCancelled(true);
@@ -819,7 +819,7 @@ public class ChunksProtection implements Listener {
                     }
                 } else if (material.name().contains("DOOR")) {
                     if (!player.getUniqueId().toString().equals(land_owner_uuid)
-                            && !LandMembersManager.hasPlayerThePermissionToDo(new Integer(land_id),
+                            && !LandMembersManager.hasFlagPermission(new Integer(land_id),
                                     player.getUniqueId().toString(),
                                     "doors")) {
                         event.setCancelled(true);
@@ -829,7 +829,7 @@ public class ChunksProtection implements Listener {
                     }
                 } else if (material.name().contains("SIGN")) {
                     if (!player.getUniqueId().toString().equals(land_owner_uuid)
-                            && !LandMembersManager.hasPlayerThePermissionToDo(new Integer(land_id),
+                            && !LandMembersManager.hasFlagPermission(new Integer(land_id),
                                     player.getUniqueId().toString(),
                                     "editsigns")) {
                         event.setCancelled(true);
@@ -839,7 +839,7 @@ public class ChunksProtection implements Listener {
                     }
                 } else if (material.name().contains("BUTTON")) {
                     if (!player.getUniqueId().toString().equals(land_owner_uuid)
-                            && !LandMembersManager.hasPlayerThePermissionToDo(new Integer(land_id),
+                            && !LandMembersManager.hasFlagPermission(new Integer(land_id),
                                     player.getUniqueId().toString(),
                                     "buttons")) {
                         event.setCancelled(true);
@@ -849,7 +849,7 @@ public class ChunksProtection implements Listener {
                     }
                 } else if (material.name().contains("FENCE_GATE")) {
                     if (!player.getUniqueId().toString().equals(land_owner_uuid)
-                            && !LandMembersManager.hasPlayerThePermissionToDo(new Integer(land_id),
+                            && !LandMembersManager.hasFlagPermission(new Integer(land_id),
                                     player.getUniqueId().toString(),
                                     "fencegates")) {
                         event.setCancelled(true);
@@ -862,7 +862,7 @@ public class ChunksProtection implements Listener {
                         || material.equals(Material.CAKE)
                         || material.equals(Material.DAYLIGHT_DETECTOR)) {
                     if (!player.getUniqueId().toString().equals(land_owner_uuid)
-                            && !LandMembersManager.hasPlayerThePermissionToDo(new Integer(land_id),
+                            && !LandMembersManager.hasFlagPermission(new Integer(land_id),
                                     player.getUniqueId().toString(),
                                     "generalinteractions")) {
                         event.setCancelled(true);
@@ -872,7 +872,7 @@ public class ChunksProtection implements Listener {
                     }
                 } else if (material.equals(Material.LEVER)) {
                     if (!player.getUniqueId().toString().equals(land_owner_uuid)
-                            && !LandMembersManager.hasPlayerThePermissionToDo(new Integer(land_id),
+                            && !LandMembersManager.hasFlagPermission(new Integer(land_id),
                                     player.getUniqueId().toString(),
                                     "levers")) {
                         event.setCancelled(true);
@@ -886,7 +886,7 @@ public class ChunksProtection implements Listener {
                         || material.equals(Material.NOTE_BLOCK) || material.equals(Material.JUKEBOX)
                         || material.equals(Material.COMPOSTER)) {
                     if (!player.getUniqueId().toString().equals(land_owner_uuid)
-                            && !LandMembersManager.hasPlayerThePermissionToDo(new Integer(land_id),
+                            && !LandMembersManager.hasFlagPermission(new Integer(land_id),
                                     player.getUniqueId().toString(),
                                     "redstone")) {
                         event.setCancelled(true);
@@ -896,7 +896,7 @@ public class ChunksProtection implements Listener {
                     }
                 } else if (material.equals(Material.BELL)) {
                     if (!player.getUniqueId().toString().equals(land_owner_uuid)
-                            && !LandMembersManager.hasPlayerThePermissionToDo(new Integer(land_id),
+                            && !LandMembersManager.hasFlagPermission(new Integer(land_id),
                                     player.getUniqueId().toString(),
                                     "bells")) {
                         event.setCancelled(true);
@@ -907,7 +907,7 @@ public class ChunksProtection implements Listener {
                 } else if (material.equals(Material.CAULDRON) || material.equals(Material.LAVA_CAULDRON)
                         || material.equals(Material.WATER_CAULDRON)) {
                     if (!player.getUniqueId().toString().equals(land_owner_uuid)
-                            && !LandMembersManager.hasPlayerThePermissionToDo(new Integer(land_id),
+                            && !LandMembersManager.hasFlagPermission(new Integer(land_id),
                                     player.getUniqueId().toString(),
                                     "usecauldron")) {
                         event.setCancelled(true);
@@ -928,7 +928,7 @@ public class ChunksProtection implements Listener {
                 if (event.getAction() == Action.PHYSICAL) {
                     if (block != null && block.getType().name().contains("PRESSURE_PLATE")) {
                         if (!player.getUniqueId().toString().equals(land_owner_uuid)
-                                && !LandMembersManager.hasPlayerThePermissionToDo(new Integer(land_id),
+                                && !LandMembersManager.hasFlagPermission(new Integer(land_id),
                                         player.getUniqueId().toString(),
                                         "pressureplates")) {
                             event.setCancelled(true);
@@ -946,7 +946,7 @@ public class ChunksProtection implements Listener {
                     if (block != null) {
                         if (block.getType() == Material.TRIPWIRE) {
                             if (!player.getUniqueId().toString().equals(land_owner_uuid)
-                                    && !LandMembersManager.hasPlayerThePermissionToDo(new Integer(land_id),
+                                    && !LandMembersManager.hasFlagPermission(new Integer(land_id),
                                             player.getUniqueId().toString(),
                                             "tripwires")) {
                                 event.setCancelled(true);
@@ -985,7 +985,7 @@ public class ChunksProtection implements Listener {
                     String land_owner_uuid = LandsManager.getLandDetailById(new Integer(land_id), "owner_uuid");
 
                     if (!player.getUniqueId().toString().equals(land_owner_uuid)
-                            && !LandMembersManager.hasPlayerThePermissionToDo(new Integer(land_id),
+                            && !LandMembersManager.hasFlagPermission(new Integer(land_id),
                                     player.getUniqueId().toString(),
                                     "throwenderpearls")) {
                         event.setCancelled(true);
@@ -1005,7 +1005,7 @@ public class ChunksProtection implements Listener {
                     String land_owner_uuid = LandsManager.getLandDetailById(new Integer(land_id), "owner_uuid");
 
                     if (!player.getUniqueId().toString().equals(land_owner_uuid)
-                            && !LandMembersManager.hasPlayerThePermissionToDo(new Integer(land_id),
+                            && !LandMembersManager.hasFlagPermission(new Integer(land_id),
                                     player.getUniqueId().toString(),
                                     "throwpotions")) {
                         event.setCancelled(true);
@@ -1034,7 +1034,7 @@ public class ChunksProtection implements Listener {
                 String land_owner_uuid = LandsManager.getLandDetailById(new Integer(land_id), "owner_uuid");
 
                 if (!player.getUniqueId().toString().equals(land_owner_uuid)
-                        && !LandMembersManager.hasPlayerThePermissionToDo(new Integer(land_id),
+                        && !LandMembersManager.hasFlagPermission(new Integer(land_id),
                                 player.getUniqueId().toString(),
                                 "armorstands")) {
                     event.setCancelled(true);
@@ -1064,7 +1064,7 @@ public class ChunksProtection implements Listener {
 
             if (source instanceof Player) {
                 if (entityhit instanceof Player) {
-                    if (!LandMembersManager.hasPlayerThePermissionToDo(new Integer(land_id),
+                    if (!LandMembersManager.hasFlagPermission(new Integer(land_id),
                             ((Player) source).getUniqueId().toString(),
                             "pvp")) {
                         event.setCancelled(true);
@@ -1076,7 +1076,7 @@ public class ChunksProtection implements Listener {
                     }
                 } else if (entityhit instanceof Monster || entityhit instanceof IronGolem) {
                     if (!((Player) source).getUniqueId().toString().equals(land_owner_uuid)
-                            && !LandMembersManager.hasPlayerThePermissionToDo(new Integer(land_id),
+                            && !LandMembersManager.hasFlagPermission(new Integer(land_id),
                                     ((Player) source).getUniqueId().toString(),
                                     "damagehostilemobs")) {
                         event.setCancelled(true);
@@ -1089,7 +1089,7 @@ public class ChunksProtection implements Listener {
                     }
                 } else if (entityhit instanceof Animals || entityhit instanceof Mob) {
                     if (!((Player) source).getUniqueId().toString().equals(land_owner_uuid)
-                            && !LandMembersManager.hasPlayerThePermissionToDo(new Integer(land_id),
+                            && !LandMembersManager.hasFlagPermission(new Integer(land_id),
                                     ((Player) source).getUniqueId().toString(),
                                     "damagepassivemobs")) {
                         event.setCancelled(true);
@@ -1123,7 +1123,7 @@ public class ChunksProtection implements Listener {
                 String land_owner_uuid = LandsManager.getLandDetailById(new Integer(land_id), "owner_uuid");
 
                 if (!player.getUniqueId().toString().equals(land_owner_uuid)
-                        && !LandMembersManager.hasPlayerThePermissionToDo(new Integer(land_id),
+                        && !LandMembersManager.hasFlagPermission(new Integer(land_id),
                                 player.getUniqueId().toString(),
                                 "generalinteractions")) {
                     event.setCancelled(true);
@@ -1151,7 +1151,7 @@ public class ChunksProtection implements Listener {
                     String land_owner_uuid = LandsManager.getLandDetailById(new Integer(land_id), "owner_uuid");
 
                     if (!player.getUniqueId().toString().equals(land_owner_uuid)
-                            && !LandMembersManager.hasPlayerThePermissionToDo(new Integer(land_id),
+                            && !LandMembersManager.hasFlagPermission(new Integer(land_id),
                                     player.getUniqueId().toString(),
                                     "itemframes")) {
                         event.setCancelled(true);
@@ -1184,7 +1184,7 @@ public class ChunksProtection implements Listener {
                 String land_owner_uuid = LandsManager.getLandDetailById(new Integer(land_id), "owner_uuid");
 
                 if (!player.getUniqueId().toString().equals(land_owner_uuid)
-                        && !LandMembersManager.hasPlayerThePermissionToDo(new Integer(land_id),
+                        && !LandMembersManager.hasFlagPermission(new Integer(land_id),
                                 player.getUniqueId().toString(),
                                 "breakblocks")) {
                     event.setCancelled(true);
@@ -1209,7 +1209,7 @@ public class ChunksProtection implements Listener {
                 String land_owner_uuid = LandsManager.getLandDetailById(new Integer(land_id), "owner_uuid");
 
                 if (!player.getUniqueId().toString().equals(land_owner_uuid)
-                        && !LandMembersManager.hasPlayerThePermissionToDo(new Integer(land_id),
+                        && !LandMembersManager.hasFlagPermission(new Integer(land_id),
                                 player.getUniqueId().toString(),
                                 "breakblocks")) {
                     event.setCancelled(true);
@@ -1236,7 +1236,7 @@ public class ChunksProtection implements Listener {
             String land_owner_uuid = LandsManager.getLandDetailById(new Integer(land_id), "owner_uuid");
 
             if (!player.getUniqueId().toString().equals(land_owner_uuid)
-                    && !LandMembersManager.hasPlayerThePermissionToDo(new Integer(land_id),
+                    && !LandMembersManager.hasFlagPermission(new Integer(land_id),
                             player.getUniqueId().toString(),
                             "pickupitems")) {
                 event.setCancelled(true);
@@ -1262,7 +1262,7 @@ public class ChunksProtection implements Listener {
             String land_owner_uuid = LandsManager.getLandDetailById(new Integer(land_id), "owner_uuid");
 
             if (!player.getUniqueId().toString().equals(land_owner_uuid)
-                    && !LandMembersManager.hasPlayerThePermissionToDo(new Integer(land_id),
+                    && !LandMembersManager.hasFlagPermission(new Integer(land_id),
                             player.getUniqueId().toString(),
                             "pickupitems")) {
                 event.setCancelled(true);
@@ -1313,7 +1313,7 @@ public class ChunksProtection implements Listener {
                 String land_owner_uuid = LandsManager.getLandDetailById(new Integer(land_id), "owner_uuid");
 
                 if (!entity.getUniqueId().toString().equals(land_owner_uuid)
-                        && !LandMembersManager.hasPlayerThePermissionToDo(new Integer(land_id),
+                        && !LandMembersManager.hasFlagPermission(new Integer(land_id),
                                 entity.getUniqueId().toString(),
                                 "usevehicles")) {
                     event.setCancelled(true);
@@ -1344,7 +1344,7 @@ public class ChunksProtection implements Listener {
                 String land_owner_uuid = LandsManager.getLandDetailById(new Integer(land_id), "owner_uuid");
 
                 if (!entity.getUniqueId().toString().equals(land_owner_uuid)
-                        && !LandMembersManager.hasPlayerThePermissionToDo(new Integer(land_id),
+                        && !LandMembersManager.hasFlagPermission(new Integer(land_id),
                                 entity.getUniqueId().toString(),
                                 "breakblocks")) {
                     event.setCancelled(true);
@@ -1375,7 +1375,7 @@ public class ChunksProtection implements Listener {
             String land_owner_uuid = LandsManager.getLandDetailById(new Integer(land_id), "owner_uuid");
 
             if (!player.getUniqueId().toString().equals(land_owner_uuid)
-                    && !LandMembersManager.hasPlayerThePermissionToDo(new Integer(land_id),
+                    && !LandMembersManager.hasFlagPermission(new Integer(land_id),
                             player.getUniqueId().toString(),
                             "leashmobs")) {
                 event.setCancelled(true);
@@ -1402,7 +1402,7 @@ public class ChunksProtection implements Listener {
                 String land_owner_uuid = LandsManager.getLandDetailById(new Integer(land_id), "owner_uuid");
 
                 if (!player.getUniqueId().toString().equals(land_owner_uuid)
-                        && !LandMembersManager.hasPlayerThePermissionToDo(new Integer(land_id),
+                        && !LandMembersManager.hasFlagPermission(new Integer(land_id),
                                 player.getUniqueId().toString(),
                                 "leashmobs")) {
                     event.setCancelled(true);
@@ -1429,7 +1429,7 @@ public class ChunksProtection implements Listener {
             String land_owner_uuid = LandsManager.getLandDetailById(new Integer(land_id), "owner_uuid");
 
             if (!player.getUniqueId().toString().equals(land_owner_uuid)
-                    && !LandMembersManager.hasPlayerThePermissionToDo(new Integer(land_id),
+                    && !LandMembersManager.hasFlagPermission(new Integer(land_id),
                             player.getUniqueId().toString(),
                             "leashmobs")) {
                 event.setCancelled(true);
@@ -1456,7 +1456,7 @@ public class ChunksProtection implements Listener {
             String land_owner_uuid = LandsManager.getLandDetailById(new Integer(land_id), "owner_uuid");
 
             if (!player.getUniqueId().toString().equals(land_owner_uuid)
-                    && !LandMembersManager.hasPlayerThePermissionToDo(new Integer(land_id),
+                    && !LandMembersManager.hasFlagPermission(new Integer(land_id),
                             player.getUniqueId().toString(),
                             "containers")) {
                 event.setCancelled(true);
@@ -1490,7 +1490,7 @@ public class ChunksProtection implements Listener {
                     String land_owner_uuid = LandsManager.getLandDetailById(new Integer(land_id), "owner_uuid");
 
                     if (!player.getUniqueId().toString().equals(land_owner_uuid)
-                            && !LandMembersManager.hasPlayerThePermissionToDo(new Integer(land_id),
+                            && !LandMembersManager.hasFlagPermission(new Integer(land_id),
                                     player.getUniqueId().toString(),
                                     "dyemobs")) {
                         event.setCancelled(true);
@@ -1523,7 +1523,7 @@ public class ChunksProtection implements Listener {
                     String land_owner_uuid = LandsManager.getLandDetailById(new Integer(land_id), "owner_uuid");
 
                     if (!player.getUniqueId().toString().equals(land_owner_uuid)
-                            && !LandMembersManager.hasPlayerThePermissionToDo(new Integer(land_id),
+                            && !LandMembersManager.hasFlagPermission(new Integer(land_id),
                                     player.getUniqueId().toString(),
                                     "renamemobs")) {
                         event.setCancelled(true);

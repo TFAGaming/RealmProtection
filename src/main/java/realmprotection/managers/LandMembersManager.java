@@ -88,6 +88,24 @@ public class LandMembersManager {
         }
     }
 
+    public static void removeAllMembersFromLand(int land_id) {
+        String sql = "DELETE FROM land_members WHERE land_id = ?";
+
+        try {
+            Connection connection = RealmProtection.database.getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql);
+
+            statement.setInt(1, land_id);
+
+            statement.executeUpdate();
+            statement.close();
+
+            cacheUpdateAll();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static String getRoleNameFromPlayername(int land_id, String player_uuid) {
         if (cache.containsKey(createCacheKey(land_id, player_uuid))) {
             List<Object> data = cache.get(createCacheKey(land_id, player_uuid));
@@ -96,31 +114,6 @@ public class LandMembersManager {
             String role_name = RolesManager.getRoleDetailById(land_id, new Integer(role_id), "role_name");
 
             return role_name;
-        }
-
-        String sql = "SELECT * FROM land_members WHERE land_id = ? AND member_uuid COLLATE NOCASE = ?";
-
-        try {
-            Connection connection = RealmProtection.database.getConnection();
-            PreparedStatement statement = connection.prepareStatement(sql);
-
-            statement.setInt(1, land_id);
-            statement.setString(2, player_uuid);
-
-            ResultSet rs = statement.executeQuery();
-
-            if (rs.next()) {
-                String role_id = rs.getString("role_id");
-                String role_name = RolesManager.getRoleDetailById(land_id, new Integer(role_id), "role_name");
-
-                return role_name;
-            }
-
-            statement.close();
-
-            cacheUpdateAll();
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
 
         RealmProtection plugin = RealmProtection.getPlugin(RealmProtection.class);
@@ -132,7 +125,7 @@ public class LandMembersManager {
         return cache.containsKey(createCacheKey(land_id, player_uuid));
     }
 
-    public static boolean hasPlayerThePermissionToDo(int land_id, String player_uuid, String permission_name) {
+    public static boolean hasFlagPermission(int land_id, String player_uuid, String permission_name) {
         boolean isTrusted = isPlayerInTheLand(land_id, player_uuid);
 
         RealmProtection plugin = RealmProtection.getPlugin(RealmProtection.class);
@@ -154,74 +147,33 @@ public class LandMembersManager {
     }
 
     public static List<List<String>> listAllMembersData(int land_id) {
-        String sql = "SELECT * FROM land_members WHERE land_id = ?";
+        List<List<String>> members_data = new ArrayList<>();
 
-        List<List<String>> data = new ArrayList<>();
+        for (Map.Entry<String, List<Object>> entry : cache.entrySet()) {
+            List<Object> data = entry.getValue();
 
-        try {
-            Connection connection = RealmProtection.database.getConnection();
-            PreparedStatement statement = connection.prepareStatement(sql);
+            if (new Integer((String) data.get(1)) == land_id) {
+                String role_name = RolesManager.getRoleDetailById(land_id, new Integer((String) data.get(3)), "role_name");
 
-            statement.setInt(1, land_id);
-
-            ResultSet result = statement.executeQuery();
-
-            while (result.next()) {
-                String member_uuid = result.getString("member_uuid");
-                String role_id = result.getString("role_id");
-
-                String role_name = RolesManager.getRoleDetailById(land_id, new Integer(role_id), "role_name");
-
-                data.add(Lists.newArrayList(Bukkit.getOfflinePlayer(UUID.fromString(member_uuid)).getName(), role_name));
+                members_data.add(Lists.newArrayList(Bukkit.getOfflinePlayer(UUID.fromString((String) data.get(2))).getName(), role_name)); 
             }
-
-            statement.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
 
-        return data;
+        return members_data;
     }
 
     public static int getMembersCountOfLand(int land_id) {
-        String sql = "SELECT COUNT (*) AS count FROM land_members WHERE land_id = ?";
+        int count = 0;
 
-        try {
-            Connection connection = RealmProtection.database.getConnection();
-            PreparedStatement statement = connection.prepareStatement(sql);
+        for (Map.Entry<String, List<Object>> entry : cache.entrySet()) {
+            List<Object> data = entry.getValue();
 
-            statement.setInt(1, land_id);
-            ResultSet rs = statement.executeQuery();
-
-            if (rs.next()) {
-                int count = rs.getInt("count");
-                return count;
+            if (new Integer((String) data.get(1)) == land_id) {
+                count++;
             }
-
-            statement.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
 
-        return 0;
-    }
-
-    public static void deleteAllMembersFromLand(int land_id) {
-        String sql = "DELETE FROM land_members WHERE land_id = ?";
-
-        try {
-            Connection connection = RealmProtection.database.getConnection();
-            PreparedStatement statement = connection.prepareStatement(sql);
-
-            statement.setInt(1, land_id);
-
-            statement.executeUpdate();
-            statement.close();
-
-            cacheUpdateAll();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        return count;
     }
 
     private static String createCacheKey(Object land_id, String member_uuid) {

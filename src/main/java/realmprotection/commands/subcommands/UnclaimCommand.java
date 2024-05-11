@@ -52,12 +52,10 @@ public class UnclaimCommand implements CommandExecutor {
 
             player.sendMessage(Language.getCommand("unclaim.chunk_unclaimed_success"));
 
-            boolean hasOneChunkClaimedForLand = ChunksManager.isLandHaveAtLeastOneChunk(new Integer(land_id));
-
-            if (!hasOneChunkClaimedForLand) {
+            if (ChunksManager.getChunksCountOfLand(new Integer(land_id)) == 0) {
                 LandsManager.deleteLand(new Integer(land_id));
                 RolesManager.deleteAllRolesFromLand(new Integer(land_id));
-                LandMembersManager.deleteAllMembersFromLand(new Integer(land_id));
+                LandMembersManager.removeAllMembersFromLand(new Integer(land_id));
                 LandInvitesManager.deleteAllInvitesFromLand(new Integer(land_id));
                 LandBansManager.deleteAllBannedPlayersFromLand(new Integer(land_id));
                 ChunksManager.deleteAllChunksFromLand(new Integer(land_id));

@@ -20,8 +20,8 @@ public class RolesManager {
     private static final Map<String, List<Object>> role_id_cache = new HashMap<>();
     private static final Map<String, List<Object>> land_id_and_role_name_cache = new HashMap<>();
     private static final Map<String, List<Object>> land_id_and_role_id_cache = new HashMap<>();
-    private static final Map<String, List<Boolean>> role_id_flags_cache = new HashMap<>();
-    private static final Map<String, List<Boolean>> land_id_and_role_name_flags_cache = new HashMap<>();
+    private static final Map<String, List<Object>> role_id_flags_cache = new HashMap<>();
+    private static final Map<String, List<Object>> land_id_and_role_name_flags_cache = new HashMap<>();
 
     public static void cacheUpdateAll() {
         String sql = "SELECT * FROM land_roles";
@@ -81,7 +81,7 @@ public class RolesManager {
                 boolean permissions_usevehicles = result.getBoolean("permissions_usevehicles");
 
                 List<Object> data_role_cache = Lists.newArrayList(role_id, land_id, role_name);
-                List<Boolean> data_role_id_flags_cache = Lists.newArrayList(
+                List<Object> data_role_id_flags_cache = Lists.newArrayList(
                         permissions_breakblocks,
                         permissions_placeblocks,
                         permissions_containers,
@@ -117,7 +117,9 @@ public class RolesManager {
                         permissions_pickupitems,
                         permissions_useanvil,
                         permissions_createfire,
-                        permissions_usevehicles);
+                        permissions_usevehicles,
+                        land_id,
+                        role_name);
 
                 role_id_cache.put("" + role_id, data_role_cache);
                 land_id_and_role_name_cache.put(land_id + "," + role_name, data_role_cache);
@@ -246,27 +248,17 @@ public class RolesManager {
     }
 
     public static int countRolesFromLand(int land_id) {
-        String sql = "SELECT COUNT (*) AS count FROM land_roles WHERE land_id = ?";
+        int count = 0;
 
-        try {
-            Connection connection = RealmProtection.database.getConnection();
-            PreparedStatement statement = connection.prepareStatement(sql);
+        for (Map.Entry<String, List<Object>> entry : role_id_cache.entrySet()) {
+            List<Object> data = entry.getValue();
 
-            statement.setInt(1, new Integer(land_id));
-
-            ResultSet rs = statement.executeQuery();
-
-            if (rs.next()) {
-                int count = rs.getInt("count");
-                return count;
+            if (new Integer((String) data.get(1)) == land_id) {
+                count++;
             }
-
-            statement.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
 
-        return 0;
+        return count;
     }
 
     public static String getRoleDetail(int land_id, String role_name, String variable) {
@@ -283,30 +275,6 @@ public class RolesManager {
                 default:
                     return null;
             }
-        }
-
-        String sql = "SELECT * FROM land_roles WHERE land_id = ? AND role_name COLLATE NOCASE = ?";
-
-        try {
-            Connection connection = RealmProtection.database.getConnection();
-            PreparedStatement statement = connection.prepareStatement(sql);
-
-            statement.setInt(1, land_id);
-            statement.setString(2, role_name);
-
-            ResultSet result = statement.executeQuery();
-
-            if (result.next()) {
-                String string = result.getString(variable);
-
-                return string;
-            }
-
-            statement.close();
-
-            cacheUpdateAll();
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
 
         return null;
@@ -328,57 +296,22 @@ public class RolesManager {
             }
         }
 
-        String sql = "SELECT * FROM land_roles WHERE land_id = ? AND id = ?";
-
-        try {
-            Connection connection = RealmProtection.database.getConnection();
-            PreparedStatement statement = connection.prepareStatement(sql);
-
-            statement.setInt(1, land_id);
-            statement.setInt(2, role_id);
-
-            ResultSet result = statement.executeQuery();
-
-            if (result.next()) {
-                String string = result.getString(variable);
-
-                return string;
-            }
-
-            statement.close();
-
-            cacheUpdateAll();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
         return null;
     }
 
     public static boolean hasRole(int land_id, String role_name) {
-        String sql = "SELECT COUNT (*) AS count FROM land_roles WHERE land_id = ? AND role_name COLLATE NOCASE = ?";
-        boolean bool = false;
+        boolean value = false;
 
-        try {
-            Connection connection = RealmProtection.database.getConnection();
-            PreparedStatement statement = connection.prepareStatement(sql);
+        for (Map.Entry<String, List<Object>> entry : role_id_cache.entrySet()) {
+            List<Object> data = entry.getValue();
 
-            statement.setInt(1, land_id);
-            statement.setString(2, role_name);
-
-            ResultSet rs = statement.executeQuery();
-
-            if (rs.next()) {
-                int count = rs.getInt("count");
-                bool = count > 0;
+            if (new Integer((String) data.get(1)) == land_id && ((String) data.get(2)).equals(role_name)) {
+                value = true;
+                break;
             }
-
-            statement.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
 
-        return bool;
+        return value;
     }
 
     public static boolean hasReachedMaximumRolesCountForLand(Player player) {
@@ -407,107 +340,84 @@ public class RolesManager {
 
     public static boolean getPermissionValue(int land_id, String role_name, String permission_name) {
         if (land_id_and_role_name_flags_cache.containsKey(land_id + "," + role_name)) {
-            List<Boolean> data = land_id_and_role_name_flags_cache.get(land_id + "," + role_name);
+            List<Object> data = land_id_and_role_name_flags_cache.get(land_id + "," + role_name);
 
             switch ("permissions_" + permission_name) {
                 case "permissions_breakblocks":
-                    return data.get(0);
+                    return (Boolean) data.get(0);
                 case "permissions_placeblocks":
-                    return data.get(1);
+                    return (Boolean) data.get(1);
                 case "permissions_containers":
-                    return data.get(2);
+                    return (Boolean) data.get(2);
                 case "permissions_redstone":
-                    return data.get(3);
+                    return (Boolean) data.get(3);
                 case "permissions_doors":
-                    return data.get(4);
+                    return (Boolean) data.get(4);
                 case "permissions_trapdoors":
-                    return data.get(5);
+                    return (Boolean) data.get(5);
                 case "permissions_editsigns":
-                    return data.get(6);
+                    return (Boolean) data.get(6);
                 case "permissions_emptybuckets":
-                    return data.get(7);
+                    return (Boolean) data.get(7);
                 case "permissions_fillbuckets":
-                    return data.get(8);
+                    return (Boolean) data.get(8);
                 case "permissions_harvestcrops":
-                    return data.get(9);
+                    return (Boolean) data.get(9);
                 case "permissions_frostwalker":
-                    return data.get(10);
+                    return (Boolean) data.get(10);
                 case "permissions_shearentities":
-                    return data.get(11);
+                    return (Boolean) data.get(11);
                 case "permissions_itemframes":
-                    return data.get(12);
+                    return (Boolean) data.get(12);
                 case "permissions_generalinteractions":
-                    return data.get(13);
+                    return (Boolean) data.get(13);
                 case "permissions_fencegates":
-                    return data.get(14);
+                    return (Boolean) data.get(14);
                 case "permissions_buttons":
-                    return data.get(15);
+                    return (Boolean) data.get(15);
                 case "permissions_levers":
-                    return data.get(16);
+                    return (Boolean) data.get(16);
                 case "permissions_pressureplates":
-                    return data.get(17);
+                    return (Boolean) data.get(17);
                 case "permissions_bells":
-                    return data.get(18);
+                    return (Boolean) data.get(18);
                 case "permissions_tripwires":
-                    return data.get(19);
+                    return (Boolean) data.get(19);
                 case "permissions_armorstands":
-                    return data.get(20);
+                    return (Boolean) data.get(20);
                 case "permissions_dyemobs":
-                    return data.get(21);
+                    return (Boolean) data.get(21);
                 case "permissions_renamemobs":
-                    return data.get(22);
+                    return (Boolean) data.get(22);
                 case "permissions_leashmobs":
-                    return data.get(23);
+                    return (Boolean) data.get(23);
                 case "permissions_tradewithvillagers":
-                    return data.get(24);
+                    return (Boolean) data.get(24);
                 case "permissions_teleporttospawn":
-                    return data.get(25);
+                    return (Boolean) data.get(25);
                 case "permissions_throwenderpearls":
-                    return data.get(26);
+                    return (Boolean) data.get(26);
                 case "permissions_throwpotions":
-                    return data.get(27);
+                    return (Boolean) data.get(27);
                 case "permissions_damagehostilemobs":
-                    return data.get(28);
+                    return (Boolean) data.get(28);
                 case "permissions_damagepassivemobs":
-                    return data.get(29);
+                    return (Boolean) data.get(29);
                 case "permissions_pvp":
-                    return data.get(30);
+                    return (Boolean) data.get(30);
                 case "permissions_usecauldron":
-                    return data.get(31);
+                    return (Boolean) data.get(31);
                 case "permissions_pickupitems":
-                    return data.get(32);
+                    return (Boolean) data.get(32);
                 case "permissions_useanvil":
-                    return data.get(33);
+                    return (Boolean) data.get(33);
                 case "permissions_createfire":
-                    return data.get(34);
+                    return (Boolean) data.get(34);
                 case "permissions_usevehicles":
-                    return data.get(35);
+                    return (Boolean) data.get(35);
                 default:
                     return false;
             }
-        }
-
-        String sql = "SELECT * FROM land_roles WHERE land_id = ? AND role_name COLLATE NOCASE = ?";
-
-        try {
-            Connection connection = RealmProtection.database.getConnection();
-            PreparedStatement statement = connection.prepareStatement(sql);
-
-            statement.setInt(1, land_id);
-            statement.setString(2, role_name);
-
-            ResultSet result = statement.executeQuery();
-
-            if (result.next()) {
-                boolean value = result.getBoolean("permissions_" + permission_name);
-                return value;
-            }
-
-            statement.close();
-
-            cacheUpdateAll();
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
 
         return false;
@@ -559,92 +469,34 @@ public class RolesManager {
     }
 
     public static List<String> listAllRolesNames(int land_id) {
-        String sql = "SELECT * FROM land_roles WHERE land_id = ?";
+        List<String> role_names = new ArrayList<>();
 
-        List<String> rolenames = new ArrayList<>();
+        for (Map.Entry<String, List<Object>> entry : role_id_cache.entrySet()) {
+            List<Object> data = entry.getValue();
 
-        try {
-            Connection connection = RealmProtection.database.getConnection();
-            PreparedStatement statement = connection.prepareStatement(sql);
-
-            statement.setInt(1, land_id);
-
-            ResultSet result = statement.executeQuery();
-
-            while (result.next()) {
-                String role_name = result.getString("role_name");
-
-                rolenames.add(role_name);
+            if (new Integer((String) data.get(1)) == land_id) {
+                role_names.add((String) data.get(2));
             }
-
-            statement.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
 
-        return rolenames;
+        return role_names;
     }
 
     public static List<List<Object>> listEnabledAndDisabledFlagsForRole(int land_id, String role_name) {
-        String sql = "SELECT * FROM land_roles WHERE land_id = ? AND role_name COLLATE NOCASE = ?";
-
         List<List<Object>> allflags = new ArrayList<>();
+        List<String> all_permissions = listAllPermissions();
 
-        try {
-            Connection connection = RealmProtection.database.getConnection();
-            PreparedStatement statement = connection.prepareStatement(sql);
+        for (Map.Entry<String, List<Object>> entry : role_id_flags_cache.entrySet()) {
+            List<Object> data = entry.getValue();
 
-            statement.setInt(1, land_id);
-            statement.setString(2, role_name);
+            if (new Integer((String) data.get(data.size() - 2)) == land_id && ((String) data.get(data.size() - 1)).equals(role_name)) {
+                for (int index = 0; index < data.size() - 2; index++) {
+                    allflags.add(Lists.newArrayList(
+                            all_permissions.get(index), (Boolean) data.get(index)));
+                }
 
-            ResultSet result = statement.executeQuery();
-
-            while (result.next()) {
-                allflags.add(Lists.newArrayList("breakblocks", result.getBoolean("permissions_breakblocks")));
-                allflags.add(Lists.newArrayList("placeblocks", result.getBoolean("permissions_placeblocks")));
-                allflags.add(Lists.newArrayList("containers", result.getBoolean("permissions_containers")));
-                allflags.add(Lists.newArrayList("redstone", result.getBoolean("permissions_redstone")));
-                allflags.add(Lists.newArrayList("doors", result.getBoolean("permissions_doors")));
-                allflags.add(Lists.newArrayList("trapdoors", result.getBoolean("permissions_trapdoors")));
-                allflags.add(Lists.newArrayList("editsigns", result.getBoolean("permissions_editsigns")));
-                allflags.add(Lists.newArrayList("emptybuckets", result.getBoolean("permissions_emptybuckets")));
-                allflags.add(Lists.newArrayList("fillbuckets", result.getBoolean("permissions_fillbuckets")));
-                allflags.add(Lists.newArrayList("harvestcrops", result.getBoolean("permissions_harvestcrops")));
-                allflags.add(Lists.newArrayList("frostwalker", result.getBoolean("permissions_frostwalker")));
-                allflags.add(Lists.newArrayList("shearentities", result.getBoolean("permissions_shearentities")));
-                allflags.add(Lists.newArrayList("itemframes", result.getBoolean("permissions_itemframes")));
-                allflags.add(Lists.newArrayList("generalinteractions",
-                        result.getBoolean("permissions_generalinteractions")));
-                allflags.add(Lists.newArrayList("fencegates", result.getBoolean("permissions_fencegates")));
-                allflags.add(Lists.newArrayList("buttons", result.getBoolean("permissions_buttons")));
-                allflags.add(Lists.newArrayList("levers", result.getBoolean("permissions_levers")));
-                allflags.add(Lists.newArrayList("pressureplates", result.getBoolean("permissions_pressureplates")));
-                allflags.add(Lists.newArrayList("bells", result.getBoolean("permissions_bells")));
-                allflags.add(Lists.newArrayList("tripwires", result.getBoolean("permissions_tripwires")));
-                allflags.add(Lists.newArrayList("armorstands", result.getBoolean("permissions_armorstands")));
-                allflags.add(Lists.newArrayList("dyemobs", result.getBoolean("permissions_dyemobs")));
-                allflags.add(Lists.newArrayList("renamemobs", result.getBoolean("permissions_renamemobs")));
-                allflags.add(Lists.newArrayList("leashmobs", result.getBoolean("permissions_leashmobs")));
-                allflags.add(
-                        Lists.newArrayList("tradewithvillagers", result.getBoolean("permissions_tradewithvillagers")));
-                allflags.add(Lists.newArrayList("teleporttospawn", result.getBoolean("permissions_teleporttospawn")));
-                allflags.add(Lists.newArrayList("throwenderpearls", result.getBoolean("permissions_throwenderpearls")));
-                allflags.add(Lists.newArrayList("throwpotions", result.getBoolean("permissions_throwpotions")));
-                allflags.add(
-                        Lists.newArrayList("damagehostilemobs", result.getBoolean("permissions_damagehostilemobs")));
-                allflags.add(
-                        Lists.newArrayList("damagepassivemobs", result.getBoolean("permissions_damagepassivemobs")));
-                allflags.add(Lists.newArrayList("pvp", result.getBoolean("permissions_pvp")));
-                allflags.add(Lists.newArrayList("usecauldron", result.getBoolean("permissions_usecauldron")));
-                allflags.add(Lists.newArrayList("pickupitems", result.getBoolean("permissions_pickupitems")));
-                allflags.add(Lists.newArrayList("useanvil", result.getBoolean("permissions_useanvil")));
-                allflags.add(Lists.newArrayList("createfire", result.getBoolean("permissions_createfire")));
-                allflags.add(Lists.newArrayList("usevehicles", result.getBoolean("permissions_usevehicles")));
+                break;
             }
-
-            statement.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
 
         return allflags;
