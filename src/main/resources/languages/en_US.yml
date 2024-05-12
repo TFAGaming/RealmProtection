@@ -142,6 +142,9 @@ commands:
     max_chunks_claimed: "&cYou have claimed the maximum of chunks you have!"
     chunk_claimed_success: "&aYou have successfully claimed the chunk! &9%chunk_x%, %chunk_z%"
 
+  claimlist:
+    land_not_found: "&cYou don't have a land!"
+
   delete:
       land_not_found: "&cYou don't have a land!"
       confirm_missing: "&7You must confirm to continue..."
@@ -177,7 +180,7 @@ commands:
       - ""
       - "&6The main command: &7/lands [subcommand]"
       - ""
-      - "&6Available sub commands: &7accept, balance, ban, banlist, claim, deposit, delete, fly, help, info, invites, leave, nature, rename, roles, setspawn, spawn, storage, top, trust, unban, unclaim, untrust, view, withdraw"
+      - "&6Available sub commands: &7accept, balance, ban, banlist, claim, claimlist, deposit, delete, fly, help, info, invites, leave, nature, rename, roles, setspawn, spawn, storage, top, trust, unban, unclaim, untrust, view, withdraw"
       - ""
       - "&6Permissions: &7realmprotection.lands.[subcommand]"
       - ""
@@ -321,6 +324,18 @@ commands:
 # GUI (Graphical User Interface, using inventories)
 # IMPORTANT: The slots cannot be changed, unless you download the source of the plugin and set each specific item with it's index, and then package it to a ".jar" file.
 gui:
+  paginator:
+    previous_button:
+      type: "TEXTURE-f6dab7271f4ff04d5440219067a109b5c0c1d1e01ec602c0020476f7eb612180"
+      displayname: "&9Previous"
+    page_info:
+      type: "PAPER"
+      displayname: "&7Page %page%/%total_pages%"
+    next_button:
+      type: "TEXTURE-8aa187fede88de002cbd930575eb7ba48d3b1a06d961bdc535800750af764926"
+      displayname: "&9Next"
+
+  # For commands that uses GUIs
   commands:
     # /land info [land name]
     land_info:
@@ -333,16 +348,16 @@ gui:
             - "&aChunks: &f%chunks%"
             - "&aBalance: &f$%balance%"
             - "&aCreated at: &f%created_at%"
-          type: "OAK_SIGN"
+          type: "TEXTURE-d01afe973c5482fdc71e6aa10698833c79c437f21308ea9a1a095746ec274a0f"
         land_owner:
           displayname: "&9Owner: &c%land_owner%"
-          type: "PLAYER_HEAD"
+          type: "TEXTURE-b8867c1c5826b99470953ac8908028ec89b5c6c14d1bd8b5d366c6eab88cfe0a" # Player kind head
         land_members:
           displayname: "&9Members (%members_count%):"
           lore:
             - "%repeatstyle%"
           __LORE_REPEAT_STYLE__: "&a%role_name%&f: &6%member_name%"
-          type: "EMERALD"   
+          type: "PLAYER_HEAD"   
             
     # /land roles flags [role name]
     role_flags:
@@ -386,7 +401,7 @@ gui:
         throwenderpearls: "ENDER_PEARL"
         throwpotions: "SPLASH_POTION"
         damagehostilemobs: "ZOMBIE_HEAD"
-        damagepassivemobs: "IRON_SWORD"
+        damagepassivemobs: "TEXTURE-9cfea6677e7acd70eaf73e2e43d4035c1d1ae3e3be76eed9ab3097186ca9a6e7"
         pvp: "DIAMOND_SWORD"
         usecauldron: "CAULDRON"
         pickupitems: "SUNFLOWER"
@@ -408,7 +423,7 @@ gui:
           type: "PAPER"
       __FLAGS_REPEAT_STYLE_ITEMS_CONFIG__:
         hostilemobsspawn: "ZOMBIE_HEAD"
-        passivemobsspawn: "SPAWNER"
+        passivemobsspawn: "TEXTURE-9cfea6677e7acd70eaf73e2e43d4035c1d1ae3e3be76eed9ab3097186ca9a6e7"
         leavesdecay: "VINE"
         firespread: "FLINT_AND_STEEL"
         liquidflow: "WATER_BUCKET"
@@ -421,6 +436,16 @@ gui:
     # /land storage
     land_storage:
       title: "&9Land storage"
+
+    # /land claimlist
+    land_claimlist:
+      title: "&9Land Claimlist"
+      content:
+        __ITEM_DISPLAYNAME__: "&9X: &a%chunk_x%&9, Z: &a%chunk_z% &9(%chunk_world%)"
+        __ITEM_TYPE__:
+          __DEFAULT__: "TEXTURE-e40f2391e71df56d8f8810e8039fced5b2e35394f40de6fecf644bde2ffb017d"
+          __NETHER__: "TEXTURE-99c6a378a72da175831c9394fa45eb7343f31d7d058fa76a9a646be007b7888d"
+          __END__: "TEXTURE-42813cf8c4fd013baf5bf55a8c93121c482da1cf6e1054c180ff3e81727b65dd"
 
 # Flags configuration (for GUIs)
 flags:

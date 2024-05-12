@@ -1,6 +1,7 @@
 package realmprotection.events;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.bukkit.Material;
@@ -17,6 +18,7 @@ import realmprotection.managers.LandStorageManager;
 import realmprotection.managers.LandsManager;
 import realmprotection.managers.RolesManager;
 import realmprotection.utils.ChatColorTranslator;
+import realmprotection.utils.CustomHeadTexture;
 import realmprotection.utils.Language;
 
 public class GUIListener implements Listener {
@@ -79,8 +81,7 @@ public class GUIListener implements Listener {
 
             RolesManager.updatePermissionValue(new Integer(land_id), role_name, permission, value);
 
-            ItemStack flagButton = new ItemStack(
-					getMaterialItemFromPermissionNameRoleFlags("permissions_" + permission));
+            ItemStack flagButton = getItemFromPermissionNameRoleFlags("permissions_" + permission);
 
 			ItemMeta flagButtonMeta = flagButton.getItemMeta();
 			flagButtonMeta.setDisplayName(ChatColorTranslator
@@ -146,8 +147,7 @@ public class GUIListener implements Listener {
 
             LandsManager.updateNatureFlagValue(new Integer(land_id), flag, value);
 
-            ItemStack flagButton = new ItemStack(
-                    getMaterialItemFromFlagNameNatueFlags("nature_" + flag));
+            ItemStack flagButton = getItemFromFlagNatureFlags("nature_" + flag);
 
             ItemMeta flagButtonMeta = flagButton.getItemMeta();
             flagButtonMeta.setDisplayName(ChatColorTranslator
@@ -214,29 +214,7 @@ public class GUIListener implements Listener {
         }
     }
 
-    private static Material getMaterialItemFromFlagNameNatueFlags(String flag) {
-        String[] splitted = flag.split("_");
-        List<String> splittedlist = new ArrayList<>();
-
-        for (String split : splitted) {
-            splittedlist.add(split);
-        }
-
-        Material material = Material.getMaterial(
-                (String) getFromLanguageNatureFlags("__FLAGS_REPEAT_STYLE_ITEMS_CONFIG__." + splittedlist.get(1)));
-
-        if (material != null) {
-            return material;
-        } else {
-            return Material.STRUCTURE_VOID;
-        }
-    }
-
-    private static Object getFromLanguageNatureFlags(String path) {
-        return Language.get("gui.commands.nature_flags." + path);
-    }
-
-    private static Material getMaterialItemFromPermissionNameRoleFlags(String permission) {
+    private static ItemStack getItemFromFlagNatureFlags(String permission) {
 		String[] splitted = permission.split("_");
 		List<String> splittedlist = new ArrayList<>();
 
@@ -244,13 +222,28 @@ public class GUIListener implements Listener {
 			splittedlist.add(split);
 		}
 
-		Material material = Material.getMaterial((String) getFromLanguageRoleFlags("__FLAGS_REPEAT_STYLE_ITEMS_CONFIG__." + splittedlist.get(1)));
+		String itemType = (String) getFromLanguageNatureFlags("__FLAGS_REPEAT_STYLE_ITEMS_CONFIG__." + splittedlist.get(1));
+		ItemStack item = itemType.startsWith("TEXTURE-") ? CustomHeadTexture.get(Arrays.asList(itemType.split("-")).get(1)) : new ItemStack(Material.getMaterial(itemType) == null ? Material.STRUCTURE_VOID : Material.getMaterial(itemType));
 
-		if (material != null) {
-			return material;
-		} else {
-			return Material.STRUCTURE_VOID;
+		return item;
+	}
+
+    private static Object getFromLanguageNatureFlags(String path) {
+        return Language.get("gui.commands.nature_flags." + path);
+    }
+
+    private static ItemStack getItemFromPermissionNameRoleFlags(String permission) {
+		String[] splitted = permission.split("_");
+		List<String> splittedlist = new ArrayList<>();
+
+		for (String split : splitted) {
+			splittedlist.add(split);
 		}
+
+		String itemType = (String) getFromLanguageRoleFlags("__FLAGS_REPEAT_STYLE_ITEMS_CONFIG__." + splittedlist.get(1));
+		ItemStack item = itemType.startsWith("TEXTURE-") ? CustomHeadTexture.get(Arrays.asList(itemType.split("-")).get(1)) : new ItemStack(Material.getMaterial(itemType) == null ? Material.STRUCTURE_VOID : Material.getMaterial(itemType));
+
+		return item;
 	}
 
     private static Object getFromLanguageRoleFlags(String path) {

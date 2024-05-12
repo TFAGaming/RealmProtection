@@ -1,6 +1,7 @@
 package realmprotection.gui;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.bukkit.Bukkit;
@@ -12,6 +13,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import realmprotection.managers.LandsManager;
 import realmprotection.utils.ChatColorTranslator;
+import realmprotection.utils.CustomHeadTexture;
 import realmprotection.utils.Language;
 
 public class NatureFlagsGUI {
@@ -27,8 +29,7 @@ public class NatureFlagsGUI {
 		List<List<Object>> allflags = LandsManager.listEnabledAndDisabledFlagsForLand(new Integer(land_id));
 
 		for (List<Object> flag : allflags) {
-			ItemStack flagButton = new ItemStack(
-					getMaterialItemFromFlagName("nature_" + flag.get(0)));
+			ItemStack flagButton = getItemFromPermissionName("nature_" + flag.get(0));
 
 			ItemMeta flagButtonMeta = flagButton.getItemMeta();
 			flagButtonMeta.setDisplayName(ChatColorTranslator
@@ -70,8 +71,11 @@ public class NatureFlagsGUI {
 						.replace("%land_name%", land_name)));
 		landNameButton.setItemMeta(landNameButtonMeta);
 
-		ItemStack closeButton = new ItemStack(
-				Material.getMaterial((String) Language.get("general.guis.close_button.item.type")));
+		String closeButtonType = (String) Language.get("general.guis.close_button.item.type");
+		ItemStack closeButton = closeButtonType.startsWith("TEXTURE-")
+				? CustomHeadTexture.get(Arrays.asList(closeButtonType.split("-")).get(1))
+				: new ItemStack(Material.getMaterial(closeButtonType));
+
 		ItemMeta closeButtonMeta = closeButton.getItemMeta();
 		closeButtonMeta.setDisplayName(
 				ChatColorTranslator.translate((String) Language.get("general.guis.close_button.item.displayname")));
@@ -85,21 +89,18 @@ public class NatureFlagsGUI {
 		player.openInventory(inventory);
 	}
 
-	private static Material getMaterialItemFromFlagName(String flag) {
-		String[] splitted = flag.split("_");
+	private static ItemStack getItemFromPermissionName(String permission) {
+		String[] splitted = permission.split("_");
 		List<String> splittedlist = new ArrayList<>();
 
 		for (String split : splitted) {
 			splittedlist.add(split);
 		}
 
-		Material material = Material.getMaterial((String) getFromLanguage("__FLAGS_REPEAT_STYLE_ITEMS_CONFIG__." + splittedlist.get(1)));
+		String itemType = (String) getFromLanguage("__FLAGS_REPEAT_STYLE_ITEMS_CONFIG__." + splittedlist.get(1));
+		ItemStack item = itemType.startsWith("TEXTURE-") ? CustomHeadTexture.get(Arrays.asList(itemType.split("-")).get(1)) : new ItemStack(Material.getMaterial(itemType) == null ? Material.STRUCTURE_VOID : Material.getMaterial(itemType));
 
-		if (material != null) {
-			return material;
-		} else {
-			return Material.STRUCTURE_VOID;
-		}
+		return item;
 	}
 
 	private static Object getFromLanguage(String path) {

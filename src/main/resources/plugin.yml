@@ -34,6 +34,9 @@ permissions:
   realmprotection.lands.claim:
     description: "Allow a player to run the command: /lands claim"
     default: true
+  realmprotection.lands.claimlist:
+    description: "Allow a player to run the command: /lands claimlist"
+    default: true
   realmprotection.lands.deposit:
     description: "Allow a player to run the command: /lands deposit"
     default: true

@@ -205,7 +205,7 @@ public class ChunksManager {
             List<Object> data = entry.getValue();
 
             if ((int) data.get(4) == land_id) {
-                chunks.add(data.subList(1, 4));
+                chunks.add(data.subList(1, 6));
             }
         }
 

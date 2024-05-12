@@ -3,6 +3,7 @@ package realmprotection.gui;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -18,6 +19,7 @@ import realmprotection.managers.ChunksManager;
 import realmprotection.managers.LandMembersManager;
 import realmprotection.managers.LandsManager;
 import realmprotection.utils.ChatColorTranslator;
+import realmprotection.utils.CustomHeadTexture;
 import realmprotection.utils.Language;
 
 public class LandInfoGUI {
@@ -25,14 +27,25 @@ public class LandInfoGUI {
 		Inventory inventory = Bukkit.createInventory(player, 9 * 3,
 				ChatColorTranslator.translate((String) getFromLanguage("title")));
 
-		ItemStack landInformationButton = new ItemStack(
-				Material.getMaterial((String) getFromLanguage(("content.land_information.type"))));
-		ItemStack landOwnerButton = new ItemStack(
-				Material.getMaterial((String) getFromLanguage("content.land_owner.type")));
-		ItemStack landMembersButton = new ItemStack(
-				Material.getMaterial((String) getFromLanguage("content.land_members.type")));
-		ItemStack landCloseButton = new ItemStack(
-				Material.getMaterial((String) Language.get("general.guis.close_button.item.type")));
+		String landInformationButtonType = (String) getFromLanguage(("content.land_information.type"));
+		ItemStack landInformationButton = landInformationButtonType.startsWith("TEXTURE-")
+				? CustomHeadTexture.get(Arrays.asList(landInformationButtonType.split("-")).get(1))
+				: new ItemStack(Material.getMaterial(landInformationButtonType));
+
+		String landOwnerButtonType = (String) getFromLanguage("content.land_owner.type");
+		ItemStack landOwnerButton = landOwnerButtonType.startsWith("TEXTURE-")
+				? CustomHeadTexture.get(Arrays.asList(landOwnerButtonType.split("-")).get(1))
+				: new ItemStack(Material.getMaterial(landOwnerButtonType));
+
+		String landMembersButtonType = (String) getFromLanguage("content.land_members.type");
+		ItemStack landMembersButton = landMembersButtonType.startsWith("TEXTURE-")
+				? CustomHeadTexture.get(Arrays.asList(landMembersButtonType.split("-")).get(1))
+				: new ItemStack(Material.getMaterial(landMembersButtonType));
+
+		String landCloseButtonType = (String) Language.get("general.guis.close_button.item.type");
+		ItemStack landCloseButton = landCloseButtonType.startsWith("TEXTURE-")
+				? CustomHeadTexture.get(Arrays.asList(landCloseButtonType.split("-")).get(1))
+				: new ItemStack(Material.getMaterial(landCloseButtonType));
 
 		ItemMeta landInformationButtonMeta = landInformationButton.getItemMeta();
 		landInformationButtonMeta.setDisplayName(ChatColorTranslator.translate(

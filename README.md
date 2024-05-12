@@ -73,6 +73,7 @@ The primary command for the plugin is `/land`, which also accepts the alias `/la
 - `/land ban [player name] (reason)`: Bans a player from entering a land.
 - `/land banlist`: Lists banned players from a land.
 - `/land claim {name}`: Creates a new land and protects the chunk the player is standing on.
+- `/land claimlist`: Opens a pagination GUI with a list of claimed chunks for a land.
 - `/land delete [confirm]`: Deletes a land, removing roles, trusted members, and claimed chunks.
 - `/land deposit [amount]`: Deposits money into a land's bank.
 - `/land fly`: Toggles fly mode in owned land chunks.

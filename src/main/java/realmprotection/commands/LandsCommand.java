@@ -16,6 +16,7 @@ import realmprotection.commands.subcommands.BalanceCommand;
 import realmprotection.commands.subcommands.BanCommand;
 import realmprotection.commands.subcommands.BanlistCommand;
 import realmprotection.commands.subcommands.ClaimCommand;
+import realmprotection.commands.subcommands.ClaimlistCommand;
 import realmprotection.commands.subcommands.DeleteCommand;
 import realmprotection.commands.subcommands.DeleteRoleCommand;
 import realmprotection.commands.subcommands.DepositCommand;
@@ -125,6 +126,9 @@ public class LandsCommand implements TabExecutor {
                     case "top":
                         new TopCommand().onCommand(sender, command, label, args);
                         break;
+                    case "claimlist":
+                        new ClaimlistCommand().onCommand(sender, command, label, args);
+                        break;
                     default:
                         break;
                 }
@@ -194,6 +198,7 @@ public class LandsCommand implements TabExecutor {
             arraylist.add("accept");
             arraylist.add("invites");
             arraylist.add("top");
+            arraylist.add("claimlist");
 
             currentindex = 1;
         } else if (args.length == 2) {

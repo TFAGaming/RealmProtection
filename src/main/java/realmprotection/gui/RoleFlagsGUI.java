@@ -1,6 +1,7 @@
 package realmprotection.gui;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +16,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import realmprotection.managers.LandsManager;
 import realmprotection.managers.RolesManager;
 import realmprotection.utils.ChatColorTranslator;
+import realmprotection.utils.CustomHeadTexture;
 import realmprotection.utils.Language;
 
 public class RoleFlagsGUI {
@@ -30,8 +32,7 @@ public class RoleFlagsGUI {
 				role_name);
 
 		for (List<Object> flag : allflags) {
-			ItemStack flagButton = new ItemStack(
-					getMaterialItemFromPermissionName("permissions_" + flag.get(0)));
+			ItemStack flagButton = getItemFromPermissionName("permissions_" + flag.get(0));
 
 			ItemMeta flagButtonMeta = flagButton.getItemMeta();
 			flagButtonMeta.setDisplayName(ChatColorTranslator
@@ -72,8 +73,11 @@ public class RoleFlagsGUI {
 				((String) getFromLanguage("content.role_name.displayname")).replace("%role%", role_name)));
 		roleNameButton.setItemMeta(roleNameButtonMeta);
 
-		ItemStack closeButton = new ItemStack(
-				Material.getMaterial((String) Language.get("general.guis.close_button.item.type")));
+		String closeButtonType = (String) Language.get("general.guis.close_button.item.type");
+		ItemStack closeButton = closeButtonType.startsWith("TEXTURE-")
+				? CustomHeadTexture.get(Arrays.asList(closeButtonType.split("-")).get(1))
+				: new ItemStack(Material.getMaterial(closeButtonType));
+				
 		ItemMeta closeButtonMeta = closeButton.getItemMeta();
 		closeButtonMeta.setDisplayName(
 				ChatColorTranslator.translate((String) Language.get("general.guis.close_button.item.displayname")));
@@ -89,7 +93,7 @@ public class RoleFlagsGUI {
 		cache.put(player.getUniqueId().toString(), role_name);
 	}
 
-	private static Material getMaterialItemFromPermissionName(String permission) {
+	private static ItemStack getItemFromPermissionName(String permission) {
 		String[] splitted = permission.split("_");
 		List<String> splittedlist = new ArrayList<>();
 
@@ -97,13 +101,10 @@ public class RoleFlagsGUI {
 			splittedlist.add(split);
 		}
 
-		Material material = Material.getMaterial((String) getFromLanguage("__FLAGS_REPEAT_STYLE_ITEMS_CONFIG__." + splittedlist.get(1)));
+		String itemType = (String) getFromLanguage("__FLAGS_REPEAT_STYLE_ITEMS_CONFIG__." + splittedlist.get(1));
+		ItemStack item = itemType.startsWith("TEXTURE-") ? CustomHeadTexture.get(Arrays.asList(itemType.split("-")).get(1)) : new ItemStack(Material.getMaterial(itemType) == null ? Material.STRUCTURE_VOID : Material.getMaterial(itemType));
 
-		if (material != null) {
-			return material;
-		} else {
-			return Material.STRUCTURE_VOID;
-		}
+		return item;
 	}
 
 	private static Object getFromLanguage(String path) {

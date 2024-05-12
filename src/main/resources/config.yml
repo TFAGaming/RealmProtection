@@ -7,8 +7,13 @@ database:
 languages:
   locale: "en_US.yml"
 
+# General configuration
 general:
   economy: true # If 'true', this will enable the economy commands: /land balance, /land deposit, and /land withdraw.
+
+# Config for custom head textures
+textures:
+  url: "https://textures.minecraft.net/texture/"
 
 # The ratelimits for each player group
 ratelimits:
