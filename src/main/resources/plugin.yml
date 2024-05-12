@@ -70,6 +70,9 @@ permissions:
   realmprotection.lands.storage:
     description: "Allow a player to run the command: /lands storage"
     default: true
+  realmprotection.lands.top:
+    description: "Allow a player to run the command: /lands top"
+    default: true
   realmprotection.lands.trust:
     description: "Allow a player to run the command: /lands trust"
     default: true

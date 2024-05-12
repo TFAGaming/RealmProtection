@@ -89,6 +89,7 @@ The primary command for the plugin is `/land`, which also accepts the alias `/la
 - `/land setspawn`: Sets a land's spawn point to the player's current position.
 - `/land spawn [land name]`: Teleports to a land's spawn point.
 - `/land storage`: Opens a large inventory acting like an Ender chest.
+- `/land top`: Returns a list of the top 10 lands with the highest bank balance in the economy.
 - `/land trust [player name] [role name]`: Invites a player to join a land.
 - `/land unban [player name]`: Unbans a player from a land.
 - `/land unclaim [confirm]`: Unclaims the chunk the player is standing on and deletes the land if no chunks remain.

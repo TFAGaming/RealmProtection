@@ -17,6 +17,11 @@ public class TopCommand implements CommandExecutor {
         if (sender instanceof Player) {
             Player player = (Player) sender;
 
+            if (LandsManager.getTotalLandsCount() == 0) {
+                player.sendMessage(Language.getCommand("top.no_lands"));
+                return true;
+            }
+
             int limit = (int) Language.get("commands.top.__LIMIT__");
 
             List<List<Object>> alldata = LandsManager.getTopLands(limit);
