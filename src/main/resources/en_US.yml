@@ -244,6 +244,16 @@ commands:
     location_not_safe: "&cThe location is not safe, it could be a trap."
     spawn_teleport_success: "&aTeleported to &6%land_name%&a: &9%x%, %y%, %z% &a(%world%)"
 
+  top:
+    no_lands: "&aNobody created a land yet."
+    __LIMIT__: 10
+    __STRING_LIST__:
+      - "&9Top Lands | Limit: %limit%"
+      - ""
+      - ""
+      - "%repeatstyle%"
+    __REPEAT_STYLE__: "&7- #%rank% &6%land_name% (%land_id%):\n  &a• Owner: &c%land_owner%\n  &a• Balance: &6$%balance%\n  &a• Chunks: &6%chunks_count%\n"
+
   trust:
     land_not_found: "&cYou don't have a land!"
     no_playername_provided: "&cYou must name the player to trust."

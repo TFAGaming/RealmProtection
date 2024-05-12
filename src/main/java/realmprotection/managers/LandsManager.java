@@ -5,11 +5,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
+
+import org.bukkit.Bukkit;
 
 import com.google.common.collect.Lists;
 
@@ -343,6 +347,41 @@ public class LandsManager {
         }
 
         return false;
+    }
+
+    public static int getTotalLandsCount() {
+        return land_id_cache.size();
+    }
+
+    public static List<List<Object>> getTopLands(int limit) {
+        List<List<Object>> topLands = new ArrayList<>();
+
+        for (Map.Entry<String, List<Object>> entry : land_id_cache.entrySet()) {
+            List<Object> data = entry.getValue();
+
+            int land_id = (int) data.get(0);
+            String landName = (String) data.get(1);
+            String owner_name = Bukkit.getOfflinePlayer(UUID.fromString((String) data.get(2))).getName();
+            int total_chunks = ChunksManager.getChunksCountOfLand(land_id);
+            double balance = (double) data.get(8);
+
+            List<Object> landInfo = new ArrayList<>();
+            landInfo.add(land_id);
+            landInfo.add(landName);
+            landInfo.add(owner_name);
+            landInfo.add(total_chunks);
+            landInfo.add(balance);
+
+            topLands.add(landInfo);
+        }
+
+        topLands.sort(Comparator.comparingDouble((List<Object> list) -> (double) list.get(4)).reversed());
+
+        if (topLands.size() > limit) {
+            topLands = topLands.subList(0, limit);
+        }
+
+        return topLands;
     }
 
     public static void updateLandName(int land_id, String new_land_name) {

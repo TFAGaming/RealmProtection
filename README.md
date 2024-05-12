@@ -30,7 +30,7 @@ RealmProtection is a Minecraft plugin allowing players to own a 16x16 block chun
   - **Vehicle Usage:** Control the use, spawning, and riding of vehicles.
   - **Entity Protection:** Prevent damage to hostile and passive entities, ensuring their safety.
 - **Customizable Configuration:** Tailor the plugin to your server's needs with a flexible configuration system, allowing you to fine-tune every aspect of chunk protection.
-- **Efficient Performance:** Experience smooth gameplay with optimized performance, ensuring minimal impact on server resources.
+- **Efficient Performance:** RealmProtection has a powerful database manager with a built-in cache to keep the server and the plugin performant.
 - **Integration with External Plugins APIs:** Seamlessly integrate with external plugins APIs including [VaultAPI](https://github.com/MilkBowl/VaultAPI) and [LuckPerms](https://github.com/LuckPerms/LuckPerms) for enhanced functionality and compatibility.
 
 <details>
@@ -107,9 +107,8 @@ The primary command for the plugin is `/land`, which also accepts the alias `/la
 
 To ensure seamless functionality, RealmProtection requires integration with three essential plugins on your server:
 
-- **Essentials** and **Vault**: Integration with the economy system provided by Essentials and Vault.
-
-- **LuckPerms**: Utilization of group management and permission features offered by LuckPerms.
+- **Essentials** and **Vault**: Integration with the economy system.
+- **LuckPerms**: Utilization of group management and permission features.
 
 ### How do the command permissions work?
 
@@ -126,7 +125,7 @@ A role flag refers to a permission that can be either allowed or disallowed for 
 
 ### Why must every player claim one chunk away from any land?
 
-To prevent neighboring claims and maintain adequate space between them. This feature is integral to the plugin and cannot be disabled. It ensures that players cannot bypass some natural flags by claiming land directly adjacent to another claimed chunk.
+To prevent neighboring claims and maintain adequate space between them. This feature is built-in to the plugin and cannot be disabled. It ensures that players cannot bypass some natural flags by claiming land directly adjacent to another claimed chunk.
 
 ### What does it mean for each color particle around a land?
 

@@ -30,6 +30,7 @@ import realmprotection.commands.subcommands.RenameRoleCommand;
 import realmprotection.commands.subcommands.SetSpawnCommand;
 import realmprotection.commands.subcommands.SpawnCommand;
 import realmprotection.commands.subcommands.StorageCommand;
+import realmprotection.commands.subcommands.TopCommand;
 import realmprotection.commands.subcommands.TrustCommand;
 import realmprotection.commands.subcommands.UnbanCommand;
 import realmprotection.commands.subcommands.UnclaimCommand;
@@ -121,6 +122,9 @@ public class LandsCommand implements TabExecutor {
                     case "invites":
                         new InvitesCommand().onCommand(sender, command, label, args);
                         break;
+                    case "top":
+                        new TopCommand().onCommand(sender, command, label, args);
+                        break;
                     default:
                         break;
                 }
@@ -189,6 +193,7 @@ public class LandsCommand implements TabExecutor {
             arraylist.add("storage");
             arraylist.add("accept");
             arraylist.add("invites");
+            arraylist.add("top");
 
             currentindex = 1;
         } else if (args.length == 2) {

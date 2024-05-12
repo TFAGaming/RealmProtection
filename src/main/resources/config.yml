@@ -8,7 +8,7 @@ languages:
   locale: "en_US.yml"
 
 general:
-  economy: false # This will enable the economy commands: /land balance, /land deposit, and /land withdraw.
+  economy: true # If 'true', this will enable the economy commands: /land balance, /land deposit, and /land withdraw.
 
 # The ratelimits for each player group
 ratelimits:
