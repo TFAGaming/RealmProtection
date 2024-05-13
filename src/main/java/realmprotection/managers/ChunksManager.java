@@ -12,6 +12,7 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 import realmprotection.RealmProtection;
+import realmprotection.utils.DelayedTeleportation;
 import realmprotection.utils.LuckPermsAPI;
 
 public class ChunksManager {
@@ -210,6 +211,14 @@ public class ChunksManager {
         }
 
         return chunks;
+    }
+
+    public static void teleportPlayerToChunk(Player player, int chunkX, int chunkZ, World world) {
+        Location location = new Location(world, chunkX * 16 + 8, 64, chunkZ * 16 + 8);
+
+        location.setY(location.getWorld().getHighestBlockYAt(location) + 1);
+
+        DelayedTeleportation.teleportPlayerWithDelay(player, location, null);
     }
 
     public static void findUnclaimedChunkPositionAndTeleportPlayer(Player player, int land_id) {

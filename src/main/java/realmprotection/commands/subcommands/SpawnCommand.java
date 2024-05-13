@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
 import realmprotection.managers.LandBansManager;
 import realmprotection.managers.LandMembersManager;
 import realmprotection.managers.LandsManager;
+import realmprotection.utils.DelayedTeleportation;
 import realmprotection.utils.Language;
 
 public class SpawnCommand implements CommandExecutor {
@@ -71,9 +72,7 @@ public class SpawnCommand implements CommandExecutor {
                 return true;
             }
 
-            player.teleport(location);
-
-            player.sendMessage(Language.getCommand("spawn.spawn_teleport_success").replace("%land_name%", args[1])
+            DelayedTeleportation.teleportPlayerWithDelay(player, location, Language.getCommand("spawn.spawn_teleport_success").replace("%land_name%", args[1])
                     .replace("%x%", String.format("%.2f", new Double(land_x)))
                     .replace("%y%", String.format("%.2f", new Double(land_y)))
                     .replace("%z%", String.format("%.2f", new Double(land_z))).replace("%world%", land_world));

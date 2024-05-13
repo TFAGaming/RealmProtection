@@ -40,7 +40,7 @@ public class CustomHeadTexture {
 
         RealmProtection plugin = RealmProtection.getPlugin(RealmProtection.class);
 
-        meta.setOwnerProfile(getProfile(plugin.getConfig().getString("textures.url") + texture_url));
+        meta.setOwnerProfile(getProfile(plugin.getConfig().getString("textures.url").replace("%texture_url%", texture_url)));
         head.setItemMeta(meta);
 
         return head;

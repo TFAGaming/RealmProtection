@@ -1,5 +1,9 @@
 package realmprotection.events;
 
+import java.util.Comparator;
+import java.util.List;
+
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -7,6 +11,8 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 
+import realmprotection.managers.ChunksManager;
+import realmprotection.managers.LandsManager;
 import realmprotection.utils.PaginationGUI;
 
 public class PaginationGUIListener implements Listener {
@@ -23,14 +29,43 @@ public class PaginationGUIListener implements Listener {
             int first_index_last_line = 9 * (inventory_size - 1);
             int last_index_last_line = (9 * inventory_size) - 1;
 
-            if (event.getSlot() == first_index_last_line) {
-                PaginationGUI pagegui = PaginationGUI.pagegui_cache.get(player.getUniqueId().toString());
+            PaginationGUI pagegui = PaginationGUI.pagegui_cache.get(player.getUniqueId().toString());
 
+            if (event.getSlot() == first_index_last_line) {
                 pagegui.previousPage();
             } else if (event.getSlot() == last_index_last_line) {
-                PaginationGUI pagegui = PaginationGUI.pagegui_cache.get(player.getUniqueId().toString());
-
                 pagegui.nextPage();
+            } else {
+                int clicked_chunk = event.getSlot();
+
+                if (clicked_chunk > (9 * 3) - 1) {
+                    return;
+                }
+
+                String land_id = LandsManager.getLandDetail(player.getUniqueId().toString(), "id");
+
+                List<List<Object>> chunks = ChunksManager.listChunksFromLandId(new Integer(land_id));
+
+                chunks.sort(Comparator.comparingLong((List<Object> list) -> (long) list.get(4)));
+
+                int pageIndex = pagegui.getPage();
+                int slotIndex = event.getSlot();
+
+                if (pageIndex >= 0 && slotIndex >= 0) {
+                    int itemsPerPage = 9;
+                    int chunkIndex = pageIndex * itemsPerPage + slotIndex;
+                    
+                    if (chunkIndex < chunks.size()) {
+                        List<Object> chunk = chunks.get(chunkIndex);
+                        int chunk_x = (Integer) chunk.get(0);
+                        int chunk_z = (Integer) chunk.get(1);
+                        String chunk_world = (String) chunk.get(2);
+
+                        player.closeInventory();
+
+                        ChunksManager.teleportPlayerToChunk(player, chunk_x, chunk_z, Bukkit.getWorld(chunk_world));
+                    }
+                }
             }
         }
     }

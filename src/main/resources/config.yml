@@ -13,7 +13,7 @@ general:
 
 # Config for custom head textures
 textures:
-  url: "https://textures.minecraft.net/texture/"
+  url: "https://textures.minecraft.net/texture/%texture_url%"
 
 # The ratelimits for each player group
 ratelimits:

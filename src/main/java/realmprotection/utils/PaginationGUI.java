@@ -35,8 +35,16 @@ public class PaginationGUI {
         data.put(page_index, items);
     }
 
-    public void setIndex(int page_index) {
+    public Map<Integer, List<ItemStack>> getPages() {
+        return data;
+    }
+
+    public void setPage(int page_index) {
         current_index = page_index;
+    }
+
+    public int getPage() {
+        return current_index;
     }
 
     public void nextPage() {
@@ -99,7 +107,7 @@ public class PaginationGUI {
 				: new ItemStack(Material.getMaterial(arrow_backType));
 
         ItemMeta arrow_back_meta = arrow_back.getItemMeta();
-		arrow_back_meta.setDisplayName(ChatColorTranslator.translate("&9Back"));
+		arrow_back_meta.setDisplayName(ChatColorTranslator.translate((String) Language.get("gui.paginator.previous_button.displayname")));
 		arrow_back.setItemMeta(arrow_back_meta);
 
         // Page info
@@ -109,7 +117,7 @@ public class PaginationGUI {
 				: new ItemStack(Material.getMaterial(page_infoType));
 
         ItemMeta page_info_meta = page_info.getItemMeta();
-		page_info_meta.setDisplayName(ChatColorTranslator.translate("&7Page " + (page_index + 1) + "/" + total_pages));
+		page_info_meta.setDisplayName(ChatColorTranslator.translate(((String) Language.get("gui.paginator.page_info.displayname")).replace("%page%", "" + (page_index + 1)).replace("%total_pages%", "" + (total_pages))));
 		page_info.setItemMeta(page_info_meta);
 
         // Next button
@@ -119,7 +127,7 @@ public class PaginationGUI {
 				: new ItemStack(Material.getMaterial(arrow_nextType));
 
         ItemMeta arrow_next_meta = arrow_next.getItemMeta();
-		arrow_next_meta.setDisplayName(ChatColorTranslator.translate("&9Next"));
+		arrow_next_meta.setDisplayName(ChatColorTranslator.translate((String) Language.get("gui.paginator.next_button.displayname")));
 		arrow_next.setItemMeta(arrow_next_meta);
 
         inventory.setItem(last_index_last_line, arrow_next);

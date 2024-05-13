@@ -10,6 +10,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import realmprotection.commands.LandsCommand;
 import realmprotection.database.Database;
 import realmprotection.events.ChunksProtection;
+import realmprotection.events.DelayedTeleportationPlayerMovement;
 import realmprotection.events.GUIListener;
 import realmprotection.events.PaginationGUIListener;
 import realmprotection.managers.LanguageLoader;
@@ -84,6 +85,7 @@ public class RealmProtection extends JavaPlugin implements Listener {
         getServer().getPluginManager().registerEvents(new ChunksProtection(), this);
         getServer().getPluginManager().registerEvents(new GUIListener(), this);
         getServer().getPluginManager().registerEvents(new PaginationGUIListener(), this);
+        getServer().getPluginManager().registerEvents(new DelayedTeleportationPlayerMovement(), this);
 
         getCommand("lands").setExecutor(new LandsCommand());
         getCommand("land").setExecutor(new LandsCommand());
