@@ -22,6 +22,7 @@ public class StringUtils {
 
     public static void sendMessageToPlayerWithTimeout(Player player, String permission, Chunk claimed_chunk) {
         UUID player_uuid = player.getUniqueId();
+
         if (!cooldow_players.contains(player_uuid)) {
             String message = getConfigurationStringMessage(permission, player, claimed_chunk);
 

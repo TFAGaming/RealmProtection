@@ -377,7 +377,7 @@ public class ChunksProtection implements Listener {
     public void onEntityExplode(EntityExplodeEvent event) {
         if (event.getEntity() instanceof TNTPrimed || event.getEntity() instanceof Creeper
                 || event.getEntity() instanceof Fireball || event.getEntity() instanceof EnderCrystal
-                || event.getEntity().getType() == EntityType.MINECART_TNT) {
+                || event.getEntity().getType() == EntityType.TNT_MINECART) {
             Chunk explosionChunk = event.getLocation().getChunk();
 
             if (ChunksManager.isChunkClaimed(explosionChunk)) {
@@ -606,7 +606,7 @@ public class ChunksProtection implements Listener {
                     return;
                 }
             } else if (damager instanceof Creeper || damager instanceof TNTPrimed || damager instanceof Fireball
-                    || damager instanceof EnderCrystal || damager.getType() == EntityType.MINECART_TNT) {
+                    || damager instanceof EnderCrystal || damager.getType() == EntityType.TNT_MINECART) {
                 if (!LandsManager.getFlagValue(new Integer(land_id), "tntblockdamage")) {
                     event.setCancelled(true);
                     return;

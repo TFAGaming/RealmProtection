@@ -22,7 +22,7 @@ public class ParticleSpawner {
     public static void spawnTemporarySmokeParticle(World world, double x, double y, double z, int count, double offsetX, double offsetY, double offsetZ, double extra) {
         Location location = new Location(world, x, y, z);
         
-        world.spawnParticle(Particle.SMOKE_NORMAL, location, count, offsetX, offsetY, offsetZ, extra);
+        world.spawnParticle(Particle.SMOKE, location, count, offsetX, offsetY, offsetZ, extra);
     }
 
     public static void spawnDelayedParticlesAroundClaimedChunk(Player player, int land_id, double y, boolean is_owner, boolean is_trusted) {
@@ -81,28 +81,28 @@ public class ParticleSpawner {
             Chunk north = world.getChunkAt(chunkX, chunkZ - 1);
             if (!ChunksManager.isChunkClaimed(north)) {
                 for (int x = minX; x < minX + 16; x++) {
-                    player.spawnParticle(Particle.REDSTONE, x, y, minZ, 5, dustoptions);
+                    player.spawnParticle(Particle.DUST, x, y, minZ, 5, dustoptions);
                 }
             }
 
             Chunk south = world.getChunkAt(chunkX, chunkZ + 1);
             if (!ChunksManager.isChunkClaimed(south)) {
                 for (int x = minX; x < minX + 16; x++) {
-                    player.spawnParticle(Particle.REDSTONE, x, y, minZ + 16, 5, dustoptions);
+                    player.spawnParticle(Particle.DUST, x, y, minZ + 16, 5, dustoptions);
                 }
             }
 
             Chunk west = world.getChunkAt(chunkX - 1, chunkZ);
             if (!ChunksManager.isChunkClaimed(west)) {
                 for (int z = minZ; z < minZ + 16; z++) {
-                    player.spawnParticle(Particle.REDSTONE, minX, y, z, 5, dustoptions);
+                    player.spawnParticle(Particle.DUST, minX, y, z, 5, dustoptions);
                 }
             }
 
             Chunk east = world.getChunkAt(chunkX + 1, chunkZ);
             if (!ChunksManager.isChunkClaimed(east)) {
                 for (int z = minZ; z < minZ + 16; z++) {
-                    player.spawnParticle(Particle.REDSTONE, minX + 16, y, z, 5, dustoptions);
+                    player.spawnParticle(Particle.DUST, minX + 16, y, z, 5, dustoptions);
                 }
             }
         }
