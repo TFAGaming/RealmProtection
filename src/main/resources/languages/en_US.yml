@@ -242,6 +242,9 @@ commands:
     missing_new_role_name: "&cYou must provide a new role name!"
     role_update_success: "&aSuccessfully renamed &9%old% &ato &9%new%&a!"
 
+  roles:
+    land_not_found: "&cYou don't have a land!"
+
   set_spawn:
     land_not_found: "&cYou don't have a land!"
     chunk_not_claimed: "&cThis chunk is not claimed."
@@ -455,6 +458,14 @@ gui:
           __DEFAULT__: "TEXTURE-e40f2391e71df56d8f8810e8039fced5b2e35394f40de6fecf644bde2ffb017d"
           __NETHER__: "TEXTURE-99c6a378a72da175831c9394fa45eb7343f31d7d058fa76a9a646be007b7888d"
           __END__: "TEXTURE-42813cf8c4fd013baf5bf55a8c93121c482da1cf6e1054c180ff3e81727b65dd"
+
+    # /land roles
+    roles_list:
+      title: "&9Land Roles"
+      content:
+        __ITEM_DISPLAYNAME__: "&6%role_name% &9(ID: &c%role_id%&9)"
+        __ITEM_TYPE__:
+          __DEFAULT__: "TEXTURE-c7e200e48b5f9d4d3b79df47ec132a3476900d5914071689b44770b6bf9a294c"
 
 # Flags configuration (for GUIs)
 flags:

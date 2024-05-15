@@ -329,7 +329,7 @@ public class RolesManager {
         }
 
         String land_id = LandsManager.getLandDetail(player.getUniqueId().toString(), "id");
-        int landrolescount = listAllRolesNames(new Integer(land_id)).size();
+        int landrolescount = listAllRolesData(new Integer(land_id)).size();
 
         if (landrolescount >= grouproleslimit) {
             return true;
@@ -466,6 +466,25 @@ public class RolesManager {
         }
 
         return;
+    }
+
+    public static List<List<Object>> listAllRolesData(int land_id) {
+        List<List<Object>> roles_data = new ArrayList<>();
+
+        for (Map.Entry<String, List<Object>> entry : role_id_cache.entrySet()) {
+            List<Object> data = entry.getValue();
+
+            if (new Integer((String) data.get(1)) == land_id) {
+                List<Object> arraylist = new ArrayList<>();
+
+                arraylist.add((String) data.get(2));
+                arraylist.add((int) data.get(0));
+
+                roles_data.add(arraylist);
+            }
+        }
+
+        return roles_data;
     }
 
     public static List<String> listAllRolesNames(int land_id) {

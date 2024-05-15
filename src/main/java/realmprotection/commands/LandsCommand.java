@@ -28,6 +28,7 @@ import realmprotection.commands.subcommands.LeaveCommand;
 import realmprotection.commands.subcommands.NewRoleCommand;
 import realmprotection.commands.subcommands.RenameCommand;
 import realmprotection.commands.subcommands.RenameRoleCommand;
+import realmprotection.commands.subcommands.RolesListCommand;
 import realmprotection.commands.subcommands.SetSpawnCommand;
 import realmprotection.commands.subcommands.SpawnCommand;
 import realmprotection.commands.subcommands.StorageCommand;
@@ -128,6 +129,13 @@ public class LandsCommand implements TabExecutor {
                         break;
                     case "claimlist":
                         new ClaimlistCommand().onCommand(sender, command, label, args);
+                        break;
+                    case "roles":
+                        if (args.length != 1) {
+                            break;
+                        }
+
+                        new RolesListCommand().onCommand(sender, command, label, args);
                         break;
                     default:
                         break;

@@ -45,13 +45,15 @@ public class DelayedTeleportation extends JavaPlugin {
             double progress = bossBar.getProgress();
             progress -= 1.0 / 60;
 
-            if (getTwoDigits(progress) == 25 || getTwoDigits(progress) == 50 || getTwoDigits(progress) == 75) {
+            if (getTwoDigits(progress) == 20 || getTwoDigits(progress) == 50 || getTwoDigits(progress) == 80) {
                 player.playSound(player.getLocation(), Sound.BLOCK_LEVER_CLICK, 500.0f, 1.0f);
             }
 
             if (progress <= 0) {
                 player.teleport(location);
                 bossBar.removeAll();
+
+                player.playSound(player.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 500.0f, 1.0f);
 
                 BukkitTask playerTask = teleport_tasks.get(player.getUniqueId());
 
