@@ -165,6 +165,7 @@ commands:
     no_role_provided: "&cYou must provide a role name to delete."
     role_not_found: "&cThis role was not found in your land."
     role_name_is_visitor: "&cThe role is default Visitor role, cannot be deleted."
+    role_has_member_with_it: "&cYou must remove every member with this role to delete it!"
     role_delete_success: "&aSuccessfully deleted the role %role%!"
 
   deposit:

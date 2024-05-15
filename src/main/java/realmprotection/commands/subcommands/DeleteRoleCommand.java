@@ -6,6 +6,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import realmprotection.RealmProtection;
+import realmprotection.managers.LandMembersManager;
 import realmprotection.managers.LandsManager;
 import realmprotection.managers.RolesManager;
 import realmprotection.utils.Language;
@@ -44,6 +45,11 @@ public class DeleteRoleCommand implements CommandExecutor {
 
             if (args[2].equalsIgnoreCase(plugin.getConfig().getString("roles.__DEFAULT_VISITOR_ROLE__"))) {
                 player.sendMessage(Language.getCommand("delete_role.role_name_is_visitor"));
+                return true;
+            }
+
+            if (LandMembersManager.hasAtLeastOneRole(new Integer(land_id), args[2])) {
+                player.sendMessage(Language.getCommand("delete_role.role_has_member_with_it"));
                 return true;
             }
 

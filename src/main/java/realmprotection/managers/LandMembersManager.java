@@ -134,16 +134,37 @@ public class LandMembersManager {
             String role_name = getRoleNameFromPlayername(land_id, player_uuid);
 
             if (role_name == plugin.getConfig().getString("roles.__DEFAULT_VISITOR_ROLE__")) {
-                boolean value = RolesManager.getPermissionValue(land_id, plugin.getConfig().getString("roles.__DEFAULT_VISITOR_ROLE__"), permission_name);
+                boolean value = RolesManager.getPermissionValue(land_id,
+                        plugin.getConfig().getString("roles.__DEFAULT_VISITOR_ROLE__"), permission_name);
                 return value;
             } else {
                 boolean value = RolesManager.getPermissionValue(land_id, role_name, permission_name);
                 return value;
             }
         } else {
-            boolean value = RolesManager.getPermissionValue(land_id, plugin.getConfig().getString("roles.__DEFAULT_VISITOR_ROLE__"), permission_name);
+            boolean value = RolesManager.getPermissionValue(land_id,
+                    plugin.getConfig().getString("roles.__DEFAULT_VISITOR_ROLE__"), permission_name);
             return value;
         }
+    }
+
+    public static boolean hasAtLeastOneRole(int land_id, String role_name) {
+        boolean value = false;
+
+        for (Map.Entry<String, List<Object>> entry : cache.entrySet()) {
+            List<Object> data = entry.getValue();
+
+            if (new Integer((String) data.get(1)) == land_id) {
+                String member_role = getRoleNameFromPlayername(land_id, (String) data.get(2));
+
+                if (member_role.equals(role_name)) {
+                    value = true;
+                    break;
+                }
+            }
+        }
+
+        return value;
     }
 
     public static List<List<String>> listAllMembersData(int land_id) {
@@ -153,9 +174,11 @@ public class LandMembersManager {
             List<Object> data = entry.getValue();
 
             if (new Integer((String) data.get(1)) == land_id) {
-                String role_name = RolesManager.getRoleDetailById(land_id, new Integer((String) data.get(3)), "role_name");
+                String role_name = RolesManager.getRoleDetailById(land_id, new Integer((String) data.get(3)),
+                        "role_name");
 
-                members_data.add(Lists.newArrayList(Bukkit.getOfflinePlayer(UUID.fromString((String) data.get(2))).getName(), role_name)); 
+                members_data.add(Lists.newArrayList(
+                        Bukkit.getOfflinePlayer(UUID.fromString((String) data.get(2))).getName(), role_name));
             }
         }
 
