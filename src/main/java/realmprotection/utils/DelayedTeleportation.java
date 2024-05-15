@@ -20,7 +20,24 @@ public class DelayedTeleportation extends JavaPlugin {
     public static HashMap<UUID, BossBar> teleport_bossbars = new HashMap<>();
 
     public static void teleportPlayerWithDelay(Player player, Location location, String message) {
-        BossBar bossBar = Bukkit.createBossBar(ChatColorTranslator.translate((String) Language.get("general.delayed_teleportation.bossbar.title")), BarColor.valueOf((String) Language.get("general.delayed_teleportation.bossbar.color")), BarStyle.valueOf((String) Language.get("general.delayed_teleportation.bossbar.style")));
+        if (teleport_tasks.containsKey(player.getUniqueId())) {
+            String prefix = "";
+
+            if ((Boolean) Language.get("general.prefix.enabled")
+                    && (Boolean) Language.get("commands.__ALLOW_PREFIX__")) {
+                prefix += (String) Language.get("general.prefix.value");
+            }
+
+            player.sendMessage(ChatColorTranslator.translate(
+                    prefix + (String) Language.get("general.delayed_teleportation.messages.already_teleporting")));
+
+            return;
+        }
+
+        BossBar bossBar = Bukkit.createBossBar(
+                ChatColorTranslator.translate((String) Language.get("general.delayed_teleportation.bossbar.title")),
+                BarColor.valueOf((String) Language.get("general.delayed_teleportation.bossbar.color")),
+                BarStyle.valueOf((String) Language.get("general.delayed_teleportation.bossbar.style")));
         bossBar.setProgress(1.0);
         bossBar.addPlayer(player);
 
@@ -28,7 +45,7 @@ public class DelayedTeleportation extends JavaPlugin {
             double progress = bossBar.getProgress();
             progress -= 1.0 / 60;
 
-            if (getTwoDigits(progress) < 0 || getTwoDigits(progress) == 50 || getTwoDigits(progress) >= 98) {
+            if (getTwoDigits(progress) == 25 || getTwoDigits(progress) == 50 || getTwoDigits(progress) == 75) {
                 player.playSound(player.getLocation(), Sound.BLOCK_LEVER_CLICK, 500.0f, 1.0f);
             }
 
@@ -57,7 +74,7 @@ public class DelayedTeleportation extends JavaPlugin {
         teleport_bossbars.put(player.getUniqueId(), bossBar);
     }
 
-    private static int getTwoDigits(double number){
-  		return (int) ((number + 0.001) * 100) % 100;
-	}
+    private static int getTwoDigits(double number) {
+        return (int) ((number + 0.001) * 100) % 100;
+    }
 }

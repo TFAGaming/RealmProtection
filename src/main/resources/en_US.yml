@@ -49,6 +49,7 @@ general:
       style: "SOLID"
     messages:
       player_moved: "&cThe teleportation has been canceled because you moved!"
+      already_teleporting: "&cPlease wait until the requested teleportion ends!"
 
 # Permissions configuration
 permissions:
