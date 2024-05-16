@@ -11,10 +11,12 @@ import java.util.Map;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 
 import com.google.common.collect.Lists;
 
 import realmprotection.RealmProtection;
+import realmprotection.utils.LuckPermsAPI;
 
 public class LandMembersManager {
     private static final Map<String, List<Object>> cache = new HashMap<>();
@@ -148,6 +150,30 @@ public class LandMembersManager {
         }
     }
 
+    public static boolean hasReachedMaxMembersToTrust(Player player) {
+        RealmProtection plugin = RealmProtection.getPlugin(RealmProtection.class);
+
+        if (!LuckPermsAPI.isReady()) {
+            return true;
+        }
+
+        String playergroup = LuckPermsAPI.getPlayerGroup(player);
+        int groupmemberslimit = plugin.getConfig().getInt("ratelimits.members." + playergroup);
+
+        if (groupmemberslimit <= 0) {
+            groupmemberslimit = plugin.getConfig().getInt("ratelimits.members.__DEFAULT__");
+        }
+
+        String land_id = LandsManager.getLandDetail(player.getUniqueId().toString(), "id");
+        int landmemberscount = getMembersCountOfLand(new Integer(land_id));
+
+        if (landmemberscount >= groupmemberslimit) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public static boolean hasAtLeastOneRole(int land_id, String role_name) {
         boolean value = false;
 
@@ -192,6 +218,20 @@ public class LandMembersManager {
             List<Object> data = entry.getValue();
 
             if (new Integer((String) data.get(1)) == land_id) {
+                count++;
+            }
+        }
+
+        return count;
+    }
+
+    public static int getPlayerLandsCount(Player player) {
+        int count = 0;
+
+        for (Map.Entry<String, List<Object>> entry : cache.entrySet()) {
+            List<Object> data = entry.getValue();
+
+            if (((String) data.get(2)) == player.getUniqueId().toString()) {
                 count++;
             }
         }

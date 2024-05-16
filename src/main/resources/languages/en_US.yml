@@ -272,6 +272,7 @@ commands:
 
   trust:
     land_not_found: "&cYou don't have a land!"
+    max_members_trusted: "&cYou have reached the limit! You cannot trust more members for your land."
     no_playername_provided: "&cYou must name the player to trust."
     player_not_found: "&cThis playername doens't exist."
     player_is_banned: "&cYou cannot trust a player that is banned from this land."

@@ -111,6 +111,7 @@ commands:
   __FEATURE_DISABLED__: "&cThis feature is disabled by server Administrators. If you think this is a mistake and you are an operator, please configure the plugin in 'config.yml' file."
 
   accept:
+    max_lands_trusted: "&cYou have reached the limit! You cannot join more lands."
     missing_land_name: "&cYou must provide the land name!"
     land_name_not_found: "&cThis land name doesn't exist."
     player_not_invited: "&cYou are not invited to join this land."
@@ -148,7 +149,7 @@ commands:
     missing_land_name: "&cYou must provide your new land name because you will create one with this chunk!"
     land_name_not_alphanumeric: "&cYour land name must be alphanumeric; Do not use colors or any other symbols."
     land_name_already_taken: "&cThis land name is already been taken, please choose another one."
-    max_chunks_claimed: "&cYou have claimed the maximum of chunks you have!"
+    max_chunks_claimed: "&cYou have reached the limit! You cannot claim more chunks."
     chunk_claimed_success: "&aYou have successfully claimed the chunk! &9%chunk_x%, %chunk_z%"
 
   claimlist:
@@ -224,7 +225,7 @@ commands:
     no_role_provided: "&cYou must provide a new role name to create."
     role_found: "&cThis role does already exist in the land!"
     role_name_not_alphanumeric: "&cThe role name must be alphanumeric; Do not use colors or any other symbols."
-    max_roles_created: "&cYou have created the maximum of roles in your land!"
+    max_roles_created: "&cYou have reached the limit! You cannot create more roles for your land."
     role_create_success: "&aSuccessfully created a new role!"
 
   rename:
@@ -272,6 +273,7 @@ commands:
 
   trust:
     land_not_found: "&cYou don't have a land!"
+    max_members_trusted: "&cYou have reached the limit! You cannot trust more members for your land."
     no_playername_provided: "&cYou must name the player to trust."
     player_not_found: "&cThis playername doens't exist."
     player_is_banned: "&cYou cannot trust a player that is banned from this land."

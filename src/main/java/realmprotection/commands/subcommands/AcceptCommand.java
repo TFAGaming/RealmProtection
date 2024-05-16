@@ -17,6 +17,11 @@ public class AcceptCommand implements CommandExecutor {
         if (sender instanceof Player) {
             Player player = (Player) sender;
 
+            if (LandInvitesManager.hasPlayerReachedMaxLandTrusts(player)) {
+                player.sendMessage(Language.getCommand("accept.max_lands_trusted"));
+                return true;
+            }
+
             if (args.length == 1) {
                 player.sendMessage(Language.getCommand("accept.missing_land_name"));
                 return true;

@@ -11,10 +11,12 @@ import java.util.Map;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 
 import com.google.common.collect.Lists;
 
 import realmprotection.RealmProtection;
+import realmprotection.utils.LuckPermsAPI;
 
 public class LandInvitesManager {
     private static final Map<String, List<Object>> cache = new HashMap<>();
@@ -148,6 +150,30 @@ public class LandInvitesManager {
 
         return invites;
     }
+
+    public static boolean hasPlayerReachedMaxLandTrusts(Player player) {
+        RealmProtection plugin = RealmProtection.getPlugin(RealmProtection.class);
+
+        if (!LuckPermsAPI.isReady()) {
+            return true;
+        }
+
+        String playergroup = LuckPermsAPI.getPlayerGroup(player);
+        int groupplayerlandslimit = plugin.getConfig().getInt("ratelimits.player_lands." + playergroup);
+
+        if (groupplayerlandslimit <= 0) {
+            groupplayerlandslimit = plugin.getConfig().getInt("ratelimits.player_lands.__DEFAULT__");
+        }
+
+        int playerlandscount = LandMembersManager.getPlayerLandsCount(player);
+
+        if (playerlandscount >= groupplayerlandslimit) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 
     public static List<List<String>> listAllInvitesForPlayer(String player_uuid) {
         List<List<String>> invites = new ArrayList<>();

@@ -27,11 +27,27 @@ ratelimits:
 
   # Land roles ratelimit
   roles:
-    __DEFAULT__: 10 # If the player's group not found
+    __DEFAULT__: 5 # If the player's group not found
     default: 5
     vip: 10
     admin: 20
     owner: 50
+
+  # Land members ratelimit
+  members:
+    __DEFAULT__: 10 # If the player's group not found
+    default: 10
+    vip: 15
+    admin: 30
+    owner: 50
+  
+  # Player trusted lands ratelimit
+  player_lands:
+    __DEFAULT__: 3 # If the player's group not found
+    default: 3
+    vip: 5
+    admin: 10
+    owner: 20
 
 # The border particles colors, by default: visitor = (255, 0, 0); trusted = (255, 255); owner = (0, 255, 0)
 border_colors: # Note: RBG colors based

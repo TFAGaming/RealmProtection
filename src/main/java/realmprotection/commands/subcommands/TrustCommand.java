@@ -27,6 +27,11 @@ public class TrustCommand implements CommandExecutor {
                 return true;
             }
 
+            if (LandMembersManager.hasReachedMaxMembersToTrust(player)) {
+                player.sendMessage(Language.getCommand("trust.max_members_trusted"));
+                return true;
+            }
+
             if (args.length == 1) {
                 player.sendMessage(Language.getCommand("trust.no_playername_provided"));
                 return true;
