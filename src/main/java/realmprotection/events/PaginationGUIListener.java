@@ -11,8 +11,10 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 
+import realmprotection.gui.RoleFlagsGUI;
 import realmprotection.managers.ChunksManager;
 import realmprotection.managers.LandsManager;
+import realmprotection.managers.RolesManager;
 import realmprotection.utils.ChatColorTranslator;
 import realmprotection.utils.Language;
 import realmprotection.utils.PaginationGUI;
@@ -85,6 +87,35 @@ public class PaginationGUIListener implements Listener {
                     pagegui.previousPage();
                 } else if (event.getSlot() == last_index_last_line) {
                     pagegui.nextPage();
+                } else {
+                    int clicked_chunk = event.getSlot();
+
+                    if (clicked_chunk > (9 * 3) - 1) {
+                        return;
+                    }
+
+                    String land_id = LandsManager.getLandDetail(player.getUniqueId().toString(), "id");
+
+                    List<List<Object>> roles = RolesManager.listAllRolesData(new Integer(land_id));
+
+                    roles.sort(Comparator.comparingInt((List<Object> list) -> (int) list.get(1)));
+
+                    int pageIndex = pagegui.getPage();
+                    int slotIndex = event.getSlot();
+
+                    if (pageIndex >= 0 && slotIndex >= 0) {
+                        int itemsPerPage = 9;
+                        int roleIndex = pageIndex * itemsPerPage + slotIndex;
+
+                        if (roleIndex < roles.size()) {
+                            List<Object> chunk = roles.get(roleIndex);
+                            String role_name = (String) chunk.get(0);
+
+                            player.closeInventory();
+
+                            RoleFlagsGUI.create(player, role_name, 1);
+                        }
+                    }
                 }
             }
         }

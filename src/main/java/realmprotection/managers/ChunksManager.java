@@ -217,6 +217,8 @@ public class ChunksManager {
         Location location = new Location(world, chunkX * 16 + 8, 64, chunkZ * 16 + 8);
 
         location.setY(location.getWorld().getHighestBlockYAt(location) + 1);
+        location.setPitch(player.getLocation().getPitch());
+        location.setYaw(player.getLocation().getYaw());
 
         DelayedTeleportation.teleportPlayerWithDelay(player, location, null);
     }

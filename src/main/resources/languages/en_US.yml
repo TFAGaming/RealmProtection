@@ -466,7 +466,7 @@ gui:
       content:
         __ITEM_DISPLAYNAME__: "&6%role_name% &9(ID: &c%role_id%&9)"
         __ITEM_TYPE__:
-          __DEFAULT__: "TEXTURE-c7e200e48b5f9d4d3b79df47ec132a3476900d5914071689b44770b6bf9a294c"
+          __DEFAULT__: "TEXTURE-d1f90cf50c9ec3c27ca334ea8e10c7db253c2f551d20c815eba65909ad928161"
 
 # Flags configuration (for GUIs)
 flags:

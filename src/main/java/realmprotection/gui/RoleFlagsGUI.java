@@ -20,9 +20,9 @@ import realmprotection.utils.CustomHeadTexture;
 import realmprotection.utils.Language;
 
 public class RoleFlagsGUI {
-	public static Map<String, String> cache = new HashMap<>();
+	public static Map<String, List<Object>> cache = new HashMap<>();
 
-	public static void create(Player player, String role_name) {
+	public static void create(Player player, String role_name, int close_method) {
 		String land_id = LandsManager.getLandDetail(player.getUniqueId().toString(), "id");
 
 		Inventory inventory = Bukkit.createInventory(player, 9 * 6,
@@ -89,8 +89,13 @@ public class RoleFlagsGUI {
 		}
 
 		player.openInventory(inventory);
+
+		List<Object> data = new ArrayList<>();
+
+		data.add(role_name);
+		data.add(close_method);
 		
-		cache.put(player.getUniqueId().toString(), role_name);
+		cache.put(player.getUniqueId().toString(), data);
 	}
 
 	private static ItemStack getItemFromPermissionName(String permission) {

@@ -33,7 +33,7 @@ public class UpdateRoleFlagsCommand implements CommandExecutor {
                 }
 
                 if (args.length == 3) {
-                    RoleFlagsGUI.create(player, args[2]);
+                    RoleFlagsGUI.create(player, args[2], 0);
                 } else {
                     List<String> listofflags = RolesManager.listAllPermissions();
 

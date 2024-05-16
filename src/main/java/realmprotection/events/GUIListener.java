@@ -14,6 +14,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import realmprotection.gui.RoleFlagsGUI;
+import realmprotection.gui.RolesListPaginationGUI;
 import realmprotection.managers.LandStorageManager;
 import realmprotection.managers.LandsManager;
 import realmprotection.managers.RolesManager;
@@ -51,17 +52,33 @@ public class GUIListener implements Listener {
                 return;
             }
 
+            List<Object> cache_data = RoleFlagsGUI.cache.get(player.getUniqueId().toString());
+
             if (item.getType()
                     .equals(Material.getMaterial((String) Language.get("general.guis.close_button.item.type")))) {
-                player.closeInventory();
+                if (cache_data == null || ((int) cache_data.get(1)) == 0) {
+                    player.closeInventory();
+                } else {
+                    switch ((int) cache_data.get(1)) {
+                        case 1:
+                            player.closeInventory();
+
+                            RolesListPaginationGUI.create(player);
+                            
+                            break;
+                        default:
+                            break;
+                    }
+                }
+
                 return;
             }
 
-            String role_name = RoleFlagsGUI.cache.get(player.getUniqueId().toString());
-
-            if (role_name == null) {
+            if (cache_data == null) {
                 return;
             }
+
+            String role_name = (String) cache_data.get(0);
 
             int index = event.getSlot();
             List<String> list_permissions = RolesManager.listAllPermissions();
@@ -83,34 +100,34 @@ public class GUIListener implements Listener {
 
             ItemStack flagButton = getItemFromPermissionNameRoleFlags("permissions_" + permission);
 
-			ItemMeta flagButtonMeta = flagButton.getItemMeta();
-			flagButtonMeta.setDisplayName(ChatColorTranslator
-					.translate(((String) getFromLanguageRoleFlags("content.__FLAGS_REPEAT_STYLE__.displayname"))
-							.replace("%flag%", "" + permission).replace("%displayname%",
-									(String) Language.get("flags.role_flags.displayname." + permission))));
+            ItemMeta flagButtonMeta = flagButton.getItemMeta();
+            flagButtonMeta.setDisplayName(ChatColorTranslator
+                    .translate(((String) getFromLanguageRoleFlags("content.__FLAGS_REPEAT_STYLE__.displayname"))
+                            .replace("%flag%", "" + permission).replace("%displayname%",
+                                    (String) Language.get("flags.role_flags.displayname." + permission))));
 
-			ArrayList<String> flagButtonLore = new ArrayList<>();
-			@SuppressWarnings("unchecked")
-			List<String> roleflagslore = (List<String>) getFromLanguageRoleFlags("content.__FLAGS_REPEAT_STYLE__.lore");
+            ArrayList<String> flagButtonLore = new ArrayList<>();
+            @SuppressWarnings("unchecked")
+            List<String> roleflagslore = (List<String>) getFromLanguageRoleFlags("content.__FLAGS_REPEAT_STYLE__.lore");
 
-			for (String lore : roleflagslore) {
-				if ((boolean) value == true) {
-					flagButtonLore.add(ChatColorTranslator
-							.translate(lore
-									.replace("%description%",
-											"" + (String) Language.get("flags.role_flags.description." + permission))
-									.replace("%value%", (String) Language.get("general.flags.enabled"))));
-				} else {
-					flagButtonLore.add(ChatColorTranslator
-							.translate(lore
-									.replace("%description%",
-											"" + (String) Language.get("flags.role_flags.description." + permission))
-									.replace("%value%", (String) Language.get("general.flags.disabled"))));
-				}
-			}
+            for (String lore : roleflagslore) {
+                if ((boolean) value == true) {
+                    flagButtonLore.add(ChatColorTranslator
+                            .translate(lore
+                                    .replace("%description%",
+                                            "" + (String) Language.get("flags.role_flags.description." + permission))
+                                    .replace("%value%", (String) Language.get("general.flags.enabled"))));
+                } else {
+                    flagButtonLore.add(ChatColorTranslator
+                            .translate(lore
+                                    .replace("%description%",
+                                            "" + (String) Language.get("flags.role_flags.description." + permission))
+                                    .replace("%value%", (String) Language.get("general.flags.disabled"))));
+                }
+            }
 
-			flagButtonMeta.setLore(flagButtonLore);
-			flagButton.setItemMeta(flagButtonMeta);
+            flagButtonMeta.setLore(flagButtonLore);
+            flagButton.setItemMeta(flagButtonMeta);
 
             event.getInventory().setItem(index, flagButton);
         } else if (event.getView().getTitle()
@@ -215,36 +232,44 @@ public class GUIListener implements Listener {
     }
 
     private static ItemStack getItemFromFlagNatureFlags(String permission) {
-		String[] splitted = permission.split("_");
-		List<String> splittedlist = new ArrayList<>();
+        String[] splitted = permission.split("_");
+        List<String> splittedlist = new ArrayList<>();
 
-		for (String split : splitted) {
-			splittedlist.add(split);
-		}
+        for (String split : splitted) {
+            splittedlist.add(split);
+        }
 
-		String itemType = (String) getFromLanguageNatureFlags("__FLAGS_REPEAT_STYLE_ITEMS_CONFIG__." + splittedlist.get(1));
-		ItemStack item = itemType.startsWith("TEXTURE-") ? CustomHeadTexture.get(Arrays.asList(itemType.split("-")).get(1)) : new ItemStack(Material.getMaterial(itemType) == null ? Material.STRUCTURE_VOID : Material.getMaterial(itemType));
+        String itemType = (String) getFromLanguageNatureFlags(
+                "__FLAGS_REPEAT_STYLE_ITEMS_CONFIG__." + splittedlist.get(1));
+        ItemStack item = itemType.startsWith("TEXTURE-")
+                ? CustomHeadTexture.get(Arrays.asList(itemType.split("-")).get(1))
+                : new ItemStack(Material.getMaterial(itemType) == null ? Material.STRUCTURE_VOID
+                        : Material.getMaterial(itemType));
 
-		return item;
-	}
+        return item;
+    }
 
     private static Object getFromLanguageNatureFlags(String path) {
         return Language.get("gui.commands.nature_flags." + path);
     }
 
     private static ItemStack getItemFromPermissionNameRoleFlags(String permission) {
-		String[] splitted = permission.split("_");
-		List<String> splittedlist = new ArrayList<>();
+        String[] splitted = permission.split("_");
+        List<String> splittedlist = new ArrayList<>();
 
-		for (String split : splitted) {
-			splittedlist.add(split);
-		}
+        for (String split : splitted) {
+            splittedlist.add(split);
+        }
 
-		String itemType = (String) getFromLanguageRoleFlags("__FLAGS_REPEAT_STYLE_ITEMS_CONFIG__." + splittedlist.get(1));
-		ItemStack item = itemType.startsWith("TEXTURE-") ? CustomHeadTexture.get(Arrays.asList(itemType.split("-")).get(1)) : new ItemStack(Material.getMaterial(itemType) == null ? Material.STRUCTURE_VOID : Material.getMaterial(itemType));
+        String itemType = (String) getFromLanguageRoleFlags(
+                "__FLAGS_REPEAT_STYLE_ITEMS_CONFIG__." + splittedlist.get(1));
+        ItemStack item = itemType.startsWith("TEXTURE-")
+                ? CustomHeadTexture.get(Arrays.asList(itemType.split("-")).get(1))
+                : new ItemStack(Material.getMaterial(itemType) == null ? Material.STRUCTURE_VOID
+                        : Material.getMaterial(itemType));
 
-		return item;
-	}
+        return item;
+    }
 
     private static Object getFromLanguageRoleFlags(String path) {
         return Language.get("gui.commands.role_flags." + path);
