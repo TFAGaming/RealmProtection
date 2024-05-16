@@ -2,6 +2,7 @@ package realmprotection.utils;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
@@ -17,7 +18,7 @@ import realmprotection.RealmProtection;
 import realmprotection.managers.ChunksManager;
 
 public class ParticleSpawner {
-    private static final Map<String, BukkitTask> particles_players_cache = new HashMap<>();
+    private static final Map<UUID, BukkitTask> particles_players_cache = new HashMap<>();
 
     public static void spawnTemporarySmokeParticle(World world, double x, double y, double z, int count, double offsetX, double offsetY, double offsetZ, double extra) {
         Location location = new Location(world, x, y, z);
@@ -26,20 +27,20 @@ public class ParticleSpawner {
     }
 
     public static void spawnDelayedParticlesAroundClaimedChunk(Player player, int land_id, double y, boolean is_owner, boolean is_trusted) {
-        if (particles_players_cache.containsKey(player.getName())) {
-            BukkitTask taskFromMap = particles_players_cache.get(player.getName());
+        if (particles_players_cache.containsKey(player.getUniqueId())) {
+            BukkitTask taskFromMap = particles_players_cache.get(player.getUniqueId());
 
-            cancelTaskFromDelayedParticlesAroundChunk(taskFromMap, player.getName());
+            cancelTaskFromDelayedParticlesAroundChunk(taskFromMap, player);
         }
 
         BukkitTask task = Bukkit.getScheduler().runTaskTimer(RealmProtection.getPlugin(RealmProtection.class), () -> {
             spawnParticlesAroundChunk(player, land_id, player.getLocation().getY() + y, is_owner, is_trusted);
         }, 0L, 15L);
 
-        particles_players_cache.put(player.getName(), task);
+        particles_players_cache.put(player.getUniqueId(), task);
 
         Bukkit.getScheduler().runTaskLater(RealmProtection.getPlugin(RealmProtection.class),
-                () -> cancelTaskFromDelayedParticlesAroundChunk(task, player.getName()), 60 * 20L);
+                () -> cancelTaskFromDelayedParticlesAroundChunk(task, player), 60 * 20L);
     }
 
     private static void spawnParticlesAroundChunk(Player player, int land_id, double y, boolean is_owner,
@@ -108,9 +109,9 @@ public class ParticleSpawner {
         }
     }
 
-    private static void cancelTaskFromDelayedParticlesAroundChunk(BukkitTask task, String player_name) {
+    private static void cancelTaskFromDelayedParticlesAroundChunk(BukkitTask task, Player player) {
         if (task != null) {
-            particles_players_cache.remove(player_name);
+            particles_players_cache.remove(player.getUniqueId());
 
             task.cancel();
             task = null;
