@@ -15,8 +15,8 @@ RealmProtection is a Minecraft plugin allowing players to own a 16x16 block chun
 
 <br>
 
-**Minecraft version:** 1.20.6 <br>
-**Tested Minecraft versions:** 1.19, 1.20, 1.20.6
+**Native Minecraft version:** 1.20.6 <br>
+**Tested Minecraft versions:** 1.18, 1.19, 1.20, 1.20.6
 
 ## Features
 - **User-Friendly and Open-Source:** Enjoy the simplicity and freedom of RealmProtection, which is both easy to use and open-source.
