@@ -60,6 +60,8 @@ public class LandsManager {
                 boolean nature_pistonsfromwilderness = result.getBoolean("nature_pistonsfromwilderness");
                 boolean nature_dispensersfromwilderness = result.getBoolean("nature_dispensersfromwilderness");
                 boolean nature_plantgrowth = result.getBoolean("nature_plantgrowth");
+                boolean nature_ravagergrief = result.getBoolean("nature_ravagergrief");
+                boolean nature_endermangrief = result.getBoolean("nature_endermangrief");
 
                 List<Object> data_land_cache = Lists.newArrayList(land_id, land_name, owner_uuid,
                         location_x, location_y, location_z, location_world, created_at, balance, location_yaw);
@@ -73,7 +75,9 @@ public class LandsManager {
                         nature_respawnanchorblockdamage,
                         nature_pistonsfromwilderness,
                         nature_dispensersfromwilderness,
-                        nature_plantgrowth);
+                        nature_plantgrowth,
+                        nature_ravagergrief,
+                        nature_endermangrief);
 
                 land_id_cache.put("" + land_id, data_land_cache);
                 land_name_cache.put(land_name, data_land_cache);
@@ -110,8 +114,10 @@ public class LandsManager {
                 "nature_respawnanchorblockdamage, " +
                 "nature_pistonsfromwilderness, " +
                 "nature_dispensersfromwilderness, " +
-                "nature_plantgrowth " +
-                ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                "nature_plantgrowth, " +
+                "nature_ravagergrief, " +
+                "nature_endermangrief" +
+                ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
         try {
             Connection connection = RealmProtection.database.getConnection();
@@ -138,6 +144,8 @@ public class LandsManager {
             statement.setBoolean(17, false); // Pistons damage
             statement.setBoolean(18, false); // Dispensers damage
             statement.setBoolean(19, true); // Plant growth
+            statement.setBoolean(20, false); // Ravager grief
+            statement.setBoolean(21, false); // Enderman grief
 
             statement.execute();
             statement.close();
@@ -340,6 +348,10 @@ public class LandsManager {
                     return data.get(8);
                 case "plantgrowth":
                     return data.get(9);
+                case "ravagergrief":
+                    return data.get(10);
+                case "endermangrief":
+                    return data.get(11);
                 default:
                     return false;
             }
@@ -517,6 +529,8 @@ public class LandsManager {
                     Lists.newArrayList("pistonsfromwilderness", data.get(7)));
             allflags.add(Lists.newArrayList("dispensersfromwilderness", data.get(8)));
             allflags.add(Lists.newArrayList("plantgrowth", data.get(9)));
+            allflags.add(Lists.newArrayList("ravagergrief", data.get(10)));
+            allflags.add(Lists.newArrayList("endermangrief", data.get(11)));
 
             return allflags;
         }
@@ -537,6 +551,8 @@ public class LandsManager {
         arraylist.add("pistonsfromwilderness");
         arraylist.add("dispensersfromwilderness");
         arraylist.add("plantgrowth");
+        arraylist.add("ravagergrief");
+        arraylist.add("endermangrief");
 
         return arraylist;
     }

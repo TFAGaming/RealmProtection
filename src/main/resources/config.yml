@@ -17,7 +17,7 @@ textures:
 
 # The ratelimits for each player group
 ratelimits:
-  # Chunks ratelimit
+  # Land chunks ratelimit
   chunks:
     __DEFAULT__: 10 # If the player's group not found
     default: 10
@@ -41,7 +41,7 @@ ratelimits:
     admin: 30
     owner: 50
   
-  # Player trusted lands ratelimit
+  # Player lands (trusted in) ratelimit
   player_lands:
     __DEFAULT__: 3 # If the player's group not found
     default: 3
@@ -49,12 +49,12 @@ ratelimits:
     admin: 10
     owner: 20
 
-# The border particles colors, by default: visitor = (255, 0, 0); trusted = (255, 255); owner = (0, 255, 0)
+# The border particles colors, by default: visitor = (255, 0, 0); trusted = (255, 255, 0); owner = (0, 255, 0)
 border_colors: # Note: RBG colors based
   visitor:
-      - 255
-      - 0
-      - 0
+    - 255
+    - 0
+    - 0
   trusted:
     - 255
     - 255

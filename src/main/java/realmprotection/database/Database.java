@@ -64,7 +64,9 @@ public class Database {
                 "nature_respawnanchorblockdamage BOOLEAN NOT NULL, " +
                 "nature_pistonsfromwilderness BOOLEAN NOT NULL, " +
                 "nature_dispensersfromwilderness BOOLEAN NOT NULL, " +
-                "nature_plantgrowth BOOLEAN NOT NULL)");
+                "nature_plantgrowth BOOLEAN NOT NULL, " +
+                "nature_ravagergrief BOOLEAN NOT NULL, " +
+                "nature_endermangrief BOOLEAN NOT NULL)");
 
         statementExecute("CREATE TABLE IF NOT EXISTS claimed_chunks (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +

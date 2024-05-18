@@ -21,6 +21,7 @@ import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Cat;
 import org.bukkit.entity.Creeper;
 import org.bukkit.entity.EnderCrystal;
+import org.bukkit.entity.Enderman;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Fireball;
@@ -28,6 +29,7 @@ import org.bukkit.entity.IronGolem;
 import org.bukkit.entity.Mob;
 import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Ravager;
 import org.bukkit.entity.Sheep;
 import org.bukkit.entity.TNTPrimed;
 import org.bukkit.entity.Vehicle;
@@ -50,6 +52,7 @@ import org.bukkit.event.block.BlockSpreadEvent;
 import org.bukkit.event.block.EntityBlockFormEvent;
 import org.bukkit.event.block.LeavesDecayEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.PlayerLeashEntityEvent;
@@ -731,7 +734,32 @@ public class ChunksProtection implements Listener {
                     event.setCancelled(true);
                 }
             }
+        }
+    }
 
+    // Ravager and enderman grief
+    @EventHandler
+    public void onEntityChangeBlock(EntityChangeBlockEvent event) {
+        Entity entity = event.getEntity();
+        Block block = event.getBlock();
+        Chunk chunk = block.getChunk();
+
+        if (entity != null) {
+            if (ChunksManager.isChunkClaimed(chunk)) {
+                if (entity instanceof Ravager) {
+                    String land_id = ChunksManager.getChunkDetail(chunk, "land_id");
+
+                    if (!LandsManager.getFlagValue(new Integer(land_id), "ravagergrief")) {
+                        event.setCancelled(true);
+                    }
+                } else if (entity instanceof Enderman) {
+                    String land_id = ChunksManager.getChunkDetail(chunk, "land_id");
+
+                    if (!LandsManager.getFlagValue(new Integer(land_id), "endermangrief")) {
+                        event.setCancelled(true);
+                    }
+                }
+            }
         }
     }
 
@@ -1320,7 +1348,7 @@ public class ChunksProtection implements Listener {
                     StringUtils.sendMessageToPlayerWithTimeout((Player) entity, "usevehicles", chunk);
 
                     ParticleSpawner.spawnTemporarySmokeParticle(chunk.getWorld(), vehicle.getLocation().getX() + 0.5,
-                        vehicle.getLocation().getY() + 1, vehicle.getLocation().getZ() + 0.5, 0, 0, 0, 0, 0);
+                            vehicle.getLocation().getY() + 1, vehicle.getLocation().getZ() + 0.5, 0, 0, 0, 0, 0);
 
                     return;
                 }
@@ -1351,7 +1379,7 @@ public class ChunksProtection implements Listener {
                     StringUtils.sendMessageToPlayerWithTimeout((Player) entity, "breakblocks", chunk);
 
                     ParticleSpawner.spawnTemporarySmokeParticle(chunk.getWorld(), vehicle.getLocation().getX() + 0.5,
-                        vehicle.getLocation().getY() + 1, vehicle.getLocation().getZ() + 0.5, 0, 0, 0, 0, 0);
+                            vehicle.getLocation().getY() + 1, vehicle.getLocation().getZ() + 0.5, 0, 0, 0, 0, 0);
 
                     return;
                 }

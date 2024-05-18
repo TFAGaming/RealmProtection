@@ -2,7 +2,7 @@
 # This is the language file used for languages directory.
 # Language used: English (US)
 # 
-# If you want to make another language file, copy this file and dp any changes you want.
+# If you want to make another language file, copy this file and do any changes you want.
 # Once you finish, go to "config.yml" and set the new locale language with the new file name.
 # ---------------------------------------------------------------------------------------------
 
@@ -36,17 +36,17 @@ general:
   player_chunk_entry:
     # If a player enters a claimed chunk
     claimed:
-      action_bar: "&aTerritory: &6%land% &9(Owner: &c%land_owner%&9)"
+      action_bar: "&aYou enter the territory: &6%land% &9(Owner: &c%land_owner%&9)"
       __PLAYER_BANNED__: "&cYou are banned from the land &6%land%&c with the reason: &7%reason%"
 
     # If a player leaves a claimed chunk
     unclaimed:
-      action_bar: "&2Wilderness&a!"
+      action_bar: "&aYou enter the &2Wilderness"
       __FLY_MODE_DISABLED__: "&8[&9RealmProtection&8] &cThe fly mode has been disabled because you are not in a claimed chunk!"
 
   delayed_teleportation:
     bossbar:
-      title: "&aTeleporting... (&cDo not move!&a)"
+      title: "&6Teleporting..."
       color: "YELLOW"
       style: "SOLID"
     messages:
@@ -81,8 +81,8 @@ permissions:
     emptybuckets: "&cYou do not have permission to empty buckets here"
     fillbuckets: "&cYou do not have permission to fill buckets here"
     harvestcrops: "&cYou do not have permission to harvest crops here"
-    frostwalker: "&cYou do not have permission to use frost walker boots here"
-    shearentities: "&cYou do not have permission to shear sheeps here"
+    frostwalker: "&cYou do not have permission to use frostwalker boots here"
+    shearentities: "&cYou do not have permission to shear sheep here"
     itemframes: "&cYou do not have permission to interact with item frames here"
     generalinteractions: "&cYou do not have permission to do any interaction here"
     fencegates: "&cYou do not have permission to use fence gates here"
@@ -103,7 +103,7 @@ permissions:
     damagepassivemobs: "&cYou do not have permission to hit passive mobs here"
     pvp: "&cYou do not have permission to PvP here"
     usecauldron: "&cYou do not have permission to empty or fill cauldrons here"
-    pickupitems: "&cYou do not have permission to pickup items here"
+    pickupitems: "&cYou do not have permission to pick up items here"
     useanvil: "&cYou do not have permission to use anvils here"
     createfire: "&cYou do not have permission to ignite a fire here"
     usevehicles: "&cYou do not have permission to ride vehicles here"
@@ -454,6 +454,8 @@ gui:
         pistonsfromwilderness: "PISTON"
         dispensersfromwilderness: "DISPENSER"
         plantgrowth: "OAK_SAPLING"
+        ravagergrief: "TEXTURE-5c73e16fa2926899cf18434360e2144f84ef1eb981f996148912148dd87e0b2a"
+        endermangrief: "TEXTURE-9689c200980e4c54adcfbbdad492c1d2edbd92366aabf89724ed19930cb5b6e2"
 
     # /land storage
     land_storage:
@@ -570,6 +572,8 @@ flags:
       pistonsfromwilderness: "Wilderness pistons"
       dispensersfromwilderness: "Wilderness dispensers"
       plantgrowth: "Plant growth"
+      ravagergrief: "Ravager grief"
+      endermangrief: "Enderman grief"
 
     description:
       hostilemobsspawn: "Allow any hostile mob to spawn?"
@@ -582,3 +586,5 @@ flags:
       pistonsfromwilderness: "Allow blocks to be pushed/pulled by pistons to/from your land?"
       dispensersfromwilderness: "Allow wilderness dispensers to dispense items to your land?"
       plantgrowth: "Allow any plant to grow in your land?"
+      ravagergrief: "Allow Ravagers to destroy leaves, plants... etc?"
+      endermangrief: "Allow Endermen to pick up and place blocks?"
