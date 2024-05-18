@@ -1,12 +1,3 @@
-<p align="center">
-    <a href="https://github.com/TFAGaming/RealmProtection/releases/latest">
-        <img src="https://img.shields.io/github/downloads/TFAGaming/RealmProtection/total?label=Downloads">
-        <img src="https://img.shields.io/github/v/tag/TFAGaming/RealmProtection?label=Version">
-        <img src="https://img.shields.io/github/license/TFAGaming/RealmProtection?label=License">
-        <img src="https://img.shields.io/github/repo-size/TFAGaming/RealmProtection?label=Size">
-    </a>
-</p>
-
 <img width="150" height="150" align="left" style="float: left; margin: 0 10px 10px 0;" alt="RealmProtection" src="images/realmprotection-icon.png">
 
 <h3><u>RealmProtection</u></h3>
@@ -17,6 +8,21 @@ RealmProtection is a Minecraft plugin allowing players to own a 16x16 block chun
 
 **Native Minecraft version:** 1.20.6 <br>
 **Tested Minecraft versions:** 1.18, 1.19, 1.20, 1.20.6
+
+<p align="center">
+    <a href="https://www.spigotmc.org"> <img src="https://avatars.githubusercontent.com/u/4350249?s=100&v=4"> </a>
+    <a href="https://papermc.io/"> <img src="https://avatars.githubusercontent.com/u/7608950?s=100&v=4"> </a>
+</p>
+
+
+<p align="center">
+    <a href="https://github.com/TFAGaming/RealmProtection/releases/latest">
+        <img src="https://img.shields.io/github/downloads/TFAGaming/RealmProtection/total?label=Downloads">
+        <img src="https://img.shields.io/github/v/tag/TFAGaming/RealmProtection?label=Version">
+        <img src="https://img.shields.io/github/license/TFAGaming/RealmProtection?label=License">
+        <img src="https://img.shields.io/github/repo-size/TFAGaming/RealmProtection?label=Size">
+    </a>
+</p>
 
 ## Features
 - **User-Friendly and Open-Source:** Enjoy the simplicity and freedom of RealmProtection, which is both easy to use and open-source.
@@ -31,20 +37,24 @@ RealmProtection is a Minecraft plugin allowing players to own a 16x16 block chun
   - **Entity Protection:** Prevent damage to hostile and passive entities, ensuring their safety.
 - **Customizable Configuration:** Customize the plugin to your server's needs with a flexible configuration system, allowing you to fine-tune every aspect of chunk protection.
 - **Efficient Performance:** RealmProtection has a powerful database manager with a built-in cache to keep the server and the plugin performant.
-- **Integration with External Plugins APIs:** Seamlessly integrate with external plugins APIs including [VaultAPI](https://github.com/MilkBowl/VaultAPI) and [LuckPerms](https://github.com/LuckPerms/LuckPerms) for enhanced functionality and compatibility.
+- **Integration with External Plugins APIs:** External plugins APIs used, including [VaultAPI](https://github.com/MilkBowl/VaultAPI) and [LuckPerms](https://github.com/LuckPerms/LuckPerms) for enhanced functionality and compatibility.
+
+## Preview
 
 <details>
-    <summary>Screenshots (Click here)</summary>
+    <summary>Click here</summary>
     <h3>Land information GUI:</h3>
     <img src="./images/img1.png">
-    <h3>Role flags GUI:</h3>
+    <h3>Role permissions GUI (for a specific role):</h3>
     <img src="./images/img2.png"><br><br>
     <h3>Nature flags GUI:</h3>
     <img src="./images/img3.png">
     <h3>Land claimlist:</h3>
     <img src="./images/img4.png">
-    <h3>Land border (green particles):</h3>
+    <h3>Land roles:</h3>
     <img src="./images/img5.png">
+    <h3>Land border (green particles):</h3>
+    <img src="./images/img6.png">
 </details>
 
 ## How to install
@@ -54,8 +64,6 @@ Go to the [releases section](https://github.com/TFAGaming/RealmProtector/release
 <!-- <img src="images/img6.png"> -->
 
 After the download completes, simply copy the **.jar** file and navigate to the plugins folder within your Minecraft server directory, and paste the file there. If your Minecraft server is currently running, you can execute the command `/reload` to activate the plugin. However, for optimal performance, we advise stopping the server and then restarting it for a clean startup.
-
-For your Minecraft server setup, we recommend utilizing [PaperMC](https://papermc.io/) due to its superior performance and optimization compared to [Spigot](https://www.spigotmc.org/).
 
 > [!WARNING]  
 > You must install the plugins from the list below to make the plugin fully functional:
@@ -84,7 +92,7 @@ The primary command for the plugin is `/land`, which also accepts the alias `/la
 - `/land leave [land name]`: Leaves a land without owner actions.
 - `/land nature flags (flag) {true/false}`: Manages land nature flags.
 - `/land rename [new name]`: Renames a land.
-- `/land roles [create/delete/rename/flags]`: Manages land roles:
+- `/land roles (create/delete/rename/flags)`: Manages land roles, opens GUI if there are no arguments:
     - `/land roles create [role name]`: Creates a new role with default permissions.
     - `/land roles delete [role name]`: Deletes an existing role.
     - `/land roles flags [role name] (flag) {true/false}`: Manages role flags.
@@ -132,7 +140,21 @@ Each command within the plugin is associated with its specific permission node, 
 
 ### What's the difference between Role flag and Nature flag?
 
-A role flag refers to a permission that can be either allowed or disallowed for a specific land role. On the other hand, a nature flag refers a feature or protection for a land that is either allowed or disallowed and remains undetectable when a player performs it. Examples of nature flags include features like wilderness pistons, which are undetectable when activated by a player, and protections like mob spawners, which are natural from the environment.
+A role flag refers to a permission that can be either allowed or disallowed for a specific land role. On the other hand, a nature flag refers a feature or protection for a land that is either allowed or disallowed and remains undetectable when a player performs it. Examples of nature flags include features like wilderness pistons, which are undetectable when activated by a player, and protections like mob spawners, which are natural by the environment.
+
+### What is the Visitor role?
+
+The Visitor role is the default role for untrusted players, and it holds permissions for the players who are marked as visitors in your land. The role cannot be deleted, renamed, or replaced by another. If you trust a player, the player cannot have the Visitor role because it will still mark them as an untrusted player.
+
+> [!WARNING]
+> In `config.yml`, make sure that there are at least two roles, and one of them is the Visitor role. Also, for the property `roles.__DEFAULT_VISITOR_ROLE__`, the value **must be** the Visitor role. Here is an example:
+> ```yml
+> roles:
+>    names:
+>       - "Visitor"
+>       - "Member"
+>    __DEFAULT_VISITOR_ROLE__: "Visitor"
+> ```
 
 ### Why must every player claim one chunk away from any land?
 
