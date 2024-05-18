@@ -15,8 +15,10 @@ general:
 
   # The flags toggle value, it could be enabled or disabled
   flags:
-    enabled: "&a✔ Enabled &r"
-    disabled: "&c✘ Disabled &r"
+    enabled: "&7Value: &a✔ Enabled &r"
+    disabled: "&7Value: &c✘ Disabled &r"
+    opposite_enable: "&7Click to disable."
+    opposite_disable: "&7Click to enable."
 
   # This part is for the GUIs
   guis:
@@ -24,7 +26,7 @@ general:
     close_button:
       enabled: true
       item:
-        displayname: "&cClose"
+        displayname: "&cBack"
         type: "BARRIER"
 
   # The date format
@@ -34,22 +36,27 @@ general:
   player_chunk_entry:
     # If a player enters a claimed chunk
     claimed:
-      action_bar: "&aYou entered to the land: &6%land% &9(Owner: &c%land_owner%&9)"
+      action_bar: "&aTerritory: &6%land% &9(Owner: &c%land_owner%&9)"
       __PLAYER_BANNED__: "&cYou are banned from the land &6%land%&c with the reason: &7%reason%"
 
     # If a player leaves a claimed chunk
     unclaimed:
-      action_bar: "&aYou are in &2wilderness&a!"
-      __FLY_MODE_DISABLED__: "&cThe fly mode has been disabled since you are not in a claimed chunk anymore!"
+      action_bar: "&2Wilderness&a!"
+      __FLY_MODE_DISABLED__: "&8[&9RealmProtection&8] &cThe fly mode has been disabled because you are not in a claimed chunk!"
 
   delayed_teleportation:
     bossbar:
-      title: "&fTeleporting... (Do not move!)"
+      title: "&aTeleporting... (&cDo not move!&a)"
       color: "YELLOW"
       style: "SOLID"
     messages:
       player_moved: "&cThe teleportation has been canceled because you moved!"
       already_teleporting: "&cPlease wait until the requested teleportion ends!"
+
+  # For commands
+  commands:
+    not_found: "&8[&9RealmProtection&8] &cThis sub-command does not exist, please use /help."
+    missing_permissions: "&8[&9RealmProtection&8] &cYou do not the permission to use this sub-command."
 
 # Permissions configuration
 permissions:
@@ -61,9 +68,6 @@ permissions:
     suffix:
       enabled: true
       value: " &c(Land: &9%land_name%&c, Flag: &7%flag%&c)"
-
-  # This one is for a player when they don't have a permission to use a command
-  commands: "&cYou do not have permission to run this command!"
 
   # The land roles permissions messages
   lands:
@@ -188,17 +192,15 @@ commands:
     __STRING_LIST__:
       - "&9Help | RealmProtection plugin"
       - ""
+      - "\n"
+      - "&7Version: 1.3.2"
       - ""
-      - "&6The main command: &7/lands [subcommand]"
+      - "&7Repository: &agithub.com/TFAGaming/RealmProtection/"
       - ""
-      - "&6Available sub commands: &7accept, balance, ban, banlist, claim, claimlist, deposit, delete, fly, help, info, invites, leave, nature, rename, roles, setspawn, spawn, storage, top, trust, unban, unclaim, untrust, view, withdraw"
+      - "&7Author: &aTFAGaming ツ"
       - ""
-      - "&6Permissions: &7realmprotection.lands.[subcommand]"
-      - ""
-      - ""
-      - "&aCreated by TFAGaming"
-      - ""
-      - "&aSource: &fhttps://github.com/TFAGaming/RealmProtection/"
+      - "\n"
+      - "&6© 2024, License: Apache-2.0"
 
   info:
     chunk_wilderness: "&cThis is wilderness, you must use this command inside a claimed chunk!"
@@ -269,6 +271,8 @@ commands:
       - ""
       - ""
       - "%repeatstyle%"
+      - ""
+      - "&9Your land rank is: &7#%player_land_rank%"
     __REPEAT_STYLE__: "&7- #%rank% &6%land_name% (%land_id%):\n  &a• Owner: &c%land_owner%\n  &a• Balance: &6$%balance%\n  &a• Chunks: &6%chunks_count%\n"
 
   trust:
@@ -363,16 +367,17 @@ gui:
             - "&aChunks: &f%chunks%"
             - "&aBalance: &f$%balance%"
             - "&aCreated at: &f%created_at%"
-          type: "TEXTURE-d01afe973c5482fdc71e6aa10698833c79c437f21308ea9a1a095746ec274a0f"
+          type: "TEXTURE-35747010d84aa56483b75f6243d94f34c534603584b2cc68a45bf365840105fd"
         land_owner:
           displayname: "&9Owner: &c%land_owner%"
-          type: "TEXTURE-b8867c1c5826b99470953ac8908028ec89b5c6c14d1bd8b5d366c6eab88cfe0a" # Player kind head
+          type: "TEXTURE-5d64c2f2f232f050023930695b0cf7cd6db7d7dc947ca31a795b55b895de60d4" # Player kind head
         land_members:
           displayname: "&9Members (%members_count%):"
           lore:
             - "%repeatstyle%"
           __LORE_REPEAT_STYLE__: "&a%role_name%&f: &6%member_name%"
-          type: "PLAYER_HEAD"   
+          type: "TEXTURE-d1d2b7dd66ffd86ad4709927b175e83f1a9e10fbc864b2390403708f39d8efd8"
+          __NO_MEMBERS__: "&cNone"
             
     # /land roles flags [role name]
     role_flags:
@@ -383,6 +388,7 @@ gui:
           lore:
             - "&f%description%"
             - "%value%"
+            - "%opposite_value%"
         role_name:
           displayname: "&9Role: &6%role%"
           type: "PAPER"
@@ -433,6 +439,7 @@ gui:
           lore:
             - "&f%description%"
             - "%value%"
+            - "%opposite_value%"
         land_name:
           displayname: "&9Land: &6%land_name%"
           type: "PAPER"
@@ -466,7 +473,7 @@ gui:
     roles_list:
       title: "&9Land Roles"
       content:
-        __ITEM_DISPLAYNAME__: "&6%role_name% &9(ID: &c%role_id%&9)"
+        __ITEM_DISPLAYNAME__: "&a%role_name% &9(ID: &c%role_id%&9)"
         __ITEM_TYPE__:
           __DEFAULT__: "TEXTURE-d1f90cf50c9ec3c27ca334ea8e10c7db253c2f551d20c815eba65909ad928161"
 
@@ -519,7 +526,7 @@ flags:
       redstone: "Allow players to configure redstone components?"
       doors: "Allow players to use doors?"
       trapdoors: "Allow players to trapdoors?"
-      editsigns: "Allow players to edit signs and hanging signs?"
+      editsigns: "Allow players to edit signs?"
       emptybuckets: "Allow players to empty any bucket?"
       fillbuckets: "Allow players to fill any bucket?"
       harvestcrops: "Allow players to harvest crops?"
@@ -532,23 +539,23 @@ flags:
       levers: "Allow players to use levers?"
       pressureplates: "Allow players to step on pressure plates?"
       bells: "Allow players to use bells?"
-      tripwires: "Allow players to step on tripwires and triggers them?"
+      tripwires: "Allow players to step on tripwires and trigger them?"
       armorstands: "Allow players to interact with armor stands?"
-      dyemobs: "Allow players to change sheeps color and cats/dogs collar color?"
+      dyemobs: "Allow players to change sheep's color and animals' collar color?"
       renamemobs: "Allow players to rename entities with a name tag?"
       leashmobs: "Allow players to leash entities and remove leash?"
       tradewithvillagers: "Allow players to trade with villagers?"
       teleporttospawn: "Allow players to visit your land?"
       throwenderpearls: "Allow players to teleport using ender pearls?"
-      throwpotions: "Allow players to throw splash or lengering potions?"
-      damagehostilemobs: "Allow players to hit and kill hostile mobs?"
-      damagepassivemobs: "Allow players to hit and kill passive mobs?"
-      pvp: "Allow players to PvP each other?"
+      throwpotions: "Allow players to throw splash or lingering potions?"
+      damagehostilemobs: "Allow players to kill hostile mobs?"
+      damagepassivemobs: "Allow players to kill passive mobs?"
+      pvp: "Allow players to PvP?"
       usecauldron: "Allow players to interact with cauldrons?"
       pickupitems: "Allow players to drop and pick up items?"
       useanvil: "Allow players to use anvils?"
-      createfire: "Allow players to start fire?"
-      usevehicles: "Allow players to ride minecarts and boats?"
+      createfire: "Allow players to start a fire?"
+      usevehicles: "Allow players to use minecarts, boats, and horses?"
 
   # For nature flags
   nature_flags:
@@ -568,8 +575,8 @@ flags:
       hostilemobsspawn: "Allow any hostile mob to spawn?"
       passivemobsspawn: "Allow any passive mob to spawn?"
       leavesdecay: "Allow leaves to decay?"
-      firespread: "Allow fire to spread in your land?"
-      liquidflow: "Allow any external liquid to enter to your land?"
+      firespread: "Allow the fire to spread in your land?"
+      liquidflow: "Allow any external liquid to enter your land?"
       tntblockdamage: "Allow TNT damage blocks in your land?"
       respawnanchorblockdamage: "Allow respawn anchors and beds (Nether) damage blocks in your land?"
       pistonsfromwilderness: "Allow blocks to be pushed/pulled by pistons to/from your land?"

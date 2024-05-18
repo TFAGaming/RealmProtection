@@ -23,7 +23,7 @@ public class RolesListPaginationGUI {
 
         List<List<Object>> roles = RolesManager.listAllRolesData(new Integer(land_id));
 
-        roles.sort(Comparator.comparingInt((List<Object> list) -> (int) list.get(1)));
+        roles.sort(Comparator.comparingInt((List<Object> list) -> (int) list.get(1)).reversed());
 
         int roles_count = roles.size();
 

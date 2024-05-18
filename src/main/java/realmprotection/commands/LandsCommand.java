@@ -50,14 +50,17 @@ public class LandsCommand implements TabExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
             if (args.length > 0) {
-                if (!sender.hasPermission("realmprotection.lands." + args[0])) {
-
-                    sender.sendMessage(ChatColorTranslator.translate((String) Language.get("permissions.commands")));
-
+                if (!getSubcommands().contains(args[0].toLowerCase())) {
+                    sender.sendMessage(ChatColorTranslator.translate((String) Language.get("general.commands.not_found")));
                     return true;
                 }
 
-                switch (args[0]) {
+                if (!sender.hasPermission("realmprotection.lands." + args[0].toLowerCase())) {
+                    sender.sendMessage(ChatColorTranslator.translate((String) Language.get("general.commands.missing_permissions")));
+                    return true;
+                }
+
+                switch (args[0].toLowerCase()) {
                     case "claim":
                         new ClaimCommand().onCommand(sender, command, label, args);
                         break;
@@ -181,32 +184,7 @@ public class LandsCommand implements TabExecutor {
         int currentindex = 0;
 
         if (args.length == 1) {
-            arraylist.add("claim");
-            arraylist.add("unclaim");
-            arraylist.add("info");
-            arraylist.add("roles");
-            arraylist.add("view");
-            arraylist.add("trust");
-            arraylist.add("untrust");
-            arraylist.add("spawn");
-            arraylist.add("setspawn");
-            arraylist.add("nature");
-            arraylist.add("deposit");
-            arraylist.add("withdraw");
-            arraylist.add("balance");
-            arraylist.add("rename");
-            arraylist.add("leave");
-            arraylist.add("help");
-            arraylist.add("ban");
-            arraylist.add("unban");
-            arraylist.add("banlist");
-            arraylist.add("delete");
-            arraylist.add("fly");
-            arraylist.add("storage");
-            arraylist.add("accept");
-            arraylist.add("invites");
-            arraylist.add("top");
-            arraylist.add("claimlist");
+            arraylist = getSubcommands();
 
             currentindex = 1;
         } else if (args.length == 2) {
@@ -358,7 +336,7 @@ public class LandsCommand implements TabExecutor {
         return filteredlist;
     }
 
-    public List<String> getOnlinePlayersList() {
+    private static List<String> getOnlinePlayersList() {
         List<String> playernames = new ArrayList<>();
         Player[] players = new Player[Bukkit.getServer().getOnlinePlayers().size()];
 
@@ -369,5 +347,38 @@ public class LandsCommand implements TabExecutor {
         }
 
         return playernames;
+    }
+
+    private static List<String> getSubcommands() {
+        List<String> arraylist = new ArrayList<>();
+
+        arraylist.add("claim");
+        arraylist.add("unclaim");
+        arraylist.add("info");
+        arraylist.add("roles");
+        arraylist.add("view");
+        arraylist.add("trust");
+        arraylist.add("untrust");
+        arraylist.add("spawn");
+        arraylist.add("setspawn");
+        arraylist.add("nature");
+        arraylist.add("deposit");
+        arraylist.add("withdraw");
+        arraylist.add("balance");
+        arraylist.add("rename");
+        arraylist.add("leave");
+        arraylist.add("help");
+        arraylist.add("ban");
+        arraylist.add("unban");
+        arraylist.add("banlist");
+        arraylist.add("delete");
+        arraylist.add("fly");
+        arraylist.add("storage");
+        arraylist.add("accept");
+        arraylist.add("invites");
+        arraylist.add("top");
+        arraylist.add("claimlist");
+
+        return arraylist;
     }
 }

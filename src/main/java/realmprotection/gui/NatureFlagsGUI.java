@@ -47,13 +47,13 @@ public class NatureFlagsGUI {
 							.translate(lore
 									.replace("%description%",
 											"" + (String) Language.get("flags.nature_flags.description." + flag.get(0)))
-									.replace("%value%", (String) Language.get("general.flags.enabled"))));
+									.replace("%value%", (String) Language.get("general.flags.enabled")).replace("%opposite_value%", (String) Language.get("general.flags.opposite_enable"))));
 				} else {
 					flagButtonLore.add(ChatColorTranslator
 							.translate(lore
 									.replace("%description%",
 											"" + (String) Language.get("flags.nature_flags.description." + flag.get(0)))
-									.replace("%value%", (String) Language.get("general.flags.disabled"))));
+									.replace("%value%", (String) Language.get("general.flags.disabled")).replace("%opposite_value%", (String) Language.get("general.flags.opposite_disable"))));
 				}
 			}
 

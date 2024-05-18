@@ -1,7 +1,9 @@
 package realmprotection.commands.subcommands;
 
 import java.util.List;
+import java.util.UUID;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -32,7 +34,7 @@ public class TopCommand implements CommandExecutor {
 
             for (List<Object> data : alldata) {
                 repeatstylefinalstring += repeatstyle.replace("%rank%", "" + rank).replace("%land_id%", ""+ data.get(0))
-                        .replace("%land_name%", (String) data.get(1)).replace("%land_owner%", (String) data.get(2))
+                        .replace("%land_name%", (String) data.get(1)).replace("%land_owner%", Bukkit.getOfflinePlayer(UUID.fromString((String) data.get(2))).getName())
                         .replace("%chunks_count%", "" + data.get(3)).replace("%balance%", String.format("%.2f", data.get(4)));
 
                 rank++;
@@ -47,7 +49,7 @@ public class TopCommand implements CommandExecutor {
                     finalstring += '\n';
                 } else {
                     finalstring += string.replace("%limit%", "" + limit).replace("%repeatstyle%",
-                            repeatstylefinalstring);
+                            repeatstylefinalstring).replace("%player_land_rank%", "" + (LandsManager.getPlayerLandRank(player) + 1));
                 }
             }
 

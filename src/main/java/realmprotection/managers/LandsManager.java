@@ -11,9 +11,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
 
-import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 
 import com.google.common.collect.Lists;
 
@@ -361,14 +360,14 @@ public class LandsManager {
 
             int land_id = (int) data.get(0);
             String landName = (String) data.get(1);
-            String owner_name = Bukkit.getOfflinePlayer(UUID.fromString((String) data.get(2))).getName();
+            String owner_uuid = (String) data.get(2);
             int total_chunks = ChunksManager.getChunksCountOfLand(land_id);
             double balance = (double) data.get(8);
 
             List<Object> landInfo = new ArrayList<>();
             landInfo.add(land_id);
             landInfo.add(landName);
-            landInfo.add(owner_name);
+            landInfo.add(owner_uuid);
             landInfo.add(total_chunks);
             landInfo.add(balance);
 
@@ -382,6 +381,21 @@ public class LandsManager {
         }
 
         return topLands;
+    }
+
+    public static int getPlayerLandRank(Player player) {
+        List<List<Object>> topLands = getTopLands(getTotalLandsCount());
+        int index = 0;
+
+        for (int i = 0; i < topLands.size(); i++) {
+            if (((String) topLands.get(i).get(2)).equals(player.getUniqueId().toString())) {
+                index = i;
+
+                break;
+            }
+        }
+
+        return index;
     }
 
     public static void updateLandName(int land_id, String new_land_name) {

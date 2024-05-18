@@ -72,6 +72,7 @@ roles:
   names:
     - "Visitor"
     - "Member"
+    - "Admin"
 
   # IMPORTANT 1: This role is unchangeable, which means it cannot be deleted or renamed.
   # IMPORTANT 2: YOU MUST PROVIDE THE ROLE NAME THAT EXISTS FROM THE ARRAY "roles.names" OR ELSE THE ENTIRE PLUGIN WILL BE BUGGED OUT.
@@ -155,6 +156,45 @@ roles:
       - true # pickupitems
       - true # useanvil
       - false # createfire
+      - true # usevehicles
+
+    # Permissions for the role: Admin
+    Admin:
+      - true # breakblocks
+      - true # placeblocks
+      - true # containers
+      - true # redstone
+      - true # doors
+      - true # trapdoors
+      - true # editsigns
+      - true # emptybuckets
+      - true # fillbuckets
+      - true # harvestcrops
+      - true # frostwalker
+      - true # shearentities
+      - true # itemframes
+      - true # generalinteractions
+      - true # fencegates
+      - true # buttons
+      - true # levers
+      - true # pressureplates
+      - true # bells
+      - true # tripwires
+      - true # armorstands
+      - true # dyemobs
+      - true # renamemobs
+      - true # leashmobs
+      - true # tradewithvillagers
+      - true # teleporttospawn
+      - true # throwenderpearls
+      - true # throwpotions
+      - true # damagehostilemobs
+      - true # damagepassivemobs
+      - true # pvp
+      - true # usecauldron
+      - true # pickupitems
+      - true # useanvil
+      - true # createfire
       - true # usevehicles
 
       # Default permissions if there is a new role created:

@@ -101,14 +101,18 @@ public class LandInfoGUI {
 
 		ArrayList<String> landMembersButtonLore = new ArrayList<>();
 
-		for (List<String> memberdata : membersdata) {
-			landMembersButtonLore
-					.add(ChatColorTranslator
-							.translate(((String) getFromLanguage("content.land_members.__LORE_REPEAT_STYLE__"))
-									.replace("%role_name%",
-											memberdata.get(1))
-									.replace("%member_name%",
-											memberdata.get(0))));
+		if (membersdata.size() == 0) {
+			landMembersButtonLore.add(ChatColorTranslator.translate((String) getFromLanguage("content.land_members.__NO_MEMBERS__")));
+		} else {
+			for (List<String> memberdata : membersdata) {
+				landMembersButtonLore
+						.add(ChatColorTranslator
+								.translate(((String) getFromLanguage("content.land_members.__LORE_REPEAT_STYLE__"))
+										.replace("%role_name%",
+												memberdata.get(1))
+										.replace("%member_name%",
+												memberdata.get(0))));
+			}
 		}
 
 		landMembersButtonMeta.setLore(landMembersButtonLore);

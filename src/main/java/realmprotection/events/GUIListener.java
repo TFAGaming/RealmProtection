@@ -116,13 +116,13 @@ public class GUIListener implements Listener {
                             .translate(lore
                                     .replace("%description%",
                                             "" + (String) Language.get("flags.role_flags.description." + permission))
-                                    .replace("%value%", (String) Language.get("general.flags.enabled"))));
+                                    .replace("%value%", (String) Language.get("general.flags.enabled")).replace("%opposite_value%", (String) Language.get("general.flags.opposite_enable"))));
                 } else {
                     flagButtonLore.add(ChatColorTranslator
                             .translate(lore
                                     .replace("%description%",
                                             "" + (String) Language.get("flags.role_flags.description." + permission))
-                                    .replace("%value%", (String) Language.get("general.flags.disabled"))));
+                                    .replace("%value%", (String) Language.get("general.flags.disabled")).replace("%opposite_value%", (String) Language.get("general.flags.opposite_disable"))));
                 }
             }
 
@@ -183,13 +183,13 @@ public class GUIListener implements Listener {
                             .translate(lore
                                     .replace("%description%",
                                             "" + (String) Language.get("flags.nature_flags.description." + flag))
-                                    .replace("%value%", (String) Language.get("general.flags.enabled"))));
+                                    .replace("%value%", (String) Language.get("general.flags.enabled")).replace("%opposite_value%", (String) Language.get("general.flags.opposite_enable"))));
                 } else {
                     flagButtonLore.add(ChatColorTranslator
                             .translate(lore
                                     .replace("%description%",
                                             "" + (String) Language.get("flags.nature_flags.description." + flag))
-                                    .replace("%value%", (String) Language.get("general.flags.disabled"))));
+                                    .replace("%value%", (String) Language.get("general.flags.disabled")).replace("%opposite_value%", (String) Language.get("general.flags.opposite_disable"))));
                 }
             }
 
