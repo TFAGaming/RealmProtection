@@ -1,3 +1,17 @@
+<p align="center">
+    <a href="https://www.spigotmc.org"> <img src="https://avatars.githubusercontent.com/u/4350249?s=100&v=4"> </a>
+    <a href="https://papermc.io/"> <img src="https://avatars.githubusercontent.com/u/7608950?s=100&v=4"> </a>
+</p>
+
+<p align="center">
+    <a href="https://github.com/TFAGaming/RealmProtection/releases/latest">
+        <img src="https://img.shields.io/github/downloads/TFAGaming/RealmProtection/total?label=Downloads">
+        <img src="https://img.shields.io/github/v/tag/TFAGaming/RealmProtection?label=Version">
+        <img src="https://img.shields.io/github/license/TFAGaming/RealmProtection?label=License">
+        <img src="https://img.shields.io/github/repo-size/TFAGaming/RealmProtection?label=Size">
+    </a>
+</p>
+
 <img width="150" height="150" align="left" style="float: left; margin: 0 10px 10px 0;" alt="RealmProtection" src="images/realmprotection-icon.png">
 
 <h3><u>RealmProtection</u></h3>
@@ -8,21 +22,6 @@ RealmProtection is a Minecraft plugin allowing players to own a 16x16 block chun
 
 **Native Minecraft version:** 1.20.6 <br>
 **Tested Minecraft versions:** 1.18, 1.19, 1.20, 1.20.6
-
-<p align="center">
-    <a href="https://www.spigotmc.org"> <img src="https://avatars.githubusercontent.com/u/4350249?s=100&v=4"> </a>
-    <a href="https://papermc.io/"> <img src="https://avatars.githubusercontent.com/u/7608950?s=100&v=4"> </a>
-</p>
-
-
-<p align="center">
-    <a href="https://github.com/TFAGaming/RealmProtection/releases/latest">
-        <img src="https://img.shields.io/github/downloads/TFAGaming/RealmProtection/total?label=Downloads">
-        <img src="https://img.shields.io/github/v/tag/TFAGaming/RealmProtection?label=Version">
-        <img src="https://img.shields.io/github/license/TFAGaming/RealmProtection?label=License">
-        <img src="https://img.shields.io/github/repo-size/TFAGaming/RealmProtection?label=Size">
-    </a>
-</p>
 
 ## Features
 - **User-Friendly and Open-Source:** Enjoy the simplicity and freedom of RealmProtection, which is both easy to use and open-source.
