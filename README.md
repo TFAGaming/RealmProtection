@@ -1,3 +1,6 @@
+## This project was replaced with another upcoming plugin, [click here](https://github.com/TFAGaming/UltrasClaim).
+## The development has been discontinued as of June 3rd, 2024.
+
 <p align="center">
     <a href="https://www.spigotmc.org"> <img src="https://avatars.githubusercontent.com/u/4350249?s=100&v=4"> </a>
     <a href="https://papermc.io/"> <img src="https://avatars.githubusercontent.com/u/7608950?s=100&v=4"> </a>
